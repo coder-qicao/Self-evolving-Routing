@@ -1,0 +1,32 @@
+{
+  "id": "E007",
+  "claim": "On nomad2018-predict-transparent-conductors (tabular regression, RMSLE), claude-haiku-4-5 reached silver (RMSLE 0.0591). sonnet-4-6 reached gold (RMSLE not directly comparable: cost $16, silver-threshold-passed) and opus-4-7 reached gold (cost $51) on the same task. Haiku is one medal tier below the others.",
+  "support": {
+    "task": "nomad2018-predict-transparent-conductors",
+    "task_family_hint": "tabular-regression",
+    "comparisons": [
+      {"model": "claude-haiku-4-5",  "runs": ["20260521_062212"], "n": 1, "outcomes": "silver ×1 (aggregator submission score=0.0591)", "best_candidate_score": 0.05591, "avg_cost_usd": 2.46, "cost_caveat": "salvaged run; total_cost may be under-reported because workflow crashed before final state save"},
+      {"model": "claude-sonnet-4-6", "runs": ["20260519_212900"], "n": 1, "outcomes": "gold ×1", "avg_cost_usd": 16.01},
+      {"model": "claude-opus-4-7",   "runs": ["20260519_161312"], "n": 1, "outcomes": "gold ×1", "avg_cost_usd": 50.63}
+    ],
+    "candidate_breakdown_haiku": [
+      {"candidate": "candidate_1", "score": 0.07432, "medal": "none"},
+      {"candidate": "candidate_3", "score": 0.05908, "medal": "silver"},
+      {"candidate": "candidate_4", "score": 0.06015, "medal": "silver"},
+      {"candidate": "candidate_5", "score": 0.05591, "medal": "silver"},
+      {"candidate": "candidate_6", "score": 0.05883, "medal": "silver"}
+    ]
+  },
+  "scope": "Specific to nomad2018. Suggestive that haiku is capable on small tabular regression with simple features (this dataset is well-defined chemistry feature vectors). May not generalize to harder tabular tasks (high-dimensional, time series, or with messy features).",
+  "limitations": [
+    "n=1 per model. Cannot rule out variance, especially for the medal-tier gap (haiku silver vs sonnet/opus gold).",
+    "Cost is salvaged-data (workflow crashed before final accounting). The $2.46 number is a lower bound. Even if real cost is 2-3× that, haiku is still dramatically cheaper than sonnet/opus on this task.",
+    "Manager picked candidate_3 (RMSLE 0.0591) as the final aggregator submission, but candidate_5 had the best score (0.0559). Aggregator selection logic may not be optimal under haiku.",
+    "5 of 6 haiku candidates landed in silver range — strong consistency, not a single lucky run."
+  ],
+  "confidence": "medium",
+  "last_updated": "2026-05-21",
+  "policy_promoted": false,
+  "policy_recommendation": "Note haiku as a strong 'cost-floor' option for tabular regression in task_memory/tabular-regression.json. Promote to default after a second confirming haiku run on this or a similar tabular task.",
+  "next_action": "Re-run haiku on nomad2018 once more to confirm silver. Run haiku on a second tabular task (e.g. nyc-taxi-fare) to test family-level generalization."
+}

@@ -1,0 +1,37 @@
+{
+  "family": "text-classification",
+  "schema_version": 1,
+  "last_updated": "2026-05-21 (E001 n: 2→3)",
+  "fingerprint": {
+    "modality": "text",
+    "data_size_bucket": "tiny<10MB | small<100MB",
+    "metric_family": "auc | log_loss | accuracy",
+    "task_shape": "single-label classification, balanced or imbalanced"
+  },
+  "member_tasks": [
+    {"name": "detecting-insults-in-social-commentary", "category": "sentiment-opinion-mining", "size_mb": 1.9, "metric": "auc-roc"},
+    {"name": "spooky-author-identification",           "category": "text-classification",       "size_mb": 3.2, "metric": "multi-class-log-loss"},
+    {"name": "jigsaw-toxic-comment-classification-challenge", "category": "text-classification", "size_mb": 129, "metric": "mean-column-auc"}
+  ],
+  "default_routing": {
+    "all_roles": "claude-sonnet-4-6",
+    "rationale": "Cheapest model in our data that achieved gold/silver/bronze on a text-classification task (detecting-insults gold, spooky none). See E003.",
+    "evidence_refs": ["E003"]
+  },
+  "known_overrides": {
+    "detecting-insults-in-social-commentary": {
+      "all_roles": "claude-haiku-4-5",
+      "evidence_refs": ["E001"],
+      "notes": "Three haiku gold runs at $4.51 / $5.88 / $4.57 (avg $4.99, range $4.51-$5.88). Confidence raised on 2026-05-21 with the third reproduction."
+    }
+  },
+  "open_questions": [
+    "spooky-author: sonnet=none, opus=bronze. Re-run sonnet to confirm 'none' was transient — or is sonnet genuinely weaker on stylometric tasks?",
+    "jigsaw (129MB): both sonnet and opus came back as 'none'. Coder budget too tight, or task too hard for ML-agent at current config? Larger dataset → coder needs more time."
+  ],
+  "observations": {
+    "claude-haiku-4-5": {"gold": 3, "none": 1, "ungraded": 2, "n_total": 6, "tasks_covered": ["detecting-insults", "spooky"], "notes": "spooky-author run salvaged 2026-05-21: aggregator output none (1.07), best candidate above_median (0.366). Selection logic, not capability gap."},
+    "claude-sonnet-4-6": {"gold": 2, "none": 2, "n_total": 4, "tasks_covered": ["detecting-insults", "spooky", "jigsaw"]},
+    "claude-opus-4-7":  {"gold": 2, "bronze": 1, "none": 1, "n_total": 4, "tasks_covered": ["detecting-insults", "spooky", "jigsaw"]}
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "E001",
+  "claim": "On detecting-insults-in-social-commentary, claude-haiku-4-5 reaches gold at ~$5/run, matching the gold outcomes of sonnet-4-6 and opus-4-7 on the same task.",
+  "support": {
+    "task": "detecting-insults-in-social-commentary",
+    "task_family_hint": "text-classification (sentiment-opinion-mining subtype)",
+    "comparisons": [
+      {"model": "claude-haiku-4-5",  "runs": ["20260519_063539", "20260520_130903", "20260520_233536"], "n": 3, "outcomes": "gold ×3", "avg_cost_usd": 4.99, "cost_range_usd": [4.51, 5.88]},
+      {"model": "claude-sonnet-4-6", "runs": ["20260519_054325", "20260519_201206", "20260519_212900"], "n": 3, "outcomes": "gold ×2, none ×1", "avg_cost_usd": 4.79},
+      {"model": "claude-opus-4-7",   "runs": ["20260519_043145", "20260519_161312"], "n": 2, "outcomes": "gold ×2", "avg_cost_usd": 42.57}
+    ],
+    "cost_saving_if_used": "~$37/run vs opus, ~$0 vs sonnet"
+  },
+  "scope": "Specific to detecting-insults-in-social-commentary. Now supported by 3 consecutive haiku gold runs ($4.51 / $5.88 / $4.57) — no failure mode observed. Likely generalizes to other small (<5MB) binary text-classification tasks with AUC-ROC metric, but that has not been independently tested.",
+  "limitations": [
+    "n=3 graded haiku runs on this task; variance is low (cost range $4.51-$5.88).",
+    "One sonnet run on this task produced 'none' (no submission) — failure mode unexplained. We have not seen a haiku failure but cannot rule one out in conditions not yet observed.",
+    "All runs used a single model for all roles. Per-role-mixed haiku has not been tested."
+  ],
+  "confidence": "high",
+  "last_updated": "2026-05-21",
+  "policy_promoted": true,
+  "promotes_to": "policy/routing_policy.md § task-specific routing",
+  "history": [
+    {"date": "2026-05-21", "event": "added 20260520_233536 gold run (n: 2→3, raised confidence)"}
+  ]
+}

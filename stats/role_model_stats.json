@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-05-22T23:08:08Z",
+  "source": {
+    "total_runs_in_index": 39,
+    "graded_runs_used": 25,
+    "excluded_limit_hit_runs": 12
+  },
+  "role_cost_share_pct": {
+    "setup": 1.94,
+    "designer": 4.52,
+    "judge": 6.65,
+    "coder": 40.44,
+    "tuner": 44.47,
+    "aggregator": 1.68,
+    "manager": 0.0
+  },
+  "by_role_by_model": {
+    "setup": {
+      "claude-haiku-4-5": {
+        "avg_cost_usd": 0.0654,
+        "median_cost_usd": 0.0591,
+        "avg_calls": 1,
+        "n_runs": 8
+      },
+      "claude-sonnet-4-6": {
+        "avg_cost_usd": 0.1425,
+        "median_cost_usd": 0.1563,
+        "avg_calls": 1,
+        "n_runs": 9
+      },
+      "claude-opus-4-7": {
+        "avg_cost_usd": 0.7151,
+        "median_cost_usd": 0.7649,
+        "avg_calls": 1,
+        "n_runs": 8
+      }
+    },
+    "designer": {
+      "claude-haiku-4-5": {
+        "avg_cost_usd": 0.1374,
+        "median_cost_usd": 0.1337,
+        "avg_calls": 1,
+        "n_runs": 8
+      },
+      "claude-sonnet-4-6": {
+        "avg_cost_usd": 0.3846,
+        "median_cost_usd": 0.3754,
+        "avg_calls": 1,
+        "n_runs": 9
+      },
+      "claude-opus-4-7": {
+        "avg_cost_usd": 1.9127,
+        "median_cost_usd": 1.8955,
+        "avg_calls": 1,
+        "n_runs": 8
+      }
+    },
+    "judge": {
+      "claude-haiku-4-5": {
+        "avg_cost_usd": 0.2648,
+        "median_cost_usd": 0.3177,
+        "avg_calls": 1.25,
+        "n_runs": 8
+      },
+      "claude-sonnet-4-6": {
+        "avg_cost_usd": 0.9338,
+        "median_cost_usd": 1.0176,
+        "avg_calls": 1.22,
+        "n_runs": 9
+      },
+      "claude-opus-4-7": {
+        "avg_cost_usd": 2.6414,
+        "median_cost_usd": 2.2532,
+        "avg_calls": 1,
+        "n_runs": 8
+      }
+    },
+    "coder": {
+      "claude-haiku-4-5": {
+        "avg_cost_usd": 1.9395,
+        "median_cost_usd": 1.9247,
+        "avg_calls": 6,
+        "n_runs": 8
+      },
+      "claude-sonnet-4-6": {
+        "avg_cost_usd": 3.0238,
+        "median_cost_usd": 2.1273,
+        "avg_calls": 4.67,
+        "n_runs": 9
+      },
+      "claude-opus-4-7": {
+        "avg_cost_usd": 13.9363,
+        "median_cost_usd": 15.1274,
+        "avg_calls": 5.12,
+        "n_runs": 8
+      }
+    },
+    "tuner": {
+      "claude-haiku-4-5": {
+        "avg_cost_usd": 1.2645,
+        "median_cost_usd": 1.0503,
+        "avg_calls": 3.5,
+        "n_runs": 8
+      },
+      "claude-sonnet-4-6": {
+        "avg_cost_usd": 7.1129,
+        "median_cost_usd": 7.6967,
+        "avg_calls": 7.44,
+        "n_runs": 9
+      },
+      "claude-opus-4-7": {
+        "avg_cost_usd": 25.5856,
+        "median_cost_usd": 26.1014,
+        "avg_calls": 8,
+        "n_runs": 8
+      }
+    },
+    "aggregator": {
+      "claude-haiku-4-5": {
+        "avg_cost_usd": 0.062,
+        "median_cost_usd": 0.0631,
+        "avg_calls": 1,
+        "n_runs": 8
+      },
+      "claude-sonnet-4-6": {
+        "avg_cost_usd": 0.1402,
+        "median_cost_usd": 0.1482,
+        "avg_calls": 1,
+        "n_runs": 9
+      },
+      "claude-opus-4-7": {
+        "avg_cost_usd": 0.8051,
+        "median_cost_usd": 0.7587,
+        "avg_calls": 1,
+        "n_runs": 8
+      }
+    },
+    "manager": {
+      "claude-haiku-4-5": {
+        "avg_cost_usd": 0,
+        "median_cost_usd": 0.0,
+        "avg_calls": 15.25,
+        "n_runs": 8
+      },
+      "claude-sonnet-4-6": {
+        "avg_cost_usd": 0,
+        "median_cost_usd": 0,
+        "avg_calls": 15.67,
+        "n_runs": 9
+      },
+      "claude-opus-4-7": {
+        "avg_cost_usd": 0,
+        "median_cost_usd": 0.0,
+        "avg_calls": 16.25,
+        "n_runs": 8
+      }
+    }
+  },
+  "by_model_summary": {
+    "claude-haiku-4-5": {
+      "n_graded_runs": 8,
+      "medal_counts": {
+        "silver": 1,
+        "bronze": 1,
+        "none": 3,
+        "gold": 3
+      },
+      "avg_total_cost_usd": 3.73
+    },
+    "claude-sonnet-4-6": {
+      "n_graded_runs": 9,
+      "medal_counts": {
+        "gold": 4,
+        "none": 3,
+        "silver": 1,
+        "bronze": 1
+      },
+      "avg_total_cost_usd": 11.92
+    },
+    "claude-opus-4-7": {
+      "n_graded_runs": 8,
+      "medal_counts": {
+        "gold": 4,
+        "none": 1,
+        "silver": 2,
+        "bronze": 1
+      },
+      "avg_total_cost_usd": 45.6
+    }
+  },
+  "notes": "Every run in this dataset used a single model for all roles. Per-role costs are accurate; per-role *quality* per model is inferred from overall-run outcomes only. No per-role-mixed run has been ingested yet. Salvaged-haiku runs (2026-05-21) may have under-reported total_cost since the workflow crashed before the final state save \u2014 use medal info as primary signal."
+}

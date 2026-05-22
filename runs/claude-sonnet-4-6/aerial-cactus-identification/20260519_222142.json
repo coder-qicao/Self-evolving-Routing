@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "task": "aerial-cactus-identification",
+  "timestamp": "20260519_222142",
+  "run_dir": "/data3/qi/ML-agent-code/aerial-cactus-identification/20260519_222142",
+  "model": "claude-sonnet-4-6",
+  "model_role_map": null,
+  "result": {
+    "score": 1.0,
+    "metric_name": null,
+    "metric_direction": null,
+    "medal": "gold",
+    "above_median": true,
+    "bronze_threshold": null
+  },
+  "pipeline": {
+    "num_candidates": 6,
+    "alive_at_end": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "agent_calls": null,
+    "max_agent_calls": 10,
+    "tuner_runs": null,
+    "reviser_runs": null,
+    "consumed_seconds": null,
+    "wall_elapsed_seconds": null
+  },
+  "cost": {
+    "total_usd": 15.499016799999998,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "total_turns": 437,
+    "errors_count": 0,
+    "per_role": {
+      "manager": {
+        "calls": 15,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "setup": {
+        "calls": 1,
+        "cost_usd": 0.095688,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 7,
+        "errors": 0
+      },
+      "designer": {
+        "calls": 1,
+        "cost_usd": 0.34143575000000004,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 9,
+        "errors": 0
+      },
+      "reviser": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "coder": {
+        "calls": 6,
+        "cost_usd": 3.3108669,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 115,
+        "errors": 0
+      },
+      "tuner": {
+        "calls": 6,
+        "cost_usd": 10.879421199999998,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 265,
+        "errors": 0
+      },
+      "aggregator": {
+        "calls": 1,
+        "cost_usd": 0.15508104999999997,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 6,
+        "errors": 0
+      },
+      "judge": {
+        "calls": 1,
+        "cost_usd": 0.7165238999999999,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 35,
+        "errors": 0
+      },
+      "stop": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      }
+    }
+  },
+  "provenance": {
+    "manager_state_sha256": "b6291a94fb9071530ac4e20060f3c38dee16e97ad46c7ccf92eddc87321b1485",
+    "ingest_unix": 1779278635,
+    "source": "cli"
+  }
+}

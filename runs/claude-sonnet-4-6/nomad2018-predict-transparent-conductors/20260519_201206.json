@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "task": "nomad2018-predict-transparent-conductors",
+  "timestamp": "20260519_201206",
+  "run_dir": "/data3/qi/ML-agent-code/nomad2018-predict-transparent-conductors/20260519_201206",
+  "model": "claude-sonnet-4-6",
+  "model_role_map": null,
+  "result": {
+    "score": null,
+    "metric_name": null,
+    "metric_direction": null,
+    "medal": "ungraded",
+    "above_median": null,
+    "bronze_threshold": null
+  },
+  "pipeline": {
+    "num_candidates": 3,
+    "alive_at_end": [
+      1,
+      2,
+      3
+    ],
+    "agent_calls": null,
+    "max_agent_calls": 10,
+    "tuner_runs": null,
+    "reviser_runs": null,
+    "consumed_seconds": null,
+    "wall_elapsed_seconds": null
+  },
+  "cost": {
+    "total_usd": 1.561217,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "total_turns": 33,
+    "errors_count": 0,
+    "per_role": {
+      "manager": {
+        "calls": 5,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "setup": {
+        "calls": 1,
+        "cost_usd": 0.18836414999999998,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 10,
+        "errors": 0
+      },
+      "designer": {
+        "calls": 1,
+        "cost_usd": 0.3363963,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 9,
+        "errors": 0
+      },
+      "reviser": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "coder": {
+        "calls": 3,
+        "cost_usd": 1.03645655,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 13,
+        "errors": 0
+      },
+      "tuner": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "aggregator": {
+        "calls": 1,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 1,
+        "errors": 0
+      }
+    }
+  },
+  "provenance": {
+    "manager_state_sha256": "4b628335076455ad60d8e73d9b5a6d3576432249ae04887a663e02f33e7e7fd3",
+    "ingest_unix": 1779222044,
+    "source": "cli"
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "task": "aerial-cactus-identification",
+  "timestamp": "20260519_202133",
+  "run_dir": "/data3/qi/ML-agent-code/aerial-cactus-identification/20260519_202133",
+  "model": "claude-haiku-4-5",
+  "model_role_map": null,
+  "result": {
+    "score": null,
+    "metric_name": null,
+    "metric_direction": null,
+    "medal": "ungraded",
+    "above_median": null,
+    "bronze_threshold": null
+  },
+  "pipeline": {
+    "num_candidates": 6,
+    "alive_at_end": [],
+    "agent_calls": null,
+    "max_agent_calls": 10,
+    "tuner_runs": null,
+    "reviser_runs": null,
+    "consumed_seconds": null,
+    "wall_elapsed_seconds": null
+  },
+  "cost": {
+    "total_usd": 0.0,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "total_turns": 1,
+    "errors_count": 0,
+    "per_role": {
+      "manager": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "setup": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "designer": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "reviser": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "coder": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "tuner": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "aggregator": {
+        "calls": 1,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 1,
+        "errors": 0
+      }
+    }
+  },
+  "provenance": {
+    "manager_state_sha256": "db2e0dbb18f08afe49b95ec81f83cf46c96a9d8f512f85fac890f16bb2992ddb",
+    "ingest_unix": 1779222098,
+    "source": "cli"
+  }
+}

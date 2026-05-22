@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "_note": "X002 experiment: leaf-classification with tuner=opus, everything else sonnet. See memory/routing/experiments/queue.jsonl § X002 and evidence/E004 for the hypothesis being tested.",
+  "tasks": {
+    "leaf-classification": {
+      "by_role": {
+        "setup":      "claude-sonnet-4-6",
+        "designer":   "claude-sonnet-4-6",
+        "judge":      "claude-sonnet-4-6",
+        "coder":      "claude-sonnet-4-6",
+        "tuner":      "claude-opus-4-7",
+        "aggregator": "claude-sonnet-4-6",
+        "reviser":    "claude-sonnet-4-6",
+        "manager":    "claude-sonnet-4-6"
+      }
+    }
+  }
+}

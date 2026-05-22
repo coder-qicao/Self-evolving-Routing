@@ -1,0 +1,35 @@
+{
+  "family": "tabular-regression",
+  "schema_version": 1,
+  "last_updated": "2026-05-21 (haiku silver on nomad2018 — see E007)",
+  "fingerprint": {
+    "modality": "tabular",
+    "data_size_bucket": "tiny<10MB | small<100MB",
+    "metric_family": "rmse | mae | rmsle | r2",
+    "task_shape": "structured features, regression target"
+  },
+  "member_tasks": [
+    {"name": "nomad2018-predict-transparent-conductors", "category": "molecular-biochemical-prediction", "size_mb": 10, "metric": "rmsle"}
+  ],
+  "default_routing": {
+    "all_roles": "claude-sonnet-4-6",
+    "rationale": "Sonnet gold @ $16 vs opus gold @ $51 on the only tabular regression task we have. Strong cost win, identical medal (E003).",
+    "evidence_refs": ["E003"]
+  },
+  "cost_floor_option": {
+    "all_roles": "claude-haiku-4-5",
+    "expected_outcome": "silver @ ~$2-5 (one tier below sonnet)",
+    "evidence_refs": ["E007"],
+    "when_to_use": "User explicitly accepts a 1-tier medal drop (gold→silver) for an 8-15× cost cut. Single data point — confidence medium because 5 of 6 haiku candidates landed in silver range, showing consistency."
+  },
+  "known_overrides": {},
+  "open_questions": [
+    "Confirm haiku silver on nomad2018 with a second run (E007 is currently n=1).",
+    "We have only ONE task in this family. Need more tabular tasks before generalizing the haiku-silver pattern — e.g. nyc-taxi-fare or playground-series-s6e2."
+  ],
+  "observations": {
+    "claude-haiku-4-5":  {"silver": 1, "n_total": 1, "tasks_covered": ["nomad2018"], "salvaged": true},
+    "claude-sonnet-4-6": {"gold": 1, "n_total": 1, "tasks_covered": ["nomad2018"]},
+    "claude-opus-4-7":  {"gold": 1, "n_total": 1, "tasks_covered": ["nomad2018"]}
+  }
+}

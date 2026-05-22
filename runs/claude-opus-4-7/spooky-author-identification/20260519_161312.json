@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "task": "spooky-author-identification",
+  "timestamp": "20260519_161312",
+  "run_dir": "/data3/qi/ML-agent-code/spooky-author-identification/20260519_161312",
+  "model": "claude-opus-4-7",
+  "model_role_map": null,
+  "result": {
+    "score": 0.27769,
+    "metric_name": null,
+    "metric_direction": null,
+    "medal": "bronze",
+    "above_median": true,
+    "bronze_threshold": null
+  },
+  "pipeline": {
+    "num_candidates": 6,
+    "alive_at_end": [
+      1
+    ],
+    "agent_calls": null,
+    "max_agent_calls": 10,
+    "tuner_runs": null,
+    "reviser_runs": null,
+    "consumed_seconds": null,
+    "wall_elapsed_seconds": null
+  },
+  "cost": {
+    "total_usd": 52.8225427,
+    "total_input_tokens": 0,
+    "total_output_tokens": 0,
+    "cache_read_input_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "total_turns": 372,
+    "errors_count": 0,
+    "per_role": {
+      "manager": {
+        "calls": 16,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "setup": {
+        "calls": 1,
+        "cost_usd": 0.9176645000000001,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 8,
+        "errors": 0
+      },
+      "designer": {
+        "calls": 1,
+        "cost_usd": 2.01066175,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 9,
+        "errors": 0
+      },
+      "reviser": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "coder": {
+        "calls": 3,
+        "cost_usd": 7.538106,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 41,
+        "errors": 0
+      },
+      "tuner": {
+        "calls": 10,
+        "cost_usd": 40.76137545,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 302,
+        "errors": 0
+      },
+      "aggregator": {
+        "calls": 1,
+        "cost_usd": 0.66557875,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 6,
+        "errors": 0
+      },
+      "judge": {
+        "calls": 1,
+        "cost_usd": 0.9291562499999999,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 6,
+        "errors": 0
+      },
+      "stop": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      }
+    }
+  },
+  "provenance": {
+    "manager_state_sha256": "e11d534f37fcd259ca04a0b88e82cb659693deeb1f83c14576febeec0df82cd4",
+    "ingest_unix": 1779214357,
+    "source": "cli"
+  }
+}

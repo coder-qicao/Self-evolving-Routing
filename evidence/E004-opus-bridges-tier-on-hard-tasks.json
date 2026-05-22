@@ -1,0 +1,18 @@
+{
+  "id": "E004",
+  "claim": "On 2 tasks in the corpus, claude-opus-4-7 reached a strictly higher medal tier than claude-sonnet-4-6 (leaf-classification: silver vs bronze; spooky-author-identification: bronze vs none).",
+  "support": {
+    "task_a": {"name": "leaf-classification", "opus": "silver @ $52.44", "sonnet": "bronze @ $20.96", "delta": "+1 medal tier @ +$31"},
+    "task_b": {"name": "spooky-author-identification", "opus": "bronze @ $52.82", "sonnet": "none @ $8.07", "delta": "+1 medal tier @ +$45 (but 'none' on sonnet may indicate transient failure rather than capability gap)"}
+  },
+  "scope": "These two tasks both involve nuanced discrimination — fine-grained leaf species classification and author-identification stylometry. Unclear whether 'opus bridges tier' is a property of (a) the task family, (b) a specific role (likely coder or tuner), or (c) noise from n=1.",
+  "limitations": [
+    "n=1 per (task, model) for these comparisons. Could easily be variance — a re-run of sonnet on leaf-classification might also get silver.",
+    "We do not know WHICH role is responsible for the tier difference. Possible the difference comes from sonnet-tuner running out of attempts, or sonnet-coder writing a slightly weaker train.py. Without per-role-mixed runs we cannot localize.",
+    "spooky 'none' may not be a model-capability failure; it may be the same rate-limit / process-kill class of issue we have already observed in other corners of the corpus."
+  ],
+  "confidence": "low",
+  "last_updated": "2026-05-21",
+  "policy_promoted": false,
+  "next_action": "experiments/queue.jsonl X002 + X003 (try opus-only-on-tuner or opus-only-on-coder)"
+}

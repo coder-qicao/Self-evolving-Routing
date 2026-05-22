@@ -1,0 +1,164 @@
+"""Aggregate memory/routing/index.jsonl into per-model markdown summaries.
+
+Pure data rollup, no LLM. Each model gets one
+``memory/routing/by_model/<model>.md`` with:
+  - aggregate stats table (n runs, medal counts, mean cost, mean wall,
+    agent-call utilization, error rate)
+  - per-task breakdown table
+
+LLM-level synthesis ("what's this model good at?") is intentionally
+deferred — the goal of v0 is to make the raw signal queryable.
+
+Usage:
+    python -m memory.routing.rollup
+    python -m memory.routing.rollup --model claude-opus-4-7-...
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import statistics
+import sys
+from collections import defaultdict
+from pathlib import Path
+
+ROUTING_ROOT = Path(__file__).resolve().parent
+INDEX_PATH = ROUTING_ROOT / "index.jsonl"
+BY_MODEL_DIR = ROUTING_ROOT / "by_model"
+
+
+def _load_index() -> list[dict]:
+    if not INDEX_PATH.exists():
+        return []
+    rows = []
+    for line in INDEX_PATH.read_text().splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            rows.append(json.loads(line))
+        except json.JSONDecodeError:
+            continue
+    return rows
+
+
+def _safe_mean(values: list[float | int | None]) -> float | None:
+    clean = [v for v in values if isinstance(v, (int, float))]
+    if not clean:
+        return None
+    return statistics.fmean(clean)
+
+
+def _safe_median(values: list[float | int | None]) -> float | None:
+    clean = [v for v in values if isinstance(v, (int, float))]
+    if not clean:
+        return None
+    return statistics.median(clean)
+
+
+def _fmt(v, prec: int = 2, default: str = "—") -> str:
+    if v is None:
+        return default
+    if isinstance(v, float):
+        return f"{v:.{prec}f}"
+    return str(v)
+
+
+def _medal_counts(rows: list[dict]) -> dict[str, int]:
+    out = {"gold": 0, "silver": 0, "bronze": 0, "none": 0, "ungraded": 0}
+    for r in rows:
+        m = (r.get("medal") or "ungraded")
+        out[m] = out.get(m, 0) + 1
+    return out
+
+
+def _safe_name(model: str) -> str:
+    return model.replace("/", "_")
+
+
+def _render_model_md(model: str, rows: list[dict]) -> str:
+    n = len(rows)
+    medals = _medal_counts(rows)
+    medaled = medals["gold"] + medals["silver"] + medals["bronze"]
+    above_med = sum(1 for r in rows if r.get("above_median") is True)
+    err_runs = sum(1 for r in rows if (r.get("errors") or 0) > 0)
+
+    parts: list[str] = []
+    parts.append(f"# Routing memory — `{model}`")
+    parts.append("")
+    parts.append(f"_{n} run(s) ingested._")
+    parts.append("")
+    parts.append("## Aggregate")
+    parts.append("")
+    parts.append("| metric | value |")
+    parts.append("|---|---|")
+    parts.append(f"| Runs | {n} |")
+    parts.append(f"| Distinct tasks | {len({r.get('task') for r in rows})} |")
+    parts.append(f"| Medals (gold/silver/bronze) | {medals['gold']} / {medals['silver']} / {medals['bronze']} |")
+    parts.append(f"| Any medal rate | {_fmt(medaled / n * 100 if n else None, 1)}% |")
+    parts.append(f"| No-medal / ungraded | {medals['none']} / {medals['ungraded']} |")
+    parts.append(f"| Above-median rate | {_fmt(above_med / n * 100 if n else None, 1)}% |")
+    parts.append(f"| Mean cost (USD) | {_fmt(_safe_mean([r.get('cost_usd') for r in rows]), 2)} |")
+    parts.append(f"| Median cost (USD) | {_fmt(_safe_median([r.get('cost_usd') for r in rows]), 2)} |")
+    parts.append(f"| Mean wall (s) | {_fmt(_safe_mean([r.get('wall_s') for r in rows]), 0)} |")
+    parts.append(f"| Mean agent calls | {_fmt(_safe_mean([r.get('agent_calls') for r in rows]), 1)} |")
+    parts.append(f"| Runs with errors | {err_runs} ({_fmt(err_runs / n * 100 if n else None, 1)}%) |")
+    parts.append("")
+    parts.append("## Per task")
+    parts.append("")
+    parts.append("| task | n | best medal | best score | mean cost (USD) | mean wall (s) | errors |")
+    parts.append("|---|---|---|---|---|---|---|")
+
+    by_task: dict[str, list[dict]] = defaultdict(list)
+    for r in rows:
+        by_task[r.get("task") or "?"].append(r)
+
+    medal_rank = {"gold": 4, "silver": 3, "bronze": 2, "none": 1, "ungraded": 0}
+    for task in sorted(by_task):
+        trows = by_task[task]
+        best_medal = max((r.get("medal") or "ungraded" for r in trows), key=lambda m: medal_rank.get(m, 0))
+        scores = [r.get("score") for r in trows if isinstance(r.get("score"), (int, float))]
+        best_score = max(scores) if scores else None
+        mean_cost = _safe_mean([r.get("cost_usd") for r in trows])
+        mean_wall = _safe_mean([r.get("wall_s") for r in trows])
+        errs = sum(1 for r in trows if (r.get("errors") or 0) > 0)
+        parts.append(
+            f"| {task} | {len(trows)} | {best_medal} | {_fmt(best_score, 4)} | "
+            f"{_fmt(mean_cost, 2)} | {_fmt(mean_wall, 0)} | {errs} |"
+        )
+    parts.append("")
+    parts.append("---")
+    parts.append("")
+    parts.append("Generated by `python -m memory.routing.rollup`. Source: `memory/routing/index.jsonl`.")
+    return "\n".join(parts) + "\n"
+
+
+def main() -> int:
+    p = argparse.ArgumentParser()
+    p.add_argument("--model", help="rollup only this model")
+    args = p.parse_args()
+
+    rows = _load_index()
+    if not rows:
+        print("no rows in index.jsonl yet — run `python -m memory.routing.ingest ...` first", file=sys.stderr)
+        return 1
+
+    by_model: dict[str, list[dict]] = defaultdict(list)
+    for r in rows:
+        by_model[r.get("model") or "unknown"].append(r)
+
+    targets = [args.model] if args.model else sorted(by_model)
+    BY_MODEL_DIR.mkdir(parents=True, exist_ok=True)
+    for model in targets:
+        model_rows = by_model.get(model, [])
+        if not model_rows:
+            print(f"[skip] no rows for model {model}", file=sys.stderr)
+            continue
+        out = BY_MODEL_DIR / f"{_safe_name(model)}.md"
+        out.write_text(_render_model_md(model, model_rows))
+        print(f"[ok] {out}  ({len(model_rows)} rows)")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

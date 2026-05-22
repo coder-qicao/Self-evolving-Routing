@@ -1,0 +1,18 @@
+{
+  "id": "E005",
+  "claim": "The manager role reports $0 cost across every single run in the corpus, regardless of which model is configured.",
+  "support": {
+    "n_runs_observed": 19,
+    "models_tested": ["claude-haiku-4-5", "claude-sonnet-4-6", "claude-opus-4-7"],
+    "interpretation": "Manager runs as a persistent long-lived agent that handles tool dispatch. Its API spend is most likely being attributed to whichever sub-agent it called, via cache reads, rather than to the manager role itself."
+  },
+  "scope": "Cost accounting only. Does NOT mean the manager's choice of model is free in reality.",
+  "limitations": [
+    "Have not cross-referenced against raw Anthropic API logs to confirm whether the manager's actual API spend is really zero or just misattributed.",
+    "If it is misattributed, then any 'use cheaper manager' optimization will appear to save zero in stats but might save real money."
+  ],
+  "confidence": "high (for the accounting fact); low (for any inferred behavior)",
+  "last_updated": "2026-05-21",
+  "policy_promoted": false,
+  "policy_recommendation": "Until verified against API logs, treat manager model as a free knob — choose it for routing-quality (the manager's reasoning matters), not for cost."
+}

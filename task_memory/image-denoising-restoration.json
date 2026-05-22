@@ -1,0 +1,35 @@
+{
+  "family": "image-denoising-restoration",
+  "schema_version": 1,
+  "last_updated": "2026-05-21 (haiku data added)",
+  "fingerprint": {
+    "modality": "image",
+    "data_size_bucket": "small<100MB | medium<1GB",
+    "metric_family": "rmse",
+    "task_shape": "image-to-image regression (denoising, super-resolution, restoration)"
+  },
+  "member_tasks": [
+    {"name": "denoising-dirty-documents", "category": "document-text-image-analysis", "size_mb": 96, "metric": "rmse"}
+  ],
+  "default_routing": {
+    "all_roles": "claude-sonnet-4-6",
+    "rationale": "Sonnet silver @ $18 vs opus silver @ $43 — same medal, 2.4× cheaper (E003).",
+    "evidence_refs": ["E003"]
+  },
+  "known_overrides": {},
+  "cost_floor_option": {
+    "all_roles": "claude-haiku-4-5",
+    "expected_outcome": "bronze @ ~$6",
+    "evidence_refs": ["E006"],
+    "when_to_use": "User explicitly accepts a 1-tier medal drop for a 3× cost cut. Single data point — confidence low."
+  },
+  "open_questions": [
+    "Is haiku-bronze on denoising real or n=1 variance? Need a second haiku run to confirm.",
+    "Where does the haiku→sonnet tier gap localize? Likely coder (writes the denoising model) or tuner. A sonnet-coder + haiku-everywhere-else run would test this."
+  ],
+  "observations": {
+    "claude-haiku-4-5":  {"bronze": 1, "n_total": 1, "tasks_covered": ["denoising-dirty-documents"]},
+    "claude-sonnet-4-6": {"silver": 1, "n_total": 1, "tasks_covered": ["denoising-dirty-documents"]},
+    "claude-opus-4-7":  {"silver": 1, "n_total": 1, "tasks_covered": ["denoising-dirty-documents"]}
+  }
+}

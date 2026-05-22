@@ -1,0 +1,25 @@
+{
+  "id": "E003",
+  "claim": "On 3 of the 6 graded tasks in the corpus, claude-sonnet-4-6 achieves the same medal tier as claude-opus-4-7 at 2-3× lower cost.",
+  "support": {
+    "matched_tasks": [
+      {"task": "detecting-insults-in-social-commentary", "sonnet": "gold @ $6.05–$6.38", "opus": "gold @ $39.17–$45.96", "ratio": 6.7},
+      {"task": "nomad2018-predict-transparent-conductors", "sonnet": "gold @ $16.01", "opus": "gold @ $50.63", "ratio": 3.2},
+      {"task": "aerial-cactus-identification", "sonnet": "gold @ $15.50", "opus": "gold @ $33.99", "ratio": 2.2},
+      {"task": "denoising-dirty-documents", "sonnet": "silver @ $18.32", "opus": "silver @ $43.22", "ratio": 2.4}
+    ],
+    "mismatched_tasks": [
+      {"task": "leaf-classification", "sonnet": "bronze @ $20.96", "opus": "silver @ $52.44", "note": "opus 1 tier better"},
+      {"task": "spooky-author-identification", "sonnet": "none @ $8.07", "opus": "bronze @ $52.82", "note": "opus reached medal; sonnet failed"}
+    ]
+  },
+  "scope": "Six tasks across 5 different task families (sentiment, tabular, satellite, document, FGVC, text-classification). Plausibly extends to other 'easy' tasks where current SOTA is well-documented and the data fits in <100MB.",
+  "limitations": [
+    "Only 1 run per (task, model) pair for most tasks. We cannot rule out variance.",
+    "'Easy' vs 'hard' is observed post-hoc, not predicted. We do not yet have a feature that lets us decide a priori which side a new task will land on. Best current proxy: data size + modality + whether the leaderboard top is well above bronze threshold."
+  ],
+  "confidence": "medium",
+  "last_updated": "2026-05-21",
+  "policy_promoted": true,
+  "promotes_to": "policy/routing_policy.md § default-when-unknown — try sonnet first"
+}

@@ -1,0 +1,25 @@
+{
+  "id": "E006",
+  "claim": "On denoising-dirty-documents, claude-haiku-4-5 reaches bronze at $6.17, while sonnet-4-6 and opus-4-7 reach silver at $18.32 and $43.22 respectively. Haiku is one medal tier below the others, but 3-7× cheaper.",
+  "support": {
+    "task": "denoising-dirty-documents",
+    "task_family_hint": "image-denoising-restoration",
+    "comparisons": [
+      {"model": "claude-haiku-4-5",  "runs": ["20260521_100539"], "n": 1, "outcomes": "bronze ×1", "avg_cost_usd": 6.17},
+      {"model": "claude-sonnet-4-6", "runs": ["20260520_011737"], "n": 1, "outcomes": "silver ×1", "avg_cost_usd": 18.32},
+      {"model": "claude-opus-4-7",   "runs": ["20260519_181239"], "n": 1, "outcomes": "silver ×1", "avg_cost_usd": 43.22}
+    ],
+    "tradeoff": "If the goal is 'any medal at lowest cost', haiku wins by a wide margin ($6 vs $18). If the goal is 'silver or better', sonnet is required and the cost goes up ~3×."
+  },
+  "scope": "Specific to denoising-dirty-documents. Suggestive (but not yet confirmed) that haiku is a viable 'cost floor' option even for image-restoration tasks — at the price of one medal tier on this benchmark.",
+  "limitations": [
+    "n=1 per model. Could be variance — repeat haiku and sonnet runs needed to confirm the medal-tier gap is real and not noise.",
+    "Bronze on denoising may map to 'submission produced but not great pixel accuracy'. Without inspecting the actual submission RMSE, we cannot tell whether the gap is small (sonnet 0.05 RMSE vs haiku 0.06) or large (sonnet 0.05 vs haiku 0.10).",
+    "We do not know which sub-agent role is responsible for the tier gap. Possible the haiku-coder writes a simpler model, or the haiku-tuner does fewer/weaker tuning passes."
+  ],
+  "confidence": "low",
+  "last_updated": "2026-05-21",
+  "policy_promoted": false,
+  "policy_recommendation": "Keep sonnet as the family default for image-denoising-restoration. Note haiku as a 'cost-floor' option in the family memory open_questions — useful when the user explicitly wants ≤$10/run and accepts a possible medal-tier drop.",
+  "next_action": "Re-run haiku on denoising at least once more to confirm bronze is the expected medal (not variance). Then optionally test sonnet-coder + haiku-everywhere-else to see if the gap localizes to coder."
+}
