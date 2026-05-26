@@ -2,7 +2,7 @@
   "id": "E002",
   "claim": "Across all 19 graded runs in the corpus, the tuner role accounts for ~54% of total cost and the coder role for ~31%. The remaining five roles (setup / designer / judge / aggregator / manager) together account for ~15%.",
   "support": {
-    "computed_over": "memory/routing/stats/role_model_stats.json § role_cost_share_pct",
+    "computed_over": "memory/routing/stats/role_model_stats.json \u00a7 role_cost_share_pct",
     "share_pct": {
       "tuner": 53.65,
       "coder": 31.29,
@@ -14,13 +14,18 @@
     },
     "implication": "If routing must downgrade exactly one role to save money, downgrading the tuner has roughly 1.7x the impact of downgrading the coder, and an order of magnitude more impact than downgrading any other single role."
   },
-  "scope": "All 7 tasks observed so far, across 3 models. Pattern is consistent across tasks — tuner is the largest cost center in every single run we have.",
+  "scope": "All 7 tasks observed so far, across 3 models. Pattern is consistent across tasks \u2014 tuner is the largest cost center in every single run we have.",
   "limitations": [
     "manager cost reports as $0; this is the persistent orchestrator and its API spend is masked by cache hits in the current accounting. Do not interpret '$0' as 'manager is free regardless of model'; we have not verified this against raw API logs.",
     "Cost share is computed over single-model runs only. Mixing a cheap coder with an expensive tuner (or vice versa) may shift cache-hit patterns and change the per-role share."
   ],
   "confidence": "high",
-  "last_updated": "2026-05-21",
+  "last_updated": "2026-05-21 (legacy_scope tagged 2026-05-23)",
   "policy_promoted": true,
-  "promotes_to": "policy/routing_policy.md § cost-saving priority"
+  "promotes_to": "policy/routing_policy.md \u00a7 cost-saving priority",
+  "legacy_scope": {
+    "applies_to": "v2 role surface (8 roles incl. tuner/manager)",
+    "v3_status": "obsolete or partial \u2014 see E009 for the v2\u2192v3 role surface change",
+    "tagged": "2026-05-23"
+  }
 }

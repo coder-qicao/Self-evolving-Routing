@@ -107,3 +107,17 @@ fallback in `routing_policy.md`.
    pending.
 
 This keeps the LLM-facing surface stable, auditable, and small.
+
+
+## v2 vs v3 role surface
+
+This memory was started on `qi_memory_router_v2` (8 roles: setup, designer,
+judge, coder, **tuner**, reviser, aggregator, **manager**). main-v3
+refactored the agent surface to 9 roles: setup, **data_split**, designer,
+coder, **evaluator**, judge, **selector**, reviser, aggregator. Three roles
+were dropped (tuner, manager, ...) and three were added (data_split,
+evaluator, selector). See `evidence/E009` for the full mapping and which
+historical evidence is still valid vs legacy-only.
+
+The router (`engine/routing/router.py:ROUTED_ROLES`) is sourced from
+`domain/role.py § Role` enum on v3.
