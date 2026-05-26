@@ -1,0 +1,37 @@
+{
+  "id": "E008",
+  "claim": "On leaf-classification, isolating opus to the tuner role only (X002: tuner=opus, all other 7 roles=sonnet) FAILS to bridge bronze→silver. The mixed routing achieved above_median (one tier BELOW sonnet's bronze) at $26 — slightly worse than all-sonnet baseline ($21, bronze).",
+  "support": {
+    "task": "leaf-classification",
+    "task_family_hint": "image-classification-small / fine-grained-visual-categorization",
+    "experiment_id": "X002",
+    "comparisons": [
+      {"routing": "all sonnet (baseline)",                                  "model_log": "claude-sonnet-4-6", "medal": "bronze",       "score": 0.01364, "cost_usd": 20.96, "run": "20260519_234718"},
+      {"routing": "tuner=opus, rest=sonnet (X002)",                         "model_log": "claude-sonnet-4-6", "medal": "above_median", "score": 0.01642, "cost_usd": 26.01, "run": "20260522_231542"},
+      {"routing": "all opus (baseline)",                                    "model_log": "claude-opus-4-7",   "medal": "silver",       "score": 0.00233, "cost_usd": 52.44, "run": "20260519_181132"}
+    ],
+    "per_role_cost_x002": {
+      "tuner (opus)":      {"calls": 4, "cost_usd": 18.01, "share_pct": 69},
+      "reviser (sonnet)":  {"calls": 2, "cost_usd":  3.26, "share_pct": 13},
+      "coder (sonnet)":    {"calls": 5, "cost_usd":  3.12, "share_pct": 12},
+      "judge (sonnet)":    {"calls": 2, "cost_usd":  0.86, "share_pct":  3},
+      "designer (sonnet)": {"calls": 1, "cost_usd":  0.48, "share_pct":  2},
+      "setup, aggregator": {"calls_total": 2, "cost_usd_total": 0.28, "share_pct": 1}
+    }
+  },
+  "scope": "Single experiment, single task. The negative finding is specific to leaf-classification (FGVC image task). Does NOT prove tuner-opus is useless in general — only that it does not localize the silver-vs-bronze quality gap on this task.",
+  "limitations": [
+    "n=1 for the X002 routing. Score gap to baseline sonnet is tiny (0.01642 vs 0.01364 — same order of magnitude); could easily be variance, not a true regression. Need a re-run before claiming X002 is strictly worse than baseline.",
+    "We do not yet know which role IS the bridge. Next experiments should isolate coder, then designer.",
+    "Cost accounting reports manager=$0 again (E005 re-observed). Opus-tuner only added ~$7 over the baseline tuner cost (~$11), much less than the $30+ gap between all-sonnet and all-opus runs."
+  ],
+  "confidence": "medium",
+  "last_updated": "2026-05-23",
+  "policy_promoted": false,
+  "policy_recommendation": "Do NOT add tuner-opus-only as a routing option for image-classification-small. The cost is similar to all-sonnet but medal tier is no better. Keep all-sonnet as the family default until coder-isolation experiment runs.",
+  "next_actions": [
+    "X002b: coder=opus, everything-else=sonnet on leaf-classification. Tests whether coder is the silver-vs-bronze bridge.",
+    "If X002b also fails: try designer=opus, then 2-role mixes."
+  ],
+  "downgrades": {"E004": "indirectly weakened — the 'opus bridges tier' claim might be a coder+tuner+designer joint effect, not localizable to any single role"}
+}

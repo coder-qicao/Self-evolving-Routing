@@ -1,31 +1,80 @@
 {
   "family": "image-classification-small",
   "schema_version": 1,
-  "last_updated": "2026-05-21 (haiku data added — aerial-cactus=none, leaf=none)",
+  "last_updated": "2026-05-23 (X002 negative result added)",
   "fingerprint": {
     "modality": "image",
     "data_size_bucket": "small<100MB",
     "metric_family": "auc | accuracy | log_loss",
-    "task_shape": "single-label classification (binary or multi-class), images <=32×32 or modest resolution"
+    "task_shape": "single-label classification (binary or multi-class), images <=32\u00d732 or modest resolution"
   },
   "member_tasks": [
-    {"name": "aerial-cactus-identification", "category": "satellite-imagery-analysis", "size_mb": 18,  "metric": "auc"},
-    {"name": "leaf-classification",          "category": "fine-grained-visual-categorization", "size_mb": 27, "metric": "multi-class-log-loss"}
+    {
+      "name": "aerial-cactus-identification",
+      "category": "satellite-imagery-analysis",
+      "size_mb": 18,
+      "metric": "auc"
+    },
+    {
+      "name": "leaf-classification",
+      "category": "fine-grained-visual-categorization",
+      "size_mb": 27,
+      "metric": "multi-class-log-loss"
+    }
   ],
   "default_routing": {
     "all_roles": "claude-sonnet-4-6",
-    "rationale": "On aerial-cactus, sonnet matched opus at gold for 2.2× less money (E003). On leaf, sonnet got bronze where opus got silver (E004) — that gap is unproven at n=1.",
-    "evidence_refs": ["E003", "E004"]
+    "rationale": "On aerial-cactus, sonnet matched opus at gold for 2.2\u00d7 less money (E003). On leaf, sonnet got bronze where opus got silver (E004) \u2014 that gap is unproven at n=1.",
+    "evidence_refs": [
+      "E003",
+      "E004"
+    ]
   },
   "known_overrides": {},
   "open_questions": [
     "leaf-classification: is opus-silver a real capability gap or n=1 noise? Try sonnet-everywhere + opus-only-on-tuner (experiments queue X002).",
-    "Do small fine-grained classification tasks need a stronger coder/tuner? FGVC literature suggests yes — but our data is too thin to claim it."
+    "Do small fine-grained classification tasks need a stronger coder/tuner? FGVC literature suggests yes \u2014 but our data is too thin to claim it."
   ],
   "observations": {
-    "claude-haiku-4-5":  {"none": 2, "n_total": 2, "tasks_covered": ["aerial-cactus", "leaf-classification"], "salvaged": true, "notes": "aerial-cactus: 5/6 candidates above_median (best AUC 0.99985, just below bronze threshold). leaf-classification: best multi-class-log-loss 0.22 — no medal."},
-    "claude-sonnet-4-6": {"gold": 1, "bronze": 1, "n_total": 2, "tasks_covered": ["aerial-cactus", "leaf-classification"]},
-    "claude-opus-4-7":  {"gold": 1, "silver": 1, "n_total": 2, "tasks_covered": ["aerial-cactus", "leaf-classification"]}
+    "claude-haiku-4-5": {
+      "none": 2,
+      "n_total": 2,
+      "tasks_covered": [
+        "aerial-cactus",
+        "leaf-classification"
+      ],
+      "salvaged": true,
+      "notes": "aerial-cactus: 5/6 candidates above_median (best AUC 0.99985, just below bronze threshold). leaf-classification: best multi-class-log-loss 0.22 \u2014 no medal."
+    },
+    "claude-sonnet-4-6": {
+      "gold": 1,
+      "bronze": 1,
+      "n_total": 2,
+      "tasks_covered": [
+        "aerial-cactus",
+        "leaf-classification"
+      ]
+    },
+    "claude-opus-4-7": {
+      "gold": 1,
+      "silver": 1,
+      "n_total": 2,
+      "tasks_covered": [
+        "aerial-cactus",
+        "leaf-classification"
+      ]
+    }
   },
-  "haiku_assessment": "Haiku is one to two tiers behind sonnet/opus on this family. NOT recommended as cost-floor here — the medal gap is too large. Cheap, but the work isn't valid output."
+  "haiku_assessment": "Haiku is one to two tiers behind sonnet/opus on this family. NOT recommended as cost-floor here \u2014 the medal gap is too large. Cheap, but the work isn't valid output.",
+  "mixed_routing_observations": [
+    {
+      "experiment": "X002",
+      "routing": "tuner=opus, rest=sonnet",
+      "task": "leaf-classification",
+      "result": "above_median (one tier below all-sonnet bronze baseline)",
+      "cost_usd": 26.01,
+      "evidence_ref": "E008",
+      "takeaway": "Tuner is NOT the bronze-vs-silver bridge on this task. Probably coder + designer + judge are jointly responsible. Need single-role isolation experiments to localize."
+    }
+  ]
 }

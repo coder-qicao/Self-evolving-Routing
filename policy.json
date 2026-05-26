@@ -1,18 +1,9 @@
 {
   "schema_version": 1,
-  "_note": "X002 experiment: leaf-classification with tuner=opus, everything else sonnet. See memory/routing/experiments/queue.jsonl § X002 and evidence/E004 for the hypothesis being tested.",
+  "_note": "Live routing decisions. X002 experiment (tuner=opus on leaf-classification) completed 2026-05-23 — see evidence/E008 for the negative result. Only the promoted detecting-insults entry remains active.",
   "tasks": {
-    "leaf-classification": {
-      "by_role": {
-        "setup":      "claude-sonnet-4-6",
-        "designer":   "claude-sonnet-4-6",
-        "judge":      "claude-sonnet-4-6",
-        "coder":      "claude-sonnet-4-6",
-        "tuner":      "claude-opus-4-7",
-        "aggregator": "claude-sonnet-4-6",
-        "reviser":    "claude-sonnet-4-6",
-        "manager":    "claude-sonnet-4-6"
-      }
+    "detecting-insults-in-social-commentary": {
+      "default": "claude-haiku-4-5"
     }
   }
 }
