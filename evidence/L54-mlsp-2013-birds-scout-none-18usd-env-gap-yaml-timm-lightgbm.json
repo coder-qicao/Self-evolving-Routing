@@ -1,0 +1,49 @@
+{
+  "evidence_id": "L54",
+  "campaign": "router-24h-2026-06-05",
+  "lane": "A",
+  "stratum": "signal",
+  "task": "mlsp-2013-birds",
+  "task_status": "UNSEEN (not in member_tasks of any family in memory/routing/task_memory/)",
+  "n": 1,
+  "promoted": false,
+  "promotion_block_reason": "Law 1: n=1; also outcome confounded by env-gap (rl env missing yaml/timm/lightgbm).",
+  "command": "scripts/test_router.sh --task mlsp-2013-birds --designs 2 --nodes 6 --budget 10 --no-ingest",
+  "run_dir": "/workspace/mlebench-playground/mlsp-2013-birds/20260605T184713Z_0000",
+  "duration_hours": 1.85,
+  "router": {
+    "strategy": "composite (Static->LLM)",
+    "per_node_decisions": {
+      "node_1": {"designer": "sonnet", "coder": "sonnet", "reviser": "haiku", "aggregator": "haiku", "rest": "haiku"},
+      "node_2": {"designer": "opus-4-8", "coder": "sonnet", "reviser": "sonnet", "aggregator": "sonnet", "rest": "haiku"},
+      "node_3": {"designer": "sonnet", "coder": "opus-4-8", "reviser": "sonnet", "aggregator": "haiku", "rest": "haiku"},
+      "node_4": {"designer": "sonnet", "coder": "sonnet", "reviser": "sonnet", "aggregator": "sonnet", "rest": "haiku"}
+    },
+    "pattern_observed": "Router escalated opus to coder (node 3) AND designer (node 2) for this signal task — first non-text task where router used opus-on-designer. Hypothesis: complexity-aware escalation for audio/signal-domain reasoning."
+  },
+  "outcome": {
+    "medal": null,
+    "valid_submission": true,
+    "score": 0.56819,
+    "rank_bucket": "none",
+    "total_cost_usd": 18.34
+  },
+  "env_gap_failures": {
+    "node_1_train.py": "ModuleNotFoundError: No module named 'yaml'",
+    "node_2_train.py": "ModuleNotFoundError: No module named 'lightgbm'",
+    "node_3_train.py": "ModuleNotFoundError: No module named 'timm'",
+    "consequence": "3 of 4 attempted training nodes crashed at import time — agent's code choices were reasonable (YAML config, gradient boosting, PyTorch Image Models for spectrograms) but rl env lacks these standard ML packages.",
+    "router_implication": "These failures are NOT router defects. The router's model picks are routine; the env is the bottleneck. This confounds the n=1 datapoint."
+  },
+  "interpretation": "Signal stratum cold-start: router converged on similar designer-sonnet pattern as text/tabular strata, but escalated opus more aggressively (2 nodes). Final outcome 'none' due to environment package gaps, not router decisions. Node 4 (sonnet coder) completed successfully and produced the submission.csv, scoring 0.568 (above 0 → valid, but not competitive).",
+  "open_questions": [
+    "Does fixing the env (pip install yaml timm lightgbm into rl) lift this task into the medal zone, or is the dataset genuinely too hard at 6 nodes / 10-min budget?",
+    "Is the opus-on-designer at node 2 a generalizable pattern (router senses signal-domain harder than text)?",
+    "Should the router get explicit feedback on which python packages are available? Currently it treats env as black-box."
+  ],
+  "actions_for_future_runs": [
+    "Consider pip-installing yaml, timm, lightgbm into the rl conda env BEFORE the next signal/image stratum scout to avoid environment-confounded results.",
+    "Skipping for now — env modification is out of scope for the campaign spec."
+  ],
+  "links": ["[[L50-text-norm-en-scout]]", "[[L53-tps-may-2022-scout]]", "[[agentic-router-project]]"]
+}

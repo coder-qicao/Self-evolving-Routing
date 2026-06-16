@@ -1,0 +1,46 @@
+{
+  "id": "E010",
+  "claim": "v3 haiku-everywhere on detecting-insults-in-social-commentary does NOT reproduce v2 E001's gold result. Pipeline runs to completion at $3.80 total but the submission.csv is missing the required Comment column, so the grader rejects it as invalid_submission. Net medal is none (no score). v3 added splitter+evaluator+selector roles that v2 did not have; while the cheaper roles also stayed on haiku, the aggregator's submission shape became dependent on either designer or aggregator being competent enough to keep the schema right, and haiku is not.",
+  "support": {
+    "experiment_id": "X202",
+    "run_dir": "/workspace/mlebench-playground/detecting-insults-in-social-commentary/20260602T002527Z_0000",
+    "model": "claude-haiku-4-5",
+    "all_roles": "claude-haiku-4-5",
+    "total_cost_usd": 3.80,
+    "per_role_usd": {
+      "coder": 1.28,
+      "evaluator_review_0": 1.03,
+      "evaluator_review_1": 0.29,
+      "designer": 0.41,
+      "aggregator": 0.41,
+      "setup": 0.21,
+      "splitter": 0.18
+    },
+    "medal": "none",
+    "score": null,
+    "valid_submission": false,
+    "grader_error": "Submission should have an Comment column",
+    "pipeline_terminal": null,
+    "ungraded_reason": "submission_shape_invalid",
+    "ancillary_pipeline_crash": "post-aggregator dashboard renderer race (RuntimeError: dictionary changed size during iteration in output/dashboard/compute.py:56) — unrelated to routing; aggregator had already written submission.csv when the crash fired."
+  },
+  "scope": "v3 9-role surface, single Phase 2 run. Refutes the X202 hypothesis. Does NOT refute E001 (v2 8-role gold) — only states that haiku is insufficient for the v3 surface at the same Kaggle baseline.",
+  "limitations": [
+    "n=1. A second run might produce a valid-format submission by chance — but the failure mode (wrong column name) is a prompt-following failure on haiku, not a randomness one, so this is unlikely.",
+    "v3 added splitter, evaluator, selector to the role chain. We did not isolate which specific role's haiku capability is the bridge between 'submission written' and 'submission with correct columns'. A follow-up experiment that lifts ONLY the aggregator to sonnet would isolate that."
+  ],
+  "confidence": "medium",
+  "last_updated": "2026-06-02",
+  "policy_promoted": false,
+  "implications": {
+    "X202_status": "completed_negative",
+    "queue_updates": "X202 result documents that the cheap-everywhere path doesn't carry detecting on v3. Promotes X208 (mixed haiku-setup+sonnet-rest) and a new X209 candidate (haiku-everywhere-except-aggregator) to high priority.",
+    "policy_implication": "Do NOT promote haiku-everywhere for text-classification family on v3. Current promoted detecting routing (haiku-everywhere) in policy.json is v2 legacy and now contradicted; recommend demotion until v3 sonnet-coder / mixed-routing data lands.",
+    "follow_up_experiment": "X209 — haiku-on-coder-and-cheap-roles, sonnet-on-aggregator. Tests the hypothesis that aggregator schema-following is the bridge for v3 text-classification."
+  },
+  "next_actions": [
+    "Demote policy.json detecting-insults haiku-everywhere entry; mark as v2-legacy in policy.json _note field.",
+    "Author X209 in queue_v3.jsonl.",
+    "Continue Phase 2 with X203 (denoising mixed haiku+sonnet) — independent of detecting findings."
+  ]
+}

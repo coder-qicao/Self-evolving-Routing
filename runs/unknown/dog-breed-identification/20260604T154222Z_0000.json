@@ -1,0 +1,220 @@
+{
+  "schema_version": 1,
+  "task": "dog-breed-identification",
+  "timestamp": "20260604T154222Z_0000",
+  "run_dir": "/workspace/mlebench-playground/dog-breed-identification/20260604T154222Z_0000",
+  "model": "unknown",
+  "model_role_map": null,
+  "result": {
+    "score": null,
+    "metric_name": null,
+    "metric_direction": null,
+    "medal": "ungraded",
+    "above_median": null,
+    "bronze_threshold": null
+  },
+  "pipeline": {
+    "num_candidates": 5,
+    "alive_at_end": null,
+    "agent_calls": null,
+    "max_agent_calls": null,
+    "tuner_runs": null,
+    "reviser_runs": null,
+    "consumed_seconds": 1475.3562542153522,
+    "wall_elapsed_seconds": null,
+    "terminal": null
+  },
+  "cost": {
+    "total_usd": 5.28785465,
+    "total_input_tokens": 137,
+    "total_output_tokens": 53307,
+    "cache_read_input_tokens": 4685788,
+    "cache_creation_input_tokens": 369557,
+    "total_turns": 123,
+    "errors_count": 0,
+    "per_role": {
+      "manager": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "setup": {
+        "calls": 1,
+        "cost_usd": 0.7503805,
+        "input_tokens": 44,
+        "output_tokens": 7318,
+        "cache_read_input_tokens": 1516280,
+        "cache_creation_input_tokens": 48546,
+        "turns": 48,
+        "errors": 0
+      },
+      "designer": {
+        "calls": 1,
+        "cost_usd": 1.1194842500000002,
+        "input_tokens": 10,
+        "output_tokens": 11702,
+        "cache_read_input_tokens": 250182,
+        "cache_creation_input_tokens": 64569,
+        "turns": 11,
+        "errors": 0
+      },
+      "reviser": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "coder": {
+        "calls": 1,
+        "cost_usd": 2.6298629999999994,
+        "input_tokens": 57,
+        "output_tokens": 24958,
+        "cache_read_input_tokens": 2025363,
+        "cache_creation_input_tokens": 157150,
+        "turns": 33,
+        "errors": 0
+      },
+      "tuner": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "aggregator": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "splitter": {
+        "calls": 1,
+        "cost_usd": 0.35299369999999997,
+        "input_tokens": 14,
+        "output_tokens": 4789,
+        "cache_read_input_tokens": 425369,
+        "cache_creation_input_tokens": 39500,
+        "turns": 14,
+        "errors": 0
+      },
+      "evaluator_review_0": {
+        "calls": 1,
+        "cost_usd": 0.4351332,
+        "input_tokens": 12,
+        "output_tokens": 4540,
+        "cache_read_input_tokens": 468594,
+        "cache_creation_input_tokens": 59792,
+        "turns": 17,
+        "errors": 0
+      }
+    }
+  },
+  "per_node": [
+    {
+      "node_id": 0,
+      "depth": 0,
+      "parent_node_id": null,
+      "status": "done",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {},
+      "coder_model": null
+    },
+    {
+      "node_id": 1,
+      "depth": 1,
+      "parent_node_id": 0,
+      "status": "running",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 2.6298629999999994,
+      "coder_turns": 33,
+      "coder_duration_s": 511.91,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {},
+      "coder_model": "unknown"
+    },
+    {
+      "node_id": 2,
+      "depth": 1,
+      "parent_node_id": 0,
+      "status": "proposed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {},
+      "coder_model": null
+    },
+    {
+      "node_id": 3,
+      "depth": 1,
+      "parent_node_id": 0,
+      "status": "proposed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {},
+      "coder_model": null
+    },
+    {
+      "node_id": 4,
+      "depth": 1,
+      "parent_node_id": 0,
+      "status": "proposed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {},
+      "coder_model": null
+    }
+  ],
+  "provenance": {
+    "manager_state_sha256": "abb771e11526ba19322681ee39780ef964fb14734cf38ffb0f11b0c3d23c5bfe",
+    "ingest_unix": 1780589218,
+    "source": "cli"
+  }
+}

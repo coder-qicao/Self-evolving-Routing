@@ -1,0 +1,27 @@
+{
+  "evidence_id": "L56",
+  "campaign": "router-24h-2026-06-05",
+  "lane": "A",
+  "stratum": "image-medical",
+  "task": "histopathologic-cancer-detection",
+  "task_status": "UNSEEN",
+  "n": 1,
+  "promoted": false,
+  "promotion_block_reason": "Pipeline failed at splitter (not router): val_inputs_path is empty dir on disk.",
+  "command": "scripts/test_router.sh --task histopathologic-cancer-detection --designs 2 --nodes 6 --budget 10 --no-ingest",
+  "run_dir": "/workspace/mlebench-playground/histopathologic-cancer-detection/20260605T224756Z_0000",
+  "duration_minutes": 18.4,
+  "outcome": {
+    "medal": null,
+    "valid_submission": false,
+    "pipeline_status": "failed",
+    "fail_reason": "RuntimeError: splitter agent failed verification twice; halting run. val_inputs_path is empty dir: /workspace/routing-data/histopathologic-cancer-detection/pipeline/val_inputs",
+    "total_cost_usd": 0.77
+  },
+  "interpretation": "This is NOT a router quality issue — the splitter cannot produce valid validation inputs because the upstream data preparation left val_inputs/ empty on disk. Two splitter runs both failed verification, triggering the pipeline halt.\n\nThis is a data/host environment problem (similar in family to L54/L55 env-gap, but at the dataset-prep layer not the python-package layer).",
+  "actions_for_future_runs": [
+    "Skip histopathologic-cancer-detection until upstream data-prep pipeline (val_inputs population) is fixed.",
+    "Alternative image-medical candidate: siim-isic-melanoma-classification."
+  ],
+  "links": ["[[L55-aerial-cactus-scout-GOLD]]", "[[L54-mlsp-2013-birds-scout]]"]
+}

@@ -1,0 +1,73 @@
+{
+  "id": "E032",
+  "claim": "Per-node routing on the stable denoising-dirty-documents task is NET NEGATIVE: per-node divergence dropped the medal tier from GOLD (E-PN4-denoising $9.20) to SILVER ($8.84) while saving only 4% on cost. The LLM router made INTELLIGENT per-node decisions (node 3 downgraded to mostly haiku, node 5 upgraded back to opus-all), proving the mechanism works as designed. But on denoising — where the family default is already cost-efficient and the schema/quality gate is sensitive — the cross-node-haiku savings did not pay off in tier. Concrete finding: 'per-node routing helps where the run-level decision over-spends; it hurts where the run-level decision is already optimal.' Denoising falls in the latter category.",
+  "support": {
+    "experiment_id": "E-PN5-denoising",
+    "run_dir": "/workspace/mlebench-playground/denoising-dirty-documents/20260604T032215Z_0000",
+    "config": {
+      "task": "denoising-dirty-documents",
+      "router_strategy": "llm",
+      "per_node_routing": true,
+      "enable_router": true
+    },
+    "router_decisions_audit": [
+      {
+        "level": "startup",
+        "decision": "opus-4-7 all (note: 4-7 not 4-8 — LLM picked older opus variant)"
+      },
+      {
+        "level": "node 3 per-node",
+        "decision": "coder=sonnet, aggregator=sonnet, rest=haiku",
+        "interpretation": "downgrade for shallow exploration"
+      },
+      {
+        "level": "node 5 per-node",
+        "decision": "opus-4-8 all (FULL OPUS, refined)",
+        "interpretation": "UPGRADE back to opus when the node needs depth — TRUE P3/P5 intelligence"
+      }
+    ],
+    "result": {
+      "medal": "silver",
+      "score": 0.02275,
+      "valid_submission": true,
+      "total_cost_usd": 8.84,
+      "score_delta_vs_E_PN4": "+85% (worse — denoising score is rmsle-like, lower is better)",
+      "cost_delta_vs_E_PN4": "-4%"
+    },
+    "per_role_cost_usd": {
+      "coder": 2.53,
+      "aggregator": 2.37,
+      "designer": 1.21,
+      "evaluator_review_0": 1.17,
+      "setup": 1.02,
+      "splitter": 0.54
+    }
+  },
+  "denoising_all_runs_comparison": [
+    {"experiment": "X205", "config": "opus-all (run-level)", "medal": "gold", "score": 0.01227, "cost": 10.59},
+    {"experiment": "E-PN1", "config": "opus-all + per_node_routing=true (plumbing test, no engine hook)", "medal": "gold", "score": 0.00994, "cost": 10.67},
+    {"experiment": "E-PN4-denoising", "config": "LLM router startup (chose opus-all)", "medal": "gold", "score": 0.0176, "cost": 9.20},
+    {"experiment": "E-PN5-denoising", "config": "LLM router + per_node_routing=true (chose opus-4-7 startup, downgrade node 3, upgrade node 5)", "medal": "SILVER", "score": 0.02275, "cost": 8.84}
+  ],
+  "key_finding_for_per_node_design": "Per-node downgrade on the EARLY/SHALLOW nodes (depth 1-2) is unsafe when the family default is already optimal — the downgrade nodes contribute to the ensemble and pull the aggregate score down by a tier. Mitigation candidates: (1) static rule — never downgrade coder below the run-level decision on tasks where the run-level decision IS the family default; (2) prompt refinement — tell the LLM router that 'the run-level decision is already cost-efficient unless evidence shows otherwise'; (3) reserve per-node downgrade for tasks where evidence shows the family default over-spends (like nomad2018 where E029 confirmed mixed beats opus).",
+  "scope": "Single per-node run on denoising. The opposite-direction signal (per-node UPGRADE helps) is untested.",
+  "limitations": [
+    "n=1.",
+    "Cannot disambiguate: was the silver caused by node 3's haiku-mostly ensemble candidate, or by some other variance?",
+    "Did not look at the router_cache/calls/ content to see the agent's reasoning per node."
+  ],
+  "confidence": "medium-high (the tier drop is real and the per-node pattern was the only intervention vs E-PN4)",
+  "last_updated": "2026-06-04",
+  "policy_promoted": false,
+  "implications": {
+    "E_PN5_denoising_status": "completed_negative_tier_drop",
+    "design_finding_for_per_node_router": "Per-node routing is task-conditional. On stable tasks where the family default IS the cost-efficient optimum, per-node downgrade can drop medal tier without saving meaningful cost. Use per-node routing primarily on tasks where the family default over-spends.",
+    "next_experiment_design": "E-PN6-nomad-per-node: rerun nomad2018 (the family where LLM router DIVERGED to cheaper in E029) with per_node_routing=true. If per-node intelligently keeps the mixed routing OR finds an even cheaper config that still golds, per-node is validated for cost-saving on over-spending tasks. If per-node also drops below gold here, per-node routing needs tighter prompt constraints."
+  },
+  "next_actions": [
+    "Mark E-PN5-denoising status=completed_negative_tier_drop.",
+    "Launch E-PN6-nomad-per-node: rerun nomad2018 with per_node_routing=true (LLM router previously found mixed gold $5.07 in E029).",
+    "If E-PN6 succeeds at <$5.07 with gold, per-node validated for cost-saving on overpaying tasks. If E-PN6 also drops tier, per-node is a general regression risk and the spec needs amending."
+  ],
+  "related_evidence": ["E025", "E029", "E031"]
+}

@@ -1,0 +1,30 @@
+{
+  "evidence_id": "L67",
+  "campaign": "router-aggressive-exploration-2026-06-09",
+  "lane": "A",
+  "stratum": "image-natural-fine-grained",
+  "task": "plant-pathology-2020-fgvc7",
+  "task_status": "UNSEEN",
+  "n": 0,
+  "promoted": false,
+  "promotion_block_reason": "Pipeline-failed: all 3 nodes hit grader_failed; aggregator skipped because no usable model.",
+  "command": "scripts/test_router.sh --task plant-pathology-2020-fgvc7 --mode aggressive --designs 1 --nodes 4 --budget 15 --no-ingest",
+  "duration_hours": 1.42,
+  "outcome": {
+    "medal": null,
+    "valid_submission": false,
+    "pipeline_status": "failed",
+    "fail_reason": "RuntimeError: Aggregator skipped: no usable model was built — all 3 attempted nodes hit holdout_grader_failed with empty stderr",
+    "total_cost_usd": 9.06
+  },
+  "failure_pattern": {
+    "all_three_nodes": "HoldoutEvalError: grader exited 1. stderr tail: ''",
+    "interpretation": "The plant-pathology-2020 grader is exiting 1 with EMPTY stderr — that's not a normal validation error (which would emit a message). Likely either: (a) task-specific grader bug where multi-label scoring is undefined for the format the agent produced; (b) the grader can't parse the submission column shape; or (c) the agent's output is missing the column the grader expects.",
+    "router_did_not_cause_it": "Router decisions are fine; all 3 nodes COMPLETED training and emitted output. The grader rejected all 3 outputs for the same reason. This is task-level grader behavior, not a router or env-gap issue."
+  },
+  "actions_for_future_runs": [
+    "Skip plant-pathology-2020 until grader behavior is understood — currently a $9 sink with no usable signal.",
+    "Could try with --designs 2 (more diversity) but same grader will likely fail all."
+  ],
+  "links": ["[[L66-spaceship-titanic-aggressive-above-median-8usd-haiku-coder-novel]]"]
+}

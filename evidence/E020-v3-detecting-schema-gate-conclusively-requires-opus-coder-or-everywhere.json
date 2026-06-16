@@ -1,0 +1,72 @@
+{
+  "id": "E020",
+  "claim": "MAJOR CONCLUSION: On v3 detecting-insults-in-social-commentary, the submission schema gate is fundamentally NOT solvable by lifting designer/aggregator/sonnet in any combination tested. X233 (opus on BOTH designer + aggregator, sonnet on remaining 7 roles, $11.08 total) still produced invalid_submission (missing 'Comment' column). Nine consecutive routing variants — none containing opus-coder — all fail identically. The remaining hypotheses are: (1) opus-coder specifically is required (probe cost ~$250+), or (2) opus on 3+ roles is required (probe cost ~$20-50 per attempt). The practical conclusion is that v3 detecting cannot have its $342 Phase-1 cost meaningfully reduced via single-or-pair role routing — the cost lever is gone.",
+  "support": {
+    "experiment_id": "X233",
+    "run_dir": "/workspace/mlebench-playground/detecting-insults-in-social-commentary/20260602T165754Z_0000",
+    "routing": {
+      "setup": "claude-sonnet-4-6",
+      "splitter": "claude-sonnet-4-6",
+      "designer": "claude-opus-4-8",
+      "coder": "claude-sonnet-4-6",
+      "evaluator": "claude-sonnet-4-6",
+      "judge": "claude-sonnet-4-6",
+      "selector": "claude-sonnet-4-6",
+      "reviser": "claude-sonnet-4-6",
+      "aggregator": "claude-opus-4-8"
+    },
+    "total_cost_usd": 11.08,
+    "per_role_usd": {
+      "coder": 3.13,
+      "aggregator": 2.97,
+      "evaluator_review_0": 2.26,
+      "designer": 2.00,
+      "setup": 0.50,
+      "splitter": 0.21
+    },
+    "medal": "none",
+    "score": null,
+    "valid_submission": false,
+    "grader_error": "Submission should have an Comment column",
+    "pipeline_terminal": "completed"
+  },
+  "scope": "MAJOR finding. Consolidates 9-deep negative streak on detecting and definitively rules out the cost-savings hypothesis space we explored.",
+  "consolidated_finalfindings_on_detecting": {
+    "all_runs_summary": [
+      {"experiment": "Phase 1 opus-all", "valid_sub": true, "cost": 341.83, "medal": "gold"},
+      {"experiment": "X202 haiku-all", "valid_sub": false, "cost": 3.80},
+      {"experiment": "X209 +sonnet-aggregator", "valid_sub": false, "cost": 3.98},
+      {"experiment": "X217 +sonnet-designer", "valid_sub": false, "cost": 3.99},
+      {"experiment": "X218 +sonnet-coder", "valid_sub": false, "cost": 6.81},
+      {"experiment": "X219 sonnet-all", "valid_sub": false, "cost": 6.83},
+      {"experiment": "X231 +opus-designer (sonnet rest)", "valid_sub": false, "cost": 7.01},
+      {"experiment": "X232 +opus-aggregator (sonnet rest)", "valid_sub": false, "cost": 9.50},
+      {"experiment": "X233 +opus-designer+aggregator (sonnet rest)", "valid_sub": false, "cost": 11.08}
+    ],
+    "total_phase2_detecting_burn": "Approximately $53 spent on detecting routing probes (X202 through X233), all negative.",
+    "remaining_untested_routings_on_detecting": [
+      "opus-coder alone (sonnet rest) - probe cost ~$250-300",
+      "opus on {coder + designer} - probe cost ~$255",
+      "opus on {coder + aggregator} - probe cost ~$255",
+      "opus on 3-of-9 roles other than opus-coder (no candidates left if coder isn't in mix)",
+      "Phase 1 opus-everywhere $342 gold — only known working configuration"
+    ]
+  },
+  "practical_routing_policy_for_detecting": "Set policy.json[detecting-insults]: opus-everywhere. Routing cannot meaningfully reduce cost below $342. This is a 'no-cost-lever' task — the family-level policy should reflect that.",
+  "limitations": [
+    "n=1 per probe.",
+    "opus-coder probes never run due to high cost; if the SCHEMA gate is opus-coder specifically, the floor could drop to ~$255 but we have not verified."
+  ],
+  "confidence": "high",
+  "last_updated": "2026-06-02",
+  "policy_promoted": false,
+  "implications": {
+    "X233_status": "completed_negative",
+    "detecting_routing_exhausted": "All cost-savings hypotheses below opus-everywhere are exhausted within the affordable budget. Continuing detecting probes is not worth more cycles.",
+    "pivot_to_other_tasks": "Remaining Phase 2 queue items: X206 (text-classification 2nd task), X207 (tabular 2nd task), X212 (denoising no-evaluator), X213 (denoising aggregator=haiku), X214/X215/X216 (leaf variants). Highest-value next: X212 to isolate the evaluator cost on denoising, then X214 (leaf opus on coder+designer) for the leaf-bridging hypothesis."
+  },
+  "next_actions": [
+    "Mark X233 status=completed_negative.",
+    "Stop detecting probes. Continue to X212 next (denoising no-evaluator cost isolation)."
+  ]
+}

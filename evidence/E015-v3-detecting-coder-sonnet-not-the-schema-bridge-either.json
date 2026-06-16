@@ -1,0 +1,59 @@
+{
+  "id": "E015",
+  "claim": "v3 detecting-insults with haiku on 8 roles + sonnet ONLY on coder also does NOT fix the malformed-submission failure. Same exact failure as X202/X209/X217: submission.csv missing the 'Comment' column. Medal=none (invalid_submission). Cost $6.81 total (coder=$4.24 the largest single role). With this fourth single-role-lift failure (X202 haiku-all, X209 sonnet-aggregator-only, X217 sonnet-designer-only, X218 sonnet-coder-only) all rejecting submission, the schema gate on v3 detecting-insults is established as MULTI-role: no single role lifted from haiku to sonnet is sufficient to fix the schema. The cost-savings hypothesis 'sonnet on one role + haiku on eight' is REFUTED for v3 text-classification (detecting subfamily).",
+  "support": {
+    "experiment_id": "X218",
+    "run_dir": "/workspace/mlebench-playground/detecting-insults-in-social-commentary/20260602T085513Z_0000",
+    "routing": {
+      "setup": "claude-haiku-4-5",
+      "splitter": "claude-haiku-4-5",
+      "designer": "claude-haiku-4-5",
+      "coder": "claude-sonnet-4-6",
+      "evaluator": "claude-haiku-4-5",
+      "judge": "claude-haiku-4-5",
+      "selector": "claude-haiku-4-5",
+      "reviser": "claude-haiku-4-5",
+      "aggregator": "claude-haiku-4-5"
+    },
+    "total_cost_usd": 6.81,
+    "per_role_usd": {
+      "coder": 4.24,
+      "evaluator_review_0": 1.63,
+      "aggregator": 0.34,
+      "designer": 0.30,
+      "splitter": 0.15,
+      "setup": 0.15
+    },
+    "medal": "none",
+    "score": null,
+    "valid_submission": false,
+    "grader_error": "Submission should have an Comment column",
+    "pipeline_terminal": "completed"
+  },
+  "scope": "Single Phase 2 run. Concludes the single-role-lift series on detecting (X202/X209/X217/X218 all negative).",
+  "consolidated_findings": {
+    "single_role_isolation_complete": "All four logical single-role-lift candidates have been tested: haiku-all (X202), +sonnet-aggregator (X209), +sonnet-designer (X217), +sonnet-coder (X218). All four produced invalid_submission with cost in [$3.80, $6.81]. No single-role lift is sufficient on v3 text-classification.",
+    "implied_minimum_lift": "Schema correctness on v3 detecting requires sonnet on AT LEAST TWO of {designer, coder, aggregator}. The 3 pairwise combinations and the all-three combination remain untested. X219 (sonnet-everywhere) is the upper bound and should produce a valid submission.",
+    "cost_observation": "Sonnet-coder ($4.24, X218) is 5x more expensive than sonnet-aggregator ($0.34, X209) and sonnet-designer ($0.44, X217), because coder runs many more turns. Any minimum-lift policy that includes coder will be expensive on detecting; the cheaper minimal set if it exists would be {designer + aggregator}."
+  },
+  "limitations": [
+    "n=1 per single-role probe.",
+    "Pairwise combinations untested: {designer + aggregator}, {designer + coder}, {coder + aggregator}, and the all-three {designer + coder + aggregator}."
+  ],
+  "confidence": "medium-high (4 consecutive failures form a strong pattern)",
+  "last_updated": "2026-06-02",
+  "policy_promoted": false,
+  "implications": {
+    "X218_status": "completed_negative",
+    "schema_gate_resolution": "MULTI-role on v3 text-classification detecting subfamily. The single-role-lift hypothesis space is exhausted.",
+    "follow_up_experiments": [
+      "X219 (queued) — sonnet-everywhere on detecting. Upper bound: should produce valid submission and silver/gold tier. Anchors the cost-savings comparison.",
+      "If X219 succeeds: X220 candidate — sonnet on {designer + aggregator}, haiku on rest. Tests the cheapest two-role lift.",
+      "If X220 succeeds: minimum sonnet routing for detecting found."
+    ]
+  },
+  "next_actions": [
+    "Mark X218 status=completed_negative in queue.",
+    "Continue to X219 (sonnet-everywhere) to establish the working baseline."
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "id": "E048",
+  "claim": "E-PN20 INCONCLUSIVE due to infrastructure failure. CompositeRouter correctly fell through to LLM router (dog-breed is not in image-classification-small.member_tasks → Static returned {}, LLM fired and returned the E018-predicted mixed routing: designer+coder+aggregator=opus-4-8, eval+reviser=sonnet, judge+selector=haiku, setup+splitter=sonnet). However the run failed at training-supervisor level: no per-node conda clone at .conda-env/bin/python and no base env. dog-breed-identification conda env was never provisioned (the SETUP role's conda env creation didn't fire for this task). Routing decision validated; outcome unverified. $5.29 burned across the setup + designer + first coder before training-supervisor failure cascaded all 4 parallel nodes.",
+  "support": {
+    "experiment_id": "E-PN20-dogbreed-composite",
+    "run_dir": "/workspace/mlebench-playground/dog-breed-identification/20260604T154222Z_0000",
+    "composite_decision": {
+      "source": "LLM fallback (Static had no family match because dog-breed is not in image-classification-small.member_tasks)",
+      "routing": {"setup": "sonnet", "splitter": "sonnet", "designer": "opus-4-8", "coder": "opus-4-8", "evaluator": "sonnet", "judge": "haiku", "selector": "haiku", "reviser": "sonnet", "aggregator": "opus-4-8"}
+    },
+    "matches_E018_prediction": true,
+    "failure_mode": "Training subprocess could not resolve a python interpreter — no conda env at ${HOME}/anaconda3/envs/dog-breed-identification/ — task was never setup on this dev host.",
+    "infrastructure_takeaway": "dog-breed-identification task data exists at /workspace/routing-data/ but the conda env was not provisioned. Setup did not create the env (or sonnet-setup didn't recognize the task as needing env creation).",
+    "result": {"medal": "none", "valid_submission": false, "total_cost_usd": 5.29, "pipeline_terminal": "failed"}
+  },
+  "scope": "Single attempt. Routing logic validated; outcome inconclusive.",
+  "implications": {
+    "E_PN20_status": "completed_negative_infrastructure_no_env_inconclusive",
+    "design_finding": "Composite + LLM fallback works correctly for tasks not in member_tasks. The infrastructure-level env provisioning is task-specific and may require manual setup for new tasks. For the autonomous loop, skip tasks where conda env is not provisioned.",
+    "remaining_loop_options": "Continue with experiments on tasks that have provisioned envs: nomad (60% splitter failure), denoising (validated), leaf (validated), detecting (validated)."
+  },
+  "next_actions": [
+    "Mark E-PN20 status=completed_negative_infrastructure_no_env_inconclusive.",
+    "End the E-PN20 experiment line — dog-breed cannot validate without env provisioning.",
+    "Loop continues with remaining time (~8h budget). Consider running confirmation experiments (denoising n=5, leaf n=4)."
+  ],
+  "related_evidence": ["E018", "E044", "E045"]
+}

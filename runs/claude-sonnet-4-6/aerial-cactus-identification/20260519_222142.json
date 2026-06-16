@@ -2,7 +2,7 @@
   "schema_version": 1,
   "task": "aerial-cactus-identification",
   "timestamp": "20260519_222142",
-  "run_dir": "/data3/qi/ML-agent-code/aerial-cactus-identification/20260519_222142",
+  "run_dir": "/workspace/ML-agent-code/aerial-cactus-identification/20260519_222142",
   "model": "claude-sonnet-4-6",
   "model_role_map": null,
   "result": {

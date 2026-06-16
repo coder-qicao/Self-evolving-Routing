@@ -1,0 +1,34 @@
+{
+  "id": "E037",
+  "claim": "BUG DISCOVERED in StaticPolicyRouter._expand_entry / route(): per-task per-role known_overrides do NOT work. When attempting to promote E022 X215's routing (coder+aggregator=opus-4-8, rest=sonnet) into memory/routing/task_memory/image-classification-small.json[known_overrides.leaf-classification], CompositeRouter returned the FAMILY default (sonnet-all) regardless of override format tried. Root cause (verified by reading engine/routing/router.py lines 147-152): the lookup wraps the override in {'by_role': override} when by_role IS present, but expand_entry then sees {by_role: {by_role: {role: model, ...}}} — double wrapping — and the inner dict fails the isinstance(model, str) check for every 'role' it iterates. Flat override format (no by_role wrapper) also fails because expand_entry returns empty when entry has no 'default'/'all_roles'/'by_role' key. Workaround: callers must hand-write models_by_role in YAML; the autonomous family-level default_routing promotion (as for tabular-regression E029 and image-denoising-restoration E025) still works because that path goes through the family default branch (lines 153-156), not the known_overrides branch.",
+  "support": {
+    "experiment_id": "E-PN10-curated-sweep-side-finding",
+    "code_inspected": "engine/routing/router.py StaticPolicyRouter.route() — known_overrides handling",
+    "tested_override_shapes": [
+      {"shape": "flat {role: model}", "result": "Static returned empty → family default sonnet-all"},
+      {"shape": "{by_role: {role: model}}", "result": "Static returned empty → family default sonnet-all"},
+      {"shape": "{by_role: {role:model}, rationale: str}", "result": "Static returned {rationale: str, expected_outcome: str} — string leakage from non-role keys"}
+    ],
+    "verification": "Direct python repl with make_composite_router; bridge configured to raise so any LLM call would be visible"
+  },
+  "scope": "Code bug in production router. Affects per-task routing customization within a family.",
+  "limitations": [
+    "Not yet validated by a unit test; tests/engine/routing/test_router.py does not exercise this specific known_overrides path.",
+    "Did not produce a code fix yet — this loop pushes memory-only to main per the user's policy. A separate PR on qi_memory_router_v3 should fix the expander logic."
+  ],
+  "confidence": "high",
+  "last_updated": "2026-06-04",
+  "policy_promoted": false,
+  "implications": {
+    "E_PN10_status": "completed_negative_static_known_overrides_bug",
+    "fix_owner": "engine/routing/router.py — change the conditional in route() override branch so 'by_role'-already-present overrides are NOT double-wrapped",
+    "next_experiment": "Skip leaf for now (the only known-good v3 routing requires the broken known_overrides path). Pivot to a curated-sweep evidence card OR test the LLMRouter on a fresh angle: with inspect_data=True, see if the agent makes better detecting decisions when it can inspect the public data dir.",
+    "memory_status_post_loop": "Two family promotions completed (tabular-regression E029 and image-denoising-restoration E025/E031). policy.json detecting fix landed. Static known_overrides bug documented. Composite router validated as production-safe routing strategy (Static answers known tasks, LLM fires on miss)."
+  },
+  "next_actions": [
+    "Mark E-PN10-leaf-composite status=completed_negative_static_known_overrides_bug.",
+    "Open a non-memory PR on qi_memory_router_v3 to fix the expander conditional.",
+    "Next experiment: E-PN11 audit task_memory entries for similar drift; OR E-PN12 LLMRouter with inspect_data=True on detecting to test if data-aware routing helps."
+  ],
+  "related_evidence": ["E022", "E029", "E035"]
+}

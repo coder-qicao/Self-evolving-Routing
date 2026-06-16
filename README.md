@@ -24,8 +24,15 @@ memory/routing/
 ├── stats/
 │   └── role_model_stats.json   # aggregate cost+outcome stats by (role, model)
 │
+├── by_model/                   # PER-MODEL capability knowledge — the core asset
+│   ├── README.md               # structure + model-knowledge-card schema
+│   └── <model-id>/             # one folder per model (the model library)
+│       ├── card.md             #   human profile: good at / bad at
+│       ├── knowledge.jsonl     #   atomic (model,role,condition)->verdict cards, evidence-linked
+│       └── stats.md            #   auto-generated rollup
+│
 ├── evidence/
-│   └── E###-<slug>.json   # one claim per file, with confidence + scope
+│   └── E###-<slug>.json   # one claim per file (task-centric); by_model cards cite these
 │
 ├── task_memory/
 │   └── <family>.json      # routing memory grouped by task family + fingerprint
@@ -113,11 +120,11 @@ This keeps the LLM-facing surface stable, auditable, and small.
 
 This memory was started on `qi_memory_router_v2` (8 roles: setup, designer,
 judge, coder, **tuner**, reviser, aggregator, **manager**). main-v3
-refactored the agent surface to 9 roles: setup, **data_split**, designer,
+refactored the agent surface to 9 roles: setup, **splitter**, designer,
 coder, **evaluator**, judge, **selector**, reviser, aggregator. Three roles
-were dropped (tuner, manager, ...) and three were added (data_split,
+were dropped (tuner, manager, ...) and three were added (splitter,
 evaluator, selector). See `evidence/E009` for the full mapping and which
 historical evidence is still valid vs legacy-only.
 
-The router (`engine/routing/router.py:ROUTED_ROLES`) is sourced from
+The router (`work_unit_policy/routing/router.py:ROUTED_ROLES`) is sourced from
 `domain/role.py § Role` enum on v3.

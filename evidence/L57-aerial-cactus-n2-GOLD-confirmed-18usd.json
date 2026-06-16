@@ -1,0 +1,50 @@
+{
+  "evidence_id": "L57",
+  "campaign": "router-24h-2026-06-05",
+  "lane": "B",
+  "stratum": "image-natural",
+  "task": "aerial-cactus-identification",
+  "task_status": "UNSEEN (not in member_tasks of any family in memory/routing/task_memory/)",
+  "n": 2,
+  "law_1_satisfied": true,
+  "promoted": "FINDING-LEVEL ONLY (family-level promotion deferred until image-natural n>=3 across other tasks)",
+  "command": "scripts/test_router.sh --task aerial-cactus-identification --designs 2 --nodes 6 --budget 10 --no-ingest",
+  "run_dir": "/workspace/mlebench-playground/aerial-cactus-identification/20260605T232035Z_0000",
+  "duration_hours": 1.93,
+  "outcome": {
+    "medal": "gold",
+    "valid_submission": true,
+    "score": 1.0,
+    "total_cost_usd": 18.46,
+    "successful_nodes": ["node_1", "node_2", "node_7", "node_8"],
+    "failed_nodes": {
+      "node_3": "ModuleNotFoundError: timm",
+      "node_4": "ModuleNotFoundError: timm"
+    }
+  },
+  "n2_confirmation": {
+    "L55_outcome": "GOLD score=1.0 $13.43",
+    "L57_outcome": "GOLD score=1.0 $18.46",
+    "agreement": "PERFECT — both runs achieved score 1.0",
+    "cost_variance": "$5.03 (single-run noise from selective opus-coder escalation)",
+    "law_1_conclusion": "GOLD reproducible at n=2 on UNSEEN aerial-cactus-identification with composite router (Static->LLM, mode=stable). NOT a fluke."
+  },
+  "key_observations": [
+    "Even with 2 of 4-6 nodes lost to timm env-gap, aggregator ensemble produces a perfect score from the surviving nodes.",
+    "Cost variance ($13.43 vs $18.46) likely traces to per-node opus escalation count — the router escalated opus-coder ~1x in L55 and probably 2x in L57.",
+    "Sonnet-coder is sufficient for aerial-cactus; opus is unnecessary but doesn't hurt.",
+    "Per-node routing's adaptive design carries over WITHOUT family override — the LLM router's cold read of the task data is enough."
+  ],
+  "scorecard_progression": {
+    "L50_text_norm_en": "SILVER ($31.79) n=1",
+    "L53_tps_may_2022": "above_median ($20.20) n=1",
+    "L54_mlsp_birds": "none ($18.34, env-gap) n=1",
+    "L55_aerial_cactus": "GOLD ($13.43) n=1",
+    "L56_histo_cancer": "pipeline-failed (data gap)",
+    "L57_aerial_cactus_n2": "GOLD ($18.46) — CONFIRMS L55",
+    "generalization_signal_so_far": "Composite router achieves a medal on 2 of 5 healthy UNSEEN-task scouts (40%) at modest cost. Image-natural particularly strong (GOLD n=2 confirmed). Env-gap is the dominant non-router failure mode."
+  },
+  "policy_recommendation": "Do NOT update policy.json yet. Reasoning: aerial-cactus is a single member of image-natural. To safely promote a family default for image-natural, need at least 1 more UNSEEN image-natural task (e.g. dog-breed-identification, cifar-10) at medal>=bronze. Current family knowledge in policy.json is image-classification-small (leaf-classification) which is image-natural-fine-grained, a sub-stratum. Conservative posture per [[routing-objective-minimum-viable]]: defer policy until we have cross-task confidence within the stratum.",
+  "next_lane_b_candidate_after_text": "L59 could target image-natural #2 (e.g. dog-breed-identification scout) to test inter-task generalization of the GOLD finding.",
+  "links": ["[[L55-aerial-cactus-scout-GOLD]]", "[[L50-text-norm-en-scout]]", "[[routing-objective-minimum-viable]]"]
+}

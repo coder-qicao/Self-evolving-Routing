@@ -1,7 +1,7 @@
 {
   "family": "image-classification-small",
   "schema_version": 1,
-  "last_updated": "2026-05-23 (X002 negative result added)",
+  "last_updated": "2026-06-04 (v3 leaf evidence E022/E023 added; cost-saving routing X215 documented as known_override on leaf)",
   "fingerprint": {
     "modality": "image",
     "data_size_bucket": "small<100MB",
@@ -30,7 +30,21 @@
       "E004"
     ]
   },
-  "known_overrides": {},
+  "known_overrides": {
+    "leaf-classification": {
+      "by_role": {
+        "setup": "claude-sonnet-4-6",
+        "splitter": "claude-sonnet-4-6",
+        "designer": "claude-sonnet-4-6",
+        "coder": "claude-opus-4-8",
+        "evaluator": "claude-sonnet-4-6",
+        "judge": "claude-sonnet-4-6",
+        "selector": "claude-sonnet-4-6",
+        "reviser": "claude-sonnet-4-6",
+        "aggregator": "claude-opus-4-8"
+      }
+    }
+  },
   "open_questions": [
     "leaf-classification: is opus-silver a real capability gap or n=1 noise? Try sonnet-everywhere + opus-only-on-tuner (experiments queue X002).",
     "Do small fine-grained classification tasks need a stronger coder/tuner? FGVC literature suggests yes \u2014 but our data is too thin to claim it."
@@ -63,6 +77,21 @@
         "aerial-cactus",
         "leaf-classification"
       ]
+    },
+    "claude-opus-4-8": {
+      "none": 2,
+      "above_median": 1,
+      "n_total": 3,
+      "tasks_covered": ["leaf-classification"],
+      "notes": "Phase 1 opus-all n=2 leaf=none. X216 (E023) opus-all + bigger search = above_median $26.52. Bronze unreached."
+    },
+    "mixed-opus-coder-aggregator-sonnet-rest-X215": {
+      "none": 1,
+      "valid": 1,
+      "n_total": 1,
+      "tasks_covered": ["leaf-classification"],
+      "cost_usd": 12.03,
+      "evidence_refs": ["E022"]
     }
   },
   "haiku_assessment": "Haiku is one to two tiers behind sonnet/opus on this family. NOT recommended as cost-floor here \u2014 the medal gap is too large. Cheap, but the work isn't valid output.",

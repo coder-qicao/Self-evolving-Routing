@@ -1,0 +1,66 @@
+{
+  "id": "E013",
+  "claim": "v3 detecting-insults with haiku on 8 roles + sonnet ONLY on aggregator does NOT fix the malformed-submission failure mode that X202 (haiku-everywhere) exhibited. Same failure: aggregator runs to completion at $0.68, pipeline_terminal=completed, but submission.csv lacks the 'Comment' column required by the mlebench grader. Medal=none (invalid_submission). Total $3.98 vs X202 $3.80 — sonnet aggregator added only $0.27 of cost vs haiku aggregator, and bought NO bridge across the schema gate. The schema-correctness gate is therefore UPSTREAM of aggregator — likely designer (chooses data layout) or coder (writes inference.py + submission code).",
+  "support": {
+    "experiment_id": "X209",
+    "run_dir": "/workspace/mlebench-playground/detecting-insults-in-social-commentary/20260602T064537Z_0000",
+    "routing": {
+      "setup": "claude-haiku-4-5",
+      "splitter": "claude-haiku-4-5",
+      "designer": "claude-haiku-4-5",
+      "coder": "claude-haiku-4-5",
+      "evaluator": "claude-haiku-4-5",
+      "judge": "claude-haiku-4-5",
+      "selector": "claude-haiku-4-5",
+      "reviser": "claude-haiku-4-5",
+      "aggregator": "claude-sonnet-4-6"
+    },
+    "total_cost_usd": 3.98,
+    "per_role_usd": {
+      "coder": 1.32,
+      "evaluator_review_0": 0.73,
+      "aggregator": 0.68,
+      "evaluator_review_1": 0.65,
+      "designer": 0.27,
+      "splitter": 0.18,
+      "setup": 0.14
+    },
+    "medal": "none",
+    "score": null,
+    "valid_submission": false,
+    "grader_error": "Submission should have an Comment column",
+    "pipeline_terminal": "completed"
+  },
+  "scope": "Single Phase 2 run. Refutes the X209 hypothesis that aggregator is the role gating submission shape. Conjoint with E010 (X202 haiku-everywhere also invalid_submission): aggregator-on-sonnet alone does not save it.",
+  "comparison": {
+    "vs_x202": {
+      "x202_total_cost": 3.80,
+      "x209_total_cost": 3.98,
+      "delta": 0.18,
+      "x202_medal": "none (invalid_submission)",
+      "x209_medal": "none (invalid_submission)",
+      "verdict": "Sonnet aggregator did not change the outcome. Two consecutive haiku-driven detecting runs produce the same malformed submission, suggesting the bug is deterministic given haiku on the upstream schema-defining roles. Designer (writes id_convention.md + data shape) and coder (writes inference.py that builds submission.csv) are the remaining candidates."
+    }
+  },
+  "limitations": [
+    "n=1.",
+    "Did not yet test designer-on-sonnet (X217 candidate) or coder-on-sonnet (X218 candidate) to localize the schema bridge."
+  ],
+  "confidence": "medium",
+  "last_updated": "2026-06-02",
+  "policy_promoted": false,
+  "implications": {
+    "X209_status": "completed_negative",
+    "schema_gate_localization": "Aggregator is NOT the bridge. Designer and coder are the next candidates. Designer writes id_convention.md (defines columns) and is the more likely culprit, since the failure is a column-name shape problem.",
+    "follow_up_experiments": [
+      "X217: haiku-everywhere except designer=sonnet (probe designer as the schema gate)",
+      "X218: haiku-everywhere except coder=sonnet (probe coder as the schema gate)",
+      "X219: sonnet-everywhere on detecting (re-attempt the X201 hypothesis — splitter may have stabilized in main)"
+    ]
+  },
+  "next_actions": [
+    "Mark X209 status=completed_negative in queue.",
+    "Append X217/X218/X219 to queue_v3.jsonl.",
+    "Continue Phase 2 with the next high-priority experiment in queue."
+  ]
+}

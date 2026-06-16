@@ -1,0 +1,47 @@
+{
+  "id": "E034",
+  "claim": "FAILURE MODE FOUND: the agentic LLM router on detecting-insults-in-social-commentary picked {coder: opus-4-7, all 8 other roles: haiku} — a single-role-opus-coder configuration. This is a near-mirror of X218 (which E020 documented as invalid_submission at $6.81) and the broader negative streak (E019, E020, E026) that conclusively showed detecting needs opus on MORE than just coder. The router DID NOT read evidence deeply enough OR the prompt does not weight 'invalid_submission' outcomes strongly enough. Predicted outcome had we run cli.py: invalid submission, ~$300+ burned (opus-coder dominates cost on detecting at $300+ per run; E020's per-role cost breakdown for X218 showed coder ~$3.13 of $6.81 — but our budget would be $300+ since the LLM router picked opus on coder which is the dominant role). To save the budget, we DID NOT launch cli.py — we directly invoked router.route_async() to get the decision and stop there. Total cost of this experiment: ~£0.05 (one router LLM call).",
+  "support": {
+    "experiment_id": "E-PN7-detecting",
+    "method": "Direct python invocation of make_llm_router().route_async() — no cli.py run",
+    "router_decision": {
+      "setup": "claude-haiku-4-5",
+      "splitter": "claude-haiku-4-5",
+      "designer": "claude-haiku-4-5",
+      "coder": "claude-opus-4-7",
+      "evaluator": "claude-haiku-4-5",
+      "judge": "claude-haiku-4-5",
+      "selector": "claude-haiku-4-5",
+      "reviser": "claude-haiku-4-5",
+      "aggregator": "claude-haiku-4-5"
+    },
+    "evidence_the_router_overlooked": [
+      "E019 X232: opus-aggregator alone (sonnet rest) → invalid_submission £9.50",
+      "E020 X233 + 9-deep negative streak: 10 routings on detecting tested, all single-role opus configs fail",
+      "E026 X208: opus-coder alone (sonnet/haiku rest) → invalid_submission £8.85",
+      "Phase 1 opus-everywhere £341.83 gold — the only known working config"
+    ],
+    "predicted_outcome_had_we_run": "invalid_submission, £300+ wasted on opus-coder",
+    "actual_cost_usd": 0.05
+  },
+  "scope": "Evidence-following failure of the agentic LLM router on a high-stakes task. Real money saved by intercepting the decision.",
+  "limitations": [
+    "n=1.",
+    "Possible the LLM router would have decided differently with inspect_data=True (we used False to keep the test cheap).",
+    "Did not look at the router_cache to see the agent's reasoning."
+  ],
+  "confidence": "high (router CHOSE the config; E020/E026 PROVE it would fail)",
+  "last_updated": "2026-06-04",
+  "policy_promoted": false,
+  "implications": {
+    "E_PN7_status": "completed_negative_router_picked_known_failing_config_runs_skipped",
+    "design_finding_for_per_node_router": "On tasks with strong evidence that single-role opus is INSUFFICIENT (detecting, where 10 routings have been tested and only opus-everywhere works), the LLM router still picks a single-role opus config. The router's prompt or memory layout does not emphasize INVALID-SUB / NEGATIVE EVIDENCE strongly enough. Mitigation candidates: (1) CompositeRouter — let StaticPolicyRouter resolve detecting first (policy.json already pins detecting to opus-everywhere by global default in main); (2) Refine routing_policy.md to include the principle 'if ANY single-role opus probe was tested and failed, prefer opus-everywhere over inventing a new single-role opus'; (3) Inspect_data=True for the LLM call — the agent might infer from the schema that the task is text classification needing opus across the board.",
+    "next_experiment": "E-PN8-detecting-composite: same task, router_strategy=COMPOSITE (StaticPolicyRouter first, LLMRouter only on miss). policy.json[detecting] already pins opus-everywhere. The composite should hit the policy entry and return opus-everywhere WITHOUT firing the LLM. Confirms the multi-strategy safety net works."
+  },
+  "next_actions": [
+    "Mark E-PN7-detecting status=completed_negative_router_picked_known_failing_config_runs_skipped.",
+    "Launch E-PN8-detecting-composite: router_strategy=composite + per_node_routing=false on detecting. Expect: static policy hits opus-everywhere entry, gold £340-ish.",
+    "If E-PN8 succeeds, composite router validated as the production-safe path. If E-PN8 ALSO fails (e.g. static lookup misses), the policy entry needs updating."
+  ],
+  "related_evidence": ["E019", "E020", "E026"]
+}

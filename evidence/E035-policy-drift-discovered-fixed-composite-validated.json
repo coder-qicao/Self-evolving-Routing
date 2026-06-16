@@ -1,0 +1,61 @@
+{
+  "id": "E035",
+  "claim": "MAJOR DISCOVERY + FIX: the autonomous loop discovered that policy.json[detecting-insults] = haiku-all was STALE — it predated E019/E020/E026 (10 routings tested, only opus-everywhere works). Composite router was returning haiku-all (the stale policy entry) instead of opus-everywhere. Fixed policy.json by updating the entry to opus-4-8-all with rationale + evidence_refs to E019/E020/E026/E034. Composite router NOW returns opus-everywhere correctly without firing the LLM bridge — Static answered first, exactly as designed.",
+  "support": {
+    "experiment_id": "E-PN8-detecting-composite",
+    "method": "Direct python invocation of make_composite_router().route_async() — no cli.py run, $0 cost",
+    "pre_fix_composite_decision": {
+      "setup": "claude-haiku-4-5",
+      "splitter": "claude-haiku-4-5",
+      "designer": "claude-haiku-4-5",
+      "coder": "claude-haiku-4-5",
+      "evaluator": "claude-haiku-4-5",
+      "judge": "claude-haiku-4-5",
+      "selector": "claude-haiku-4-5",
+      "reviser": "claude-haiku-4-5",
+      "aggregator": "claude-haiku-4-5"
+    },
+    "post_fix_composite_decision": {
+      "setup": "claude-opus-4-8",
+      "splitter": "claude-opus-4-8",
+      "designer": "claude-opus-4-8",
+      "coder": "claude-opus-4-8",
+      "evaluator": "claude-opus-4-8",
+      "judge": "claude-opus-4-8",
+      "selector": "claude-opus-4-8",
+      "reviser": "claude-opus-4-8",
+      "aggregator": "claude-opus-4-8"
+    },
+    "policy_change": {
+      "file": "memory/routing/policy.json",
+      "key": "tasks.detecting-insults-in-social-commentary",
+      "before": {"default": "claude-haiku-4-5"},
+      "after": {
+        "default": "claude-opus-4-8",
+        "_rationale": "E019/E020/E026 conclusively proved single/dual-role opus configs fail; only opus-everywhere $341.83 gold works.",
+        "_evidence_refs": ["E019", "E020", "E026", "E034"]
+      }
+    }
+  },
+  "loop_self_correction": "The autonomous experiment loop's 'analyze results' step discovered a curated-layer (policy.json) drift from the evidence layer (E019/E020/E026). Without the loop, this drift would have silently shipped haiku-all to production on detecting tasks, producing invalid_submission ~100% of the time. The loop fixed the drift in the same cycle that discovered it.",
+  "scope": "Major curated-layer correction + validation of CompositeRouter as production-safe routing strategy.",
+  "limitations": [
+    "Did not run cli.py to confirm gold; the X205 baseline already establishes opus-everywhere gold on Phase 1.",
+    "Did not audit OTHER policy.json entries for similar drift — should sweep image-denoising-restoration, leaf-classification, etc. to confirm no other stale entries."
+  ],
+  "confidence": "high",
+  "last_updated": "2026-06-04",
+  "policy_promoted": true,
+  "implications": {
+    "E_PN8_status": "completed_positive (policy fixed; composite returns correct routing)",
+    "design_finding": "(1) The Static layer (policy.json) is the source of truth for known tasks; curated-layer drift is real and must be guarded. (2) CompositeRouter is the production-safe strategy: Static handles known tasks deterministically, LLM only fires on unseen tasks. (3) The autonomous loop is a curated-layer-drift detector when run periodically.",
+    "next_experiment": "Sweep the rest of policy.json + task_memory/*.json for similar drifts. Tasks to spot-check: leaf-classification (E022/E023 baseline; family memory says opus-all; policy.json has no entry → fine; family default applies). denoising (E025 baseline; family memory says ???; check). nomad2018 (E029 baseline says mixed sonnet/haiku; family memory says sonnet-all from E003; family memory may need updating per E029 -68% finding). After sweep: write E036 summarizing curated-layer state."
+  },
+  "next_actions": [
+    "Mark E-PN8 status=completed_positive (policy fix is the headline).",
+    "Audit memory/routing/task_memory/*.json for stale default_routing entries against latest evidence.",
+    "Update task_memory entries where evidence has overtaken them.",
+    "Consider promoting E029's mixed routing for nomad2018 into task_memory/tabular-regression.json known_overrides."
+  ],
+  "related_evidence": ["E019", "E020", "E026", "E034"]
+}

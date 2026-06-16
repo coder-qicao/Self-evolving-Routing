@@ -1,0 +1,45 @@
+{
+  "evidence_id": "L55",
+  "campaign": "router-24h-2026-06-05",
+  "lane": "A",
+  "stratum": "image-natural",
+  "task": "aerial-cactus-identification",
+  "task_status": "UNSEEN (not in member_tasks of any family in memory/routing/task_memory/)",
+  "n": 1,
+  "promoted": false,
+  "promotion_block_reason": "Law 1: n=1; outstanding GOLD but needs n>=2 to claim tier.",
+  "command": "scripts/test_router.sh --task aerial-cactus-identification --designs 2 --nodes 6 --budget 10 --no-ingest",
+  "run_dir": "/workspace/mlebench-playground/aerial-cactus-identification/20260605T204135Z_0000",
+  "duration_hours": 2.05,
+  "router": {
+    "strategy": "composite (Static->LLM)",
+    "mode": "stable (exploit) — NEW mode from 5c8961a7a",
+    "per_node_pattern": "Designer always sonnet; coder mostly sonnet with single opus-4-8 on node 3; reviser mix sonnet/haiku; aggregator mix haiku/sonnet; rest uniformly haiku.",
+    "summary": "Cost-aware: most nodes haiku-heavy with sonnet for designer/coder/reviser, opus reserved for single coder slot."
+  },
+  "outcome": {
+    "medal": "gold",
+    "valid_submission": true,
+    "score": 1.0,
+    "total_cost_usd": 13.43,
+    "successful_nodes": ["node_2", "node_3", "node_5", "node_6"],
+    "failed_nodes": {
+      "node_1": "ModuleNotFoundError: timm",
+      "node_4": "ModuleNotFoundError: timm"
+    }
+  },
+  "interpretation": "First GOLD on UNSEEN image-natural task at $13.43 — cheapest gold so far across the campaign (vs L50 SILVER at $31.79 for text). Validates the router's cost-aware design for tasks where:\n  - The task is amenable to classic image classification (CNN/ResNet/torchvision works without needing timm)\n  - Default sonnet-coder is sufficient (opus escalation on node 3 was incidental, not required)\n\nEven WITH 2 of 6 nodes lost to timm env-gap, 4 surviving nodes produced a perfect-score submission via aggregator ensemble. The aggregator's role in absorbing partial-node-failure is a key resilience finding.",
+  "open_questions": [
+    "Would n=2 confirm gold at this routing? Strong evidence to retry once.",
+    "Is the perfect score 1.0 indicative of an easy benchmark, or did the router specifically pick a model recipe that solves this well?",
+    "Did the new mode=stable (exploit) bias the routing differently than what L50/L53/L54 saw under the prior mode? Need a counterfactual rerun under mode=aggressive to know."
+  ],
+  "scorecard_so_far": {
+    "L50_text_norm_en": "SILVER ($31.79)",
+    "L53_tps_may_2022": "above_median ($20.20)",
+    "L54_mlsp_birds": "none ($18.34, env-gap)",
+    "L55_aerial_cactus": "GOLD ($13.43)",
+    "generalization_signal": "Router achieves a medal on 2 of 4 unseen tasks at modest cost; env-gap is the dominant failure mode, not router decision quality."
+  },
+  "links": ["[[L50-text-norm-en-scout]]", "[[L53-tps-may-2022-scout]]", "[[L54-mlsp-2013-birds-scout]]", "[[agentic-router-project]]"]
+}

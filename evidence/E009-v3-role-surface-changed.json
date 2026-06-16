@@ -1,10 +1,10 @@
 {
   "id": "E009",
-  "claim": "main-v3 refactored the agent role surface. The new canonical set is 9 roles (setup, data_split, designer, coder, evaluator, judge, selector, reviser, aggregator) instead of v2's 8 (setup, designer, judge, coder, tuner, reviser, aggregator, manager). Three roles were removed (tuner, manager, plus one absorbed elsewhere) and three were added (data_split, evaluator, selector).",
+  "claim": "main-v3 refactored the agent role surface. The new canonical set is 9 roles (setup, splitter, designer, coder, evaluator, judge, selector, reviser, aggregator) instead of v2's 8 (setup, designer, judge, coder, tuner, reviser, aggregator, manager). Three roles were removed (tuner, manager, plus one absorbed elsewhere) and three were added (splitter, evaluator, selector).",
   "support": {
     "source_of_truth": "domain/role.py § Role enum on origin/main-v3",
     "v2_only_roles": ["tuner", "manager"],
-    "v3_only_roles": ["data_split", "evaluator", "selector"],
+    "v3_only_roles": ["splitter", "evaluator", "selector"],
     "carried_over_roles": ["setup", "designer", "coder", "judge", "reviser", "aggregator"],
     "v2_role_count": 8,
     "v3_role_count": 9,
@@ -15,11 +15,11 @@
   },
   "scope": "Schema / surface fact, not a routing recommendation. Documents which historical evidence cards still apply unchanged vs which need scope tags vs which are obsolete on v3.",
   "limitations": [
-    "We have not yet measured cost / quality for data_split / evaluator / selector — they are pristine roles in the routing memory.",
+    "We have not yet measured cost / quality for splitter / evaluator / selector — they are pristine roles in the routing memory.",
     "The relationship between v2's 'tuner' work and v3's 'coder + reviser' or 'evaluator' is fuzzy. The v3 architecture likely folded hyperparameter exploration into the coder loop and added evaluator as a separate quality gate. Until we have v3 runs in index.jsonl, the v2 tuner-cost-share insight (E002) is preserved as legacy-only context."
   ],
   "confidence": "high",
-  "last_updated": "2026-05-23",
+  "last_updated": "2026-05-27",
   "policy_promoted": false,
   "implications_for_existing_evidence": {
     "E001 (haiku on detecting-insults)": "Still valid. All roles haiku — model-level claim, role-surface-independent.",
@@ -34,6 +34,6 @@
   "next_actions": [
     "When first v3 run lands in index.jsonl: recompute role_cost_share_pct (E002 successor for v3).",
     "Design v3-native experiments: opus-on-coder, opus-on-evaluator, opus-on-judge — these are the roles likely to gate medal tier on hard tasks.",
-    "Consider whether data_split should always be cheap (haiku) — it's deterministic splitting work."
+    "Consider whether splitter should always be cheap (haiku) — it's deterministic splitting work."
   ]
 }

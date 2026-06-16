@@ -2,7 +2,7 @@
   "schema_version": 1,
   "task": "leaf-classification",
   "timestamp": "20260519_181132",
-  "run_dir": "/data3/qi/ML-agent-code/leaf-classification/20260519_181132",
+  "run_dir": "/workspace/ML-agent-code/leaf-classification/20260519_181132",
   "model": "claude-opus-4-7",
   "model_role_map": null,
   "result": {

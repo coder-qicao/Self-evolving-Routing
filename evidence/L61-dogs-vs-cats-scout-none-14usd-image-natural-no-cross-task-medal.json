@@ -1,0 +1,38 @@
+{
+  "evidence_id": "L61",
+  "campaign": "router-24h-2026-06-05",
+  "lane": "A",
+  "stratum": "image-natural",
+  "task": "dogs-vs-cats-redux-kernels-edition",
+  "task_status": "UNSEEN",
+  "n": 1,
+  "promoted": false,
+  "command": "scripts/test_router.sh --task dogs-vs-cats-redux-kernels-edition --designs 1 --nodes 4 --budget 15 --no-ingest",
+  "duration_hours": 2.03,
+  "outcome": {
+    "medal": null,
+    "valid_submission": true,
+    "score": 0.14389,
+    "rank_bucket": "none",
+    "total_cost_usd": 13.94,
+    "successful_nodes": ["node_2", "node_3", "node_5"],
+    "failed_nodes": {"node_1": "ModuleNotFoundError: timm"}
+  },
+  "interpretation": "Second image-natural task tested in the campaign — outcome is 'none' (no medal). This contrasts with L55/L57 GOLD on aerial-cactus. Read: the router's GOLD finding does NOT trivially generalize across all image-natural tasks at default budget; dogs-vs-cats is significantly harder than aerial-cactus despite same stratum.\n\nValid submission DOES work and is competitive ($13.94) — just doesn't crack the medal threshold.",
+  "campaign_implication": "Family-level promotion for image-natural is NOT warranted. Image-natural is too broad a stratum — within it, task difficulty varies enough (aerial-cactus = easy, dogs-vs-cats = harder, leaf-classification = no-medal) that family default routing can't safely promote.",
+  "final_scorecard": {
+    "valid_submissions": 8,
+    "scout_attempts": 12,
+    "scout_completion_rate": "67%",
+    "medals_obtained": 3,
+    "medal_rate_on_valid": "37.5%",
+    "medals": {
+      "SILVER text-norm-en": "L50 n=1",
+      "GOLD aerial-cactus": "L55+L57 n=2 CONFIRMED",
+      "(no second GOLD)": "L55/L57 stand alone as the only Law-1-satisfied promotable finding"
+    },
+    "no_medal_but_valid": ["tps-may-2022 above_median", "leaf-classification above_median", "dogs-vs-cats none"],
+    "no_submission": ["mlsp-2013-birds env-gap", "histopathologic-cancer-detection data-prep gap", "spooky-author budget-cap", "dog-breed-identification budget-cap"]
+  },
+  "links": ["[[L55-aerial-cactus-scout-GOLD]]", "[[L57-aerial-cactus-n2-GOLD-confirmed]]", "[[L60-leaf-classification-scout]]"]
+}

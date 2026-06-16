@@ -1,0 +1,72 @@
+{
+  "id": "E016",
+  "claim": "MAJOR FINDING: On v3 detecting-insults-in-social-commentary, even sonnet on ALL 9 roles ($6.83 total) produces an invalid submission (missing 'Comment' column). The schema gate is NOT crossable with any combination of haiku and sonnet — it requires opus. The only routing that has produced a valid submission on this task to date is Phase 1 opus-everywhere ($341.83, gold medal). All four single-role-lift experiments (X202/X209/X217/X218) and now sonnet-everywhere (X219) fail identically. This collapses the routing hypothesis space for detecting-insults: any cost-savings strategy must keep opus on enough roles to satisfy the schema gate, which is currently unknown but at minimum requires opus somewhere central to schema generation.",
+  "support": {
+    "experiment_id": "X219",
+    "run_dir": "/workspace/mlebench-playground/detecting-insults-in-social-commentary/20260602T102353Z_0000",
+    "routing": {
+      "setup": "claude-sonnet-4-6",
+      "splitter": "claude-sonnet-4-6",
+      "designer": "claude-sonnet-4-6",
+      "coder": "claude-sonnet-4-6",
+      "evaluator": "claude-sonnet-4-6",
+      "judge": "claude-sonnet-4-6",
+      "selector": "claude-sonnet-4-6",
+      "reviser": "claude-sonnet-4-6",
+      "aggregator": "claude-sonnet-4-6"
+    },
+    "total_cost_usd": 6.83,
+    "per_role_usd": {
+      "coder": 3.10,
+      "evaluator_review_0": 1.54,
+      "designer": 0.69,
+      "setup": 0.64,
+      "aggregator": 0.54,
+      "splitter": 0.32
+    },
+    "medal": "none",
+    "score": null,
+    "valid_submission": false,
+    "grader_error": "Submission should have an Comment column",
+    "pipeline_terminal": "completed",
+    "splitter_did_not_fail": "Note: Phase 1 sonnet-detecting failed at splitter verifier (v3 splitter shape bug). X219 PASSED splitter — main has had multiple splitter fixes since Phase 1. So 'sonnet-detecting' as a category is now testable; the result is invalid_submission, not splitter failure."
+  },
+  "scope": "Single Phase 2 run. Conclusively refutes the cost-savings hypothesis for detecting via sonnet variants. Implies the schema gate on v3 text-classification is opus-only.",
+  "consolidated_findings_on_detecting": {
+    "results_table": [
+      {"experiment": "Phase 1 haiku-everywhere", "valid_sub": "n/a (FAILED at splitter)", "cost": null, "medal": null},
+      {"experiment": "Phase 1 sonnet-everywhere", "valid_sub": "n/a (FAILED at splitter)", "cost": null, "medal": null},
+      {"experiment": "Phase 1 opus-everywhere", "valid_sub": true, "cost": 341.83, "medal": "gold"},
+      {"experiment": "X202 haiku-everywhere", "valid_sub": false, "cost": 3.80, "medal": "none"},
+      {"experiment": "X209 haiku-rest + sonnet-aggregator", "valid_sub": false, "cost": 3.98, "medal": "none"},
+      {"experiment": "X217 haiku-rest + sonnet-designer", "valid_sub": false, "cost": 3.99, "medal": "none"},
+      {"experiment": "X218 haiku-rest + sonnet-coder", "valid_sub": false, "cost": 6.81, "medal": "none"},
+      {"experiment": "X219 sonnet-everywhere", "valid_sub": false, "cost": 6.83, "medal": "none"}
+    ],
+    "the_question_collapses_to": "What is the cheapest mix of opus-on-N-roles + cheaper-on-rest that still produces a valid submission AND a medal? Phase 1 opus-everywhere $341.83 gold is the ONLY known working point. Need targeted opus-role experiments.",
+    "cost_savings_pessimism": "If schema gate is opus-coder (which carries most of Phase 1 cost at $336/$342 = 98%), then routing cannot reduce cost by more than ~$6 from the Phase 1 baseline. The cost-savings potential on detecting is much smaller than expected."
+  },
+  "limitations": [
+    "n=1 per routing variant.",
+    "Opus-on-subset experiments not yet run. The schema gate might be a single opus role (designer, coder, or aggregator), in which case lifting only that one to opus + the rest sonnet would be the new cost minimum.",
+    "Did NOT test opus-anywhere-haiku-rest combos."
+  ],
+  "confidence": "high (5 consecutive sonnet-or-haiku failures on the same task, identical failure mode)",
+  "last_updated": "2026-06-02",
+  "policy_promoted": false,
+  "implications": {
+    "X219_status": "completed_negative",
+    "queue_revision": "DEPRIORITIZE all sonnet-only-variant experiments on detecting (X220-style pairwise). They are highly likely to fail by inheritance from X219. INSTEAD: probe which OPUS role(s) cross the schema gate.",
+    "new_experiment_candidates": [
+      "X230: opus-coder-only + sonnet-rest on detecting (X208 already queued covers this; promote to high)",
+      "X231: opus-designer-only + sonnet-rest on detecting",
+      "X232: opus-aggregator-only + sonnet-rest on detecting",
+      "X233: opus on {designer + aggregator} + sonnet-rest (cheapest two-opus minimum if either alone fails)"
+    ]
+  },
+  "next_actions": [
+    "Mark X219 status=completed_negative in queue.",
+    "Append X230-X233 to queue_v3.jsonl with priority=high.",
+    "Continue to next non-detecting experiment if no opus-on-detecting candidates take priority — X211/X212/X213 (denoising confirmation/variants) are next-best."
+  ]
+}

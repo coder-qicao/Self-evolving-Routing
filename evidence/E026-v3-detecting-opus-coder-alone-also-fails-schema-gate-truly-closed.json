@@ -1,0 +1,71 @@
+{
+  "id": "E026",
+  "claim": "DECISIVE: opus-coder alone (with sonnet/haiku on remaining 8 roles) DOES NOT bridge detecting's schema gate. X208 ran the spec X208 routing — opus-coder, sonnet on designer/evaluator/judge/selector/reviser/aggregator, haiku on setup+splitter — and produced invalid_submission ('Submission should have an Comment column') at $8.85. Combined with E020's 9-deep negative streak (including X218 sonnet+opus-coder-with-haiku-rest, which already hinted at this), the opus-coder-alone hypothesis is now CLOSED. Detecting requires opus on MORE than just coder — most plausibly the (coder, evaluator) pair or (coder, designer) pair, or opus-everywhere. Phase 1 opus-everywhere $341.83 gold remains the only known working configuration. The schema gate is structurally multi-role, not a single-role lever.",
+  "support": {
+    "experiment_id": "X208",
+    "run_dir": "/workspace/mlebench-playground/detecting-insults-in-social-commentary/20260603T043638Z_0000",
+    "routing": {
+      "setup": "claude-haiku-4-5",
+      "splitter": "claude-haiku-4-5",
+      "designer": "claude-sonnet-4-6",
+      "coder": "claude-opus-4-8",
+      "evaluator": "claude-sonnet-4-6",
+      "judge": "claude-sonnet-4-6",
+      "selector": "claude-sonnet-4-6",
+      "reviser": "claude-sonnet-4-6",
+      "aggregator": "claude-sonnet-4-6"
+    },
+    "total_cost_usd": 8.85,
+    "per_role_usd": {
+      "coder": 5.10,
+      "evaluator_review_0": 1.67,
+      "aggregator": 1.11,
+      "designer": 0.54,
+      "setup": 0.28,
+      "splitter": 0.16
+    },
+    "medal": "none",
+    "score": null,
+    "valid_submission": false,
+    "grader_error": "Submission should have an Comment column",
+    "pipeline_terminal": "completed (wall-clock budget reached)",
+    "wall_clock_seconds": 3852
+  },
+  "comparison_detecting_full_set": [
+    {"experiment": "Phase 1 opus-all",                          "valid": true,  "cost": 341.83, "medal": "gold"},
+    {"experiment": "X202 haiku-all",                            "valid": false, "cost": 3.80},
+    {"experiment": "X209 +sonnet-aggregator",                   "valid": false, "cost": 3.98},
+    {"experiment": "X217 +sonnet-designer",                     "valid": false, "cost": 3.99},
+    {"experiment": "X218 +sonnet-coder",                        "valid": false, "cost": 6.81},
+    {"experiment": "X219 sonnet-all",                           "valid": false, "cost": 6.83},
+    {"experiment": "X231 +opus-designer (sonnet rest)",         "valid": false, "cost": 7.01},
+    {"experiment": "X232 +opus-aggregator (sonnet rest)",       "valid": false, "cost": 9.50},
+    {"experiment": "X233 +opus-{designer+agg} (sonnet rest)",   "valid": false, "cost": 11.08},
+    {"experiment": "X208 +opus-coder (sonnet/haiku rest)",      "valid": false, "cost": 8.85}
+  ],
+  "scope": "DECISIVE conclusion of the detecting routing exploration. 10 distinct routings tested across Phase 2 + 1 Phase 1 baseline. ~$62 spent on detecting probes in Phase 2.",
+  "remaining_hypotheses_after_E026": [
+    "opus-{coder + evaluator} — coder+evaluator pair may matter",
+    "opus-{coder + designer} — design quality may matter as much as coder",
+    "opus-{coder + aggregator} — aggregator may need opus when coder is opus",
+    "opus-everywhere remains the only PROVEN working config"
+  ],
+  "practical_policy_for_detecting": "Set policy.json[detecting-insults]: opus-everywhere. The opus-coder-alone hypothesis is refuted; the multi-role minimal-set hypothesis is open but very expensive to probe (each pair-of-opus probe ~$10-30). Routing on detecting is not a cost lever; it is a tier preserver only. Per-NODE routing (per-node-routing M2-followup) may eventually be the right tool — spend opus per-role only on the nodes near the medal threshold — but at the routing-strategy level, single-role opus-coder is decisively NOT enough.",
+  "limitations": [
+    "n=1 per probe.",
+    "We did NOT test {coder + evaluator} pair, {coder + designer} pair, or {coder + aggregator} pair. The pair-of-opus hypothesis is open."
+  ],
+  "confidence": "high",
+  "last_updated": "2026-06-03",
+  "policy_promoted": false,
+  "implications": {
+    "X208_status": "completed_negative",
+    "detecting_routing_minimal_config": "Schema gate requires MORE than single-role opus-coder. Cheapest known: opus-everywhere $342 gold.",
+    "next_actions_on_detecting": "STOP single-role probes. If anyone wants to keep probing, try opus-{coder + evaluator} next (untried pair containing opus-coder). Otherwise, freeze detecting routing at opus-everywhere and pivot effort to per-node routing where the cost lever may live."
+  },
+  "next_actions": [
+    "Mark X208 status=completed_negative.",
+    "Detecting routing single-role exploration CLOSED. Pivot to per-node routing (M2-followup engine hook then E-PN1..E-PN4)."
+  ],
+  "related_evidence": ["E019", "E020", "E024"]
+}

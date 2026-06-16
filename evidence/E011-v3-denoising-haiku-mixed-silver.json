@@ -1,0 +1,71 @@
+{
+  "id": "E011",
+  "claim": "v3 denoising-dirty-documents with mixed routing (coder + aggregator = sonnet, everything else = haiku) reaches SILVER medal at $7.48 total, with a better score (0.0184) than the Phase 1 all-sonnet baseline (silver, 0.0249). Haiku is sufficient for the 7 non-bridge roles (setup, splitter, designer, evaluator, judge, selector, reviser) on image-denoising. The cost target ($4) was missed, primarily because v3 defaults to enable_evaluator=true while the Phase 1 baseline ran with enable_evaluator=false; $1.39 went to evaluator runs that the Phase 1 baseline did not have.",
+  "support": {
+    "experiment_id": "X203",
+    "run_dir": "/workspace/mlebench-playground/denoising-dirty-documents/20260602T020939Z_0000",
+    "routing": {
+      "setup": "claude-haiku-4-5",
+      "splitter": "claude-haiku-4-5",
+      "designer": "claude-haiku-4-5",
+      "coder": "claude-sonnet-4-6",
+      "evaluator": "claude-haiku-4-5",
+      "judge": "claude-haiku-4-5",
+      "selector": "claude-haiku-4-5",
+      "reviser": "claude-haiku-4-5",
+      "aggregator": "claude-sonnet-4-6"
+    },
+    "total_cost_usd": 7.48,
+    "per_role_usd": {
+      "coder": 4.62,
+      "evaluator_review_0": 1.05,
+      "evaluator_review_1": 0.34,
+      "aggregator": 0.83,
+      "designer": 0.28,
+      "setup": 0.22,
+      "splitter": 0.13
+    },
+    "medal": "silver",
+    "score": 0.01842,
+    "gold_threshold": 0.01794,
+    "silver_threshold": 0.02609,
+    "above_median": true,
+    "valid_submission": true,
+    "pipeline_terminal": "completed"
+  },
+  "scope": "Single Phase 2 run on denoising-dirty-documents (image-denoising-restoration family, n=1 with mixed routing). Compares against Phase 1 baselines: sonnet-everywhere silver ($5.31, 0.0249), opus-everywhere FAIL.",
+  "comparison": {
+    "vs_phase1_sonnet_everywhere": {
+      "phase1_silver_score": 0.0249,
+      "phase1_silver_cost": 5.31,
+      "x203_silver_score": 0.01842,
+      "x203_silver_cost": 7.48,
+      "delta_cost": 2.17,
+      "delta_score": -0.00648,
+      "verdict": "X203 spent $2.17 more but achieved a BETTER score (closer to gold 0.0179 by 0.00648). The cost increase is fully explained by v3-default enable_evaluator=true running 2-3 evaluator passes per node (we did NOT explicitly set enable_evaluator:false in X203 YAML); the per-role savings from haiku on setup/splitter/designer/judge/selector/reviser are real but masked by the evaluator add-on."
+    },
+    "minimum_viable_sonnet_pin": "X203 supports: ONLY coder and aggregator need sonnet for this task family. Other 7 roles are haiku-sufficient. (E012 candidate experiment would probe if reviser+judge can also be haiku given X202's documented haiku weakness on submission shape — that was on detecting; denoising's submission format is per-image and may be easier.)"
+  },
+  "limitations": [
+    "n=1. Need second denoising run with the same routing AND enable_evaluator:false to isolate the evaluator-cost confound from the routing claim.",
+    "Score 0.0184 is within 3% of gold (0.0179) — a single re-run with bigger search might cross the line. The 'silver' result understates how close this routing came to gold.",
+    "Did not test whether replacing aggregator=sonnet with aggregator=haiku also works on denoising; the X202 finding (haiku-everywhere malformed submission on detecting) suggests it might not, but denoising's submission shape is different (per-pixel image files, not a tabular CSV)."
+  ],
+  "confidence": "medium",
+  "last_updated": "2026-06-02",
+  "policy_promoted": false,
+  "implications": {
+    "X203_status": "completed_positive_partial",
+    "policy_implication": "Promotable for image-denoising-restoration family default routing — coder+aggregator=sonnet, everything else=haiku. But promotion is conditional on a confirmation run (n=2 rule). Author X211 (X203 re-run for confirmation) before policy.json update.",
+    "follow_up_experiments": [
+      "X211: re-run X203's exact routing (n=2 confirmation)",
+      "X212: X203 routing + enable_evaluator:false explicitly (isolate the $1.39 evaluator overhead)",
+      "X213: aggregator=haiku on denoising (probe whether denoising's image-per-file submission shape tolerates haiku aggregator, unlike detecting's tabular CSV)"
+    ]
+  },
+  "next_actions": [
+    "Mark X203 status=completed_positive_partial in queue.",
+    "Append X211/X212/X213 to queue_v3.jsonl.",
+    "Continue Phase 2 with X204 (leaf opus-coder + bigger search) — independent finding."
+  ]
+}

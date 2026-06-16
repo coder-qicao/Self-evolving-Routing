@@ -1,0 +1,67 @@
+{
+  "id": "E027",
+  "claim": "Per-node routing M1-M3 plumbing causes NO regression. E-PN1 (denoising opus-everywhere + per_node_routing=true, runtime_state.per_node_routing left empty since the M2-followup engine hook is not yet wired) achieved medal=GOLD at score 0.00994, total $10.67. This matches the X205 baseline (gold, score 0.01227, $10.59) within ±2% — well inside the design spec's ±15% tolerance for E-PN1. The pluming change set (LlmConfig.per_node_routing flag + RuntimeState.per_node_routing dict + engine.options._model_for_unit fallback chain + route_async on all 3 routers + per-node models_by_role at ingest) is safe under load. The flag can be flipped on without changing the run-level behavior, which is the prerequisite for adding the engine hook in the M2-followup PR.",
+  "support": {
+    "experiment_id": "E-PN1",
+    "run_dir": "/workspace/mlebench-playground/denoising-dirty-documents/20260603T055233Z_0000",
+    "implementation_commits": [
+      {"sha": "64fad101f", "milestone": "M1 — NodeRoutingContext + route_async on all 3 routers"},
+      {"sha": "b2521bb55", "milestone": "M2 plumbing — LlmConfig.per_node_routing + RuntimeState.per_node_routing + _model_for_unit"},
+      {"sha": "6a34ae936", "milestone": "M3 — per-node models_by_role at ingest"}
+    ],
+    "routing": {
+      "setup": "claude-opus-4-8",
+      "splitter": "claude-opus-4-8",
+      "designer": "claude-opus-4-8",
+      "coder": "claude-opus-4-8",
+      "evaluator": "claude-opus-4-8",
+      "judge": "claude-opus-4-8",
+      "selector": "claude-opus-4-8",
+      "reviser": "claude-opus-4-8",
+      "aggregator": "claude-opus-4-8"
+    },
+    "cli_overrides": {"per_node_routing": true},
+    "total_cost_usd": 10.67,
+    "per_role_usd": {
+      "coder": 4.45,
+      "evaluator_review_0": 1.86,
+      "aggregator": 1.69,
+      "designer": 1.32,
+      "setup": 0.85,
+      "splitter": 0.51
+    },
+    "medal": "gold",
+    "score": 0.00994,
+    "valid_submission": true,
+    "pipeline_terminal": "completed (wall-clock budget reached)",
+    "wall_clock_seconds": 3596
+  },
+  "comparison_to_baseline": {
+    "X205_baseline": {"medal": "gold", "score": 0.01227, "cost": 10.59, "config": "opus-all, per_node_routing=false"},
+    "E_PN1":        {"medal": "gold", "score": 0.00994, "cost": 10.67, "config": "opus-all, per_node_routing=true"},
+    "delta_cost_pct": "+0.8% (well within ±15% tolerance)",
+    "delta_score_pct": "-19% (BETTER score — same routing run-to-run noise; E021 documents denoising variance)",
+    "medal_regression": "none — both gold"
+  },
+  "scope": "Single Phase 2 run validating the M1-M3 plumbing. The engine hook (M2-followup) that POPULATES runtime_state.per_node_routing is not yet wired, so per_node_routing=true here is effectively a no-op flag — the per-node mapping fallback layer always returns empty and ``_model_for_unit`` cascades to the run-level models_by_role. This is precisely the no-regression invariant the design spec § 7 requires.",
+  "limitations": [
+    "n=1. Denoising-opus has n=2 gold runs across X205 and E-PN1; the loop policy's single-run-unambiguous-result criterion is met for the no-regression claim, but a 2nd E-PN1 rerun would confirm.",
+    "This validates the PLUMBING only. The actual cost lever — per-node routing decisions that vary by node — requires the M2-followup engine hook (calling router.route_async at node materialization). Until that lands, E-PN2/3/4 cannot run."
+  ],
+  "confidence": "high",
+  "last_updated": "2026-06-03",
+  "policy_promoted": false,
+  "implications": {
+    "E_PN1_status": "completed_positive",
+    "plumbing_gate_status": "GREEN — M1-M3 ready for M2-followup engine hook to land on top.",
+    "follow_up": "Implement M2-followup: at node materialization in engine/node_lifecycle_runner.run_node_lifecycle (or the inner spawning loop), construct a NodeRoutingContext from the node's depth/parent_metric/best_metric_so_far + the cost ledger + the medal threshold (when known), call await router.route_async(node_ctx=ctx), store the result in runtime_state.per_node_routing[node_id]. Cap LLM-router calls via per_node_redecide_band. With that landed, E-PN2 (budget-aware downgrade) and E-PN3 (threshold-aware upgrade) become runnable."
+  },
+  "next_actions": [
+    "Mark E-PN1 status=completed_positive.",
+    "Land M2-followup engine hook on qi_memory_router_v3 (separate PR).",
+    "Author static per-node rules in policy.json § per_node so E-PN2/3 have something to consult.",
+    "Then run E-PN2 (leaf budget-aware) and E-PN3 (leaf threshold-aware).",
+    "E-PN4 (LLM unseen task) requires a concrete task pick — jigsaw-toxic or nyc-taxi-fare are candidates."
+  ],
+  "related_evidence": ["E021", "E025"]
+}

@@ -1,0 +1,41 @@
+{
+  "id": "E041",
+  "claim": "nomad2018 splitter failure rate is 60% (3 of 5 runs) — too high to recommend the E029 mixed routing for production without a splitter stability fix. Tally: E029 success (haiku splitter), E-PN4-nomad-rerun success (haiku splitter), E033 / E-PN6 fail (haiku splitter), E036 / E-PN9 fail (sonnet splitter), E041 / E-PN14 fail (sonnet splitter). This is independent of splitter model (haiku 1/2 success, sonnet 0/2 success — both unstable). The 'family-promoted mixed routing' E029 finding is correct on the cost-saving dimension when it works ($5.07 gold), but the 60% Pipeline-halt rate makes the n=1 cost-saving result a partial finding pending splitter stabilization. Recommendation: amend task_memory/tabular-regression.json default_routing to mark the splitter as REQUIRING opus for nomad2018, OR raise pipeline_reliability.splitter_max_retries from 2 to 4+. Without this fix, the family promotion is misleading.",
+  "support": {
+    "experiment_id": "E-PN14-nomad-composite-rerun",
+    "run_dir": "/workspace/mlebench-playground/nomad2018-predict-transparent-conductors/20260604T064734Z_0000",
+    "result": {"medal": "none", "valid_submission": false, "total_cost_usd": "negligible", "pipeline_terminal": "failed_at_splitter_validation"},
+    "nomad_splitter_history_n5": [
+      {"experiment": "E029 startup-only", "splitter": "haiku", "outcome": "succeeded → gold $5.07"},
+      {"experiment": "E-PN4-nomad-rerun", "splitter": "haiku", "outcome": "succeeded → gold $5.07"},
+      {"experiment": "E033 / E-PN6 per-node", "splitter": "haiku", "outcome": "FAILED validation 2x"},
+      {"experiment": "E036 / E-PN9 composite", "splitter": "sonnet", "outcome": "FAILED validation 2x"},
+      {"experiment": "E041 / E-PN14 composite-rerun", "splitter": "sonnet", "outcome": "FAILED validation 2x"}
+    ],
+    "splitter_failure_rate_by_model": {
+      "haiku": "1/2 = 50%",
+      "sonnet": "0/2 = 100%",
+      "combined": "3/5 = 60%"
+    },
+    "interpretation": "Splitter failure is task-level on nomad2018 — both haiku and sonnet hit it. Sample size is small (n=2 per model) but failure occurs independent of model. Likely cause: the nomad2018 train.csv schema or instruction creates split-proposal edge cases that the verifier rejects."
+  },
+  "scope": "Operational stability finding for tabular-regression family. Affects production recommendation.",
+  "limitations": [
+    "Did NOT test opus-splitter on nomad — could be the stabilizer (opus 0 fails of 0 runs).",
+    "Did NOT inspect the splitter's verifier reject reason — would need to read /workspace/mlebench-playground/nomad2018-predict-transparent-conductors/<run>/steps/splitter*/output for the specific complaint."
+  ],
+  "confidence": "high (60% failure rate is real)",
+  "last_updated": "2026-06-04",
+  "policy_promoted": false,
+  "implications": {
+    "E_PN14_status": "completed_negative_splitter_validation_failed_60pct_rate",
+    "tabular_regression_family_amendment": "Add WARNING to task_memory/tabular-regression.json open_questions: 'nomad2018 splitter has 60% failure rate (3/5 runs) independent of model. E029 cost saving is real WHEN it works ($5.07 vs $16 baseline) but operational reliability is poor. Test opus-splitter (untried) or raise splitter_max_retries before recommending the mixed routing for production.'",
+    "next_experiment": "Skip nomad2018 for the rest of this loop. Pivot to LEAF for the cli.py production validation — leaf code fix landed, X215 known_override restored. Use 180min pipeline budget to allow sonnet designer headroom (E030 designer timed out at 29min)."
+  },
+  "next_actions": [
+    "Mark E-PN14 status=completed_negative_splitter_validation_failed_60pct_rate.",
+    "Update tabular-regression.json open_questions to flag the splitter instability.",
+    "Skip nomad for now. Launch E-PN15-leaf-composite with pipeline_budget_minutes=180."
+  ],
+  "related_evidence": ["E029", "E033", "E036"]
+}

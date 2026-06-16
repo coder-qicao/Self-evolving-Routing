@@ -1,0 +1,35 @@
+{
+  "evidence_id": "L65c",
+  "campaign": "router-aggressive-exploration-2026-06-09",
+  "lane": "A",
+  "stratum": "image-medical",
+  "task": "aptos2019-blindness-detection",
+  "task_status": "UNSEEN",
+  "n": 1,
+  "promoted": false,
+  "command": "scripts/test_router.sh --task aptos2019-blindness-detection --mode aggressive --designs 1 --nodes 4 --budget 15 --no-ingest",
+  "duration_hours": 2.29,
+  "outcome": {
+    "medal": null,
+    "valid_submission": true,
+    "score": 0.56107,
+    "rank_bucket": "none",
+    "total_cost_usd": 16.52,
+    "successful_nodes": ["node_2", "node_3", "node_4"],
+    "failed_nodes": {"node_1": "ModuleNotFoundError: timm"}
+  },
+  "engine_bug_fix_validation": {
+    "context": "Pre-fix runs (L65a, L65b) crashed within 4min at setup with the model_usage canonicalization assertion. After fix 9c64ba5b9 (merge-on-collision), L65c ran 2h17 to completion.",
+    "confirmation": "Fix works end-to-end. Pipeline completed; aggregator emitted submission.csv with valid format."
+  },
+  "aggressive_mode_router_observations": {
+    "node_1": {"designer": "sonnet", "coder": "opus-4-8", "reviser": "sonnet", "aggregator": "sonnet"},
+    "node_2": {"designer": "sonnet", "coder": "sonnet", "reviser": "haiku", "aggregator": "haiku"},
+    "node_3": {"designer": "sonnet", "coder": "opus-4-7", "reviser": "haiku", "aggregator": "haiku"},
+    "node_4": {"designer": "sonnet", "coder": "opus-4-8", "reviser": "haiku", "aggregator": "haiku"},
+    "key_observation": "FIRST campaign run where the router cycled THREE coder variants: opus-4-8 (n=2), opus-4-7 (n=1), sonnet (n=1). Aggressive mode is producing the variant exploration its design promised. Memory should now accumulate per-(model, role) signal for the opus-4-7 variant which previously had only 4 role-uses.",
+    "by_model_after_ingest": "opus-4-7 still at 4 role-uses (path layout changed; ingest mis-categorized — needs follow-up); opus-4-8 +1 to 47; sonnet +1 to 50."
+  },
+  "interpretation": "Image-medical task with score 0.56 (well above 0 but below medal). Diabetic-retinopathy fundus image classification is genuinely hard at this budget + node count — the model would need data augmentation + class imbalance handling that the agent only partially implemented.",
+  "links": ["[[L65a-aptos-aggressive-mode-engine-bug-canonicalization]]", "[[L65b-aptos-stable-mode-SAME-canonicalization-bug-blocks-campaign]]"]
+}

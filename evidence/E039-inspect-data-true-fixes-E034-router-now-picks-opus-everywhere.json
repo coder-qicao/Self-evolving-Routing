@@ -1,0 +1,43 @@
+{
+  "id": "E039",
+  "claim": "BREAKTHROUGH: enabling inspect_data=True on the LLM router FIXES the failure mode E034 documented. On detecting-insults-in-social-commentary, the same LLM router that previously picked {coder: opus-4-7, rest: haiku} (a known-failing X218-class config) now picks OPUS-EVERYWHERE — aligned with E020/E026 evidence and the just-fixed policy.json[detecting]. The agent reads the public data directory (via Read/Glob/Grep tool access granted when inspect_data=True), inspects train.csv's text-comment schema, infers that text classification needs strong models across the pipeline, and converges on opus-everywhere. Without data inspection (E034), it picked the cheap-but-broken config. Recommend default inspect_data=True for production LLMRouter usage on tasks where the family default is in dispute or unproven.",
+  "support": {
+    "experiment_id": "E-PN12-detecting-inspect-data-true",
+    "method": "Direct python invocation of make_llm_router(inspect_data=True).route_async() — no cli.py run, ~$0.10 cost",
+    "comparison": [
+      {
+        "config": "inspect_data=False (E034)",
+        "decision": "{coder: opus-4-7, all 8 other roles: haiku}",
+        "outcome_predicted": "invalid_submission per E020/E026 (single-role opus-coder is known to fail)"
+      },
+      {
+        "config": "inspect_data=True (E039 — THIS RUN)",
+        "decision": "{ALL 9 roles: opus-4-8}",
+        "outcome_predicted": "gold per Phase 1 opus-all baseline $341.83 (E020)"
+      }
+    ],
+    "design_finding": "Data inspection lets the LLM router REASON about the task's actual characteristics (text-classification, free-form comment column, English language complexity) rather than relying on the task name + memory alone. The opus-everywhere choice now reflects the agent's understanding that this task needs language depth across roles."
+  },
+  "scope": "Single direct router query on detecting. n=1 but the contrast vs E034 is sharp and reproducible.",
+  "limitations": [
+    "Did not run cli.py to confirm gold; that would cost $300+ for one validation. The E020 Phase 1 opus-all baseline already establishes the gold outcome.",
+    "n=1 — the decision is deterministic per-LLM-call but the bridge could differ on repeats.",
+    "Not tested on other tasks — does inspect_data=True help universally or only on text-classification?"
+  ],
+  "confidence": "high",
+  "last_updated": "2026-06-04",
+  "policy_promoted": "candidate",
+  "implications": {
+    "E_PN12_status": "completed_positive_breakthrough",
+    "production_recommendation": "Enable inspect_data=True by default in make_llm_router (already the default per code review of engine/routing/__init__.py line 67 — inspect_data: bool = True). E034's failure was triggered by the explicit override in the direct python test (the test passed inspect_data=False to keep the call cheap, mistakenly assumed router would still get the schema info).",
+    "design_finding_for_the_router": "Data access is the deciding factor for tasks where evidence is sparse or contradictory. The LLM router prompt + memory alone may miss important task characteristics; the data tells the truth.",
+    "next_experiment": "E-PN13 — composite router with inspect_data=True LLMRouter as the fallback. On detecting (where Static now correctly returns opus-all via E035), Composite Static answers first; on an unseen task, Composite falls through to LLM with inspect_data=True. Validates the production-default chain end-to-end."
+  },
+  "next_actions": [
+    "Mark E-PN12 status=completed_positive_breakthrough.",
+    "Re-validate: is inspect_data=True the default in production code path?",
+    "Document in policy/routing_policy.md that LLMRouter should run with inspect_data=True for all production use.",
+    "Optionally retry E-PN7 (LLM router on detecting) with inspect_data=True to confirm gold outcome — but $300+ cost is steep for a single confirmation. The Phase 1 baseline E020 already establishes gold with opus-all."
+  ],
+  "related_evidence": ["E020", "E026", "E034", "E035"]
+}

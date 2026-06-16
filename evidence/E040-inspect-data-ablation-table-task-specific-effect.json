@@ -1,0 +1,69 @@
+{
+  "id": "E040",
+  "claim": "GENERALIZATION FINDING: inspect_data=True effect is TASK-CONDITIONAL, not universal. Ablation table across 4 tasks (nomad2018 tabular, denoising image, leaf image-classification, detecting text-classification): inspect_data flipped the decision on 2 of 4 tasks (leaf, detecting) but had ZERO effect on 2 (nomad2018, denoising). The pattern: data inspection matters when (a) the family memory is incomplete/stale OR (b) the agent's prior is wrong from the task name alone. Where family memory is mature (nomad2018 has E029 promotion, denoising has E025/E031 promotion), the agent reaches the same decision with or without data. Where family memory is stale (image-classification-small leaf default = sonnet-all but X215 evidence suggests coder+aggregator=opus rest=sonnet) or where invalid-sub evidence needs weighting (detecting), data inspection RESCUES the decision. CONCRETE: on leaf, inspect_data=True flipped the agent from family-default sonnet-all → EXACT X215 routing (coder+aggregator=opus, rest=sonnet) — the agent saw the leaf images, recognized the need for vision-aware modeling, and upgraded coder+aggregator without being told.",
+  "support": {
+    "experiment_id": "E-PN13-inspect-data-ablation",
+    "method": "Six direct python invocations of make_llm_router with inspect_data toggled — no cli.py runs",
+    "ablation_table": [
+      {
+        "task": "nomad2018-predict-transparent-conductors",
+        "family": "tabular-regression",
+        "inspect_data_false": "setup=h, splitter+designer+coder=s, rest=h",
+        "inspect_data_true":  "setup=h, splitter+designer+coder=s, rest=h",
+        "changed": false,
+        "interpretation": "Family memory has E029 promotion (mixed gold); agent is confident with or without data."
+      },
+      {
+        "task": "denoising-dirty-documents",
+        "family": "image-denoising-restoration",
+        "inspect_data_false": "opus-4-8-all",
+        "inspect_data_true":  "opus-4-8-all",
+        "changed": false,
+        "interpretation": "Family memory has E025/E031 opus-4-8 promotion (n=3 gold); decision converged."
+      },
+      {
+        "task": "leaf-classification",
+        "family": "image-classification-small",
+        "inspect_data_false": "sonnet-4-6-all (family default)",
+        "inspect_data_true":  "coder + aggregator = opus-4-8, rest = sonnet-4-6 (EXACT MATCH X215 E022)",
+        "changed": true,
+        "interpretation": "Family default is stale (sonnet-all per E003/E004 v2). Data inspection let the agent see the leaf images and identify the need for opus on the visual modeling roles — landing on X215 routing without being told."
+      },
+      {
+        "task": "detecting-insults-in-social-commentary",
+        "family": "text-classification",
+        "inspect_data_false": "coder=opus-4-7, rest=haiku (X218-class FAILING config — E034)",
+        "inspect_data_true":  "opus-4-8 all (aligned with E020/E026 evidence — E039)",
+        "changed": true,
+        "interpretation": "Without data, agent reverts to cheap-config bias. With data, sees free-form English text comments, infers cross-role language depth requirement, picks opus-everywhere."
+      }
+    ],
+    "summary": {
+      "inspect_data_effect_rate": "2 of 4 tasks (50%)",
+      "effect_direction_when_changed": "BOTH cases moved toward an evidence-aligned, higher-quality config (X215 for leaf, opus-all for detecting). Inspect_data NEVER moved the decision away from evidence — it only RESCUED bad defaults.",
+      "no_change_pattern": "Family memory is mature; agent reaches the same answer regardless.",
+      "change_pattern": "Family memory is stale OR agent prior is wrong; data is the corrective signal."
+    }
+  },
+  "scope": "4-task ablation across all distinct families currently in task_memory. Establishes the operational rule for when inspect_data is worth its cost.",
+  "limitations": [
+    "n=1 per cell.",
+    "Did not validate end-to-end via cli.py runs (would cost ~$300 for detecting alone). The Phase 1 baseline + E022 X215 outcome serve as predicted-result references.",
+    "Cost of inspect_data=True: the Read/Glob/Grep tool calls add ~$0.10-0.30 per router invocation on top of the base prompt cost."
+  ],
+  "confidence": "high",
+  "last_updated": "2026-06-04",
+  "policy_promoted": "candidate",
+  "implications": {
+    "E_PN13_status": "completed_positive_ablation_complete",
+    "production_recommendation": "Keep inspect_data=True as the default in make_llm_router (already the case in engine/routing/__init__.py line 67). The cost (~$0.10-0.30) is small vs the risk of picking a failing config; the upside is rescuing decisions on tasks with stale or incomplete family memory.",
+    "operational_rule_for_router_design": "If family_memory[task].default_routing is updated and confirmed, the LLM router does not need data inspection for that task. But maintaining inspect_data=True universally provides a safety net for new tasks AND for stale entries the loop hasn't yet swept.",
+    "next_experiment": "E-PN14 — validate the E020 detecting opus-all prediction by running CompositeRouter on detecting via cli.py with a SHORT pipeline budget (max_nodes=2, pipeline_budget_minutes=30). Composite hits the fixed policy.json[detecting]=opus-all and runs partial pipeline — confirms the production chain end-to-end with the smallest possible burn (~$100 — still expensive). OR skip the expensive validation and accept E020 baseline as the ground truth."
+  },
+  "next_actions": [
+    "Mark E-PN13 status=completed_positive_ablation_complete.",
+    "Skip the expensive detecting cli.py validation; trust E020 baseline + E035 policy fix + this ablation table.",
+    "Next experiment: examine WHAT properties of leaf vs nomad lead to different inspect_data sensitivity. Could be (a) visual modality complexity (data tells more), (b) family memory recency, or (c) something else."
+  ],
+  "related_evidence": ["E022", "E029", "E031", "E034", "E035", "E039"]
+}

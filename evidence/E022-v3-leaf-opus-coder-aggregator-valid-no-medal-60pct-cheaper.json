@@ -1,0 +1,70 @@
+{
+  "id": "E022",
+  "claim": "On v3 leaf-classification, opus on {coder, aggregator} with sonnet on remaining 7 roles produced a VALID submission at $12.03 total — vs Phase 1 opus-everywhere $29.87 (n=2 mean). Both configs land medal=none (bronze threshold 0.01526; X215 logloss 0.169 vs Phase 1 0.296 mean — note both well above bronze). X215 score is actually closer to bronze than Phase 1 opus-all baseline, but neither clears it. The cost lever is real: leaf-classification routing achieves ~60% cost reduction with NO medal-tier regression because Phase 1 opus-everywhere also failed to medal.",
+  "support": {
+    "experiment_id": "X215",
+    "run_dir": "/workspace/mlebench-playground/leaf-classification/20260602T214945Z_0000",
+    "routing": {
+      "setup": "claude-sonnet-4-6",
+      "splitter": "claude-sonnet-4-6",
+      "designer": "claude-sonnet-4-6",
+      "coder": "claude-opus-4-8",
+      "evaluator": "claude-sonnet-4-6",
+      "judge": "claude-sonnet-4-6",
+      "selector": "claude-sonnet-4-6",
+      "reviser": "claude-sonnet-4-6",
+      "aggregator": "claude-opus-4-8"
+    },
+    "total_cost_usd": 12.03,
+    "per_role_usd": {
+      "coder": 8.63,
+      "aggregator": 1.42,
+      "evaluator_review_0": 0.70,
+      "setup": 0.49,
+      "designer": 0.48,
+      "splitter": 0.31
+    },
+    "medal": "none",
+    "score": 0.16861,
+    "bronze_threshold": 0.01526,
+    "valid_submission": true,
+    "pipeline_terminal": "completed",
+    "num_candidates": 8,
+    "wall_clock_seconds": 8380
+  },
+  "comparison_baseline": {
+    "phase1_opus_all_leaf": {
+      "n": 2,
+      "medal_mean": "none",
+      "score_mean": 0.2961,
+      "cost_mean_usd": 29.87
+    },
+    "x215_routing": {
+      "n": 1,
+      "medal": "none",
+      "score": 0.169,
+      "cost_usd": 12.03,
+      "savings_vs_baseline": "59.7%"
+    }
+  },
+  "scope": "Single Phase 2 run vs n=2 Phase 1 baseline. Leaf-classification routing validated — coder+aggregator opus is the minimum schema-passing config tested.",
+  "limitations": [
+    "n=1 for X215; need 1-2 more runs to confirm 0.169 score is not lucky/unlucky",
+    "Phase 1 opus-all n=2 both medal=none, so baseline quality is also weak — leaf may simply not be tractable in current v3 settings",
+    "X216 (opus-everywhere + max_nodes=16, pipeline_budget=180min) still queued; will test whether bigger search hits bronze"
+  ],
+  "confidence": "medium",
+  "last_updated": "2026-06-03",
+  "policy_promoted": false,
+  "implications": {
+    "X215_status": "completed_positive_partial",
+    "leaf_routing_finding": "Unlike detecting (E020 — opus-coder OR opus-everywhere required for schema), leaf TOLERATES sonnet-everywhere-except-coder-aggregator. Schema-gate is task-specific.",
+    "policy_candidate_for_leaf": "If X216 confirms bronze is unreachable even with opus-all+bigger search, policy.json[leaf-classification] could promote {coder:opus, aggregator:opus, rest:sonnet} as the default — same medal outcome, 60% cheaper."
+  },
+  "next_actions": [
+    "Mark X215 status=completed_positive_partial.",
+    "Launch X216 (opus-everywhere + bigger search) to determine if leaf medal floor is achievable at all.",
+    "If X216 also medal=none → promote X215 routing to policy.json for leaf."
+  ],
+  "related_evidence": ["E020", "E021"]
+}

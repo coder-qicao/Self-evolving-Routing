@@ -2,7 +2,7 @@
   "schema_version": 1,
   "task": "nomad2018-predict-transparent-conductors",
   "timestamp": "20260519_202126",
-  "run_dir": "/data3/qi/ML-agent-code/nomad2018-predict-transparent-conductors/20260519_202126",
+  "run_dir": "/workspace/ML-agent-code/nomad2018-predict-transparent-conductors/20260519_202126",
   "model": "claude-haiku-4-5",
   "model_role_map": null,
   "result": {

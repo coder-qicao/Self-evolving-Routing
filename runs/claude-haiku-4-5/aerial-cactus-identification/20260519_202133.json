@@ -2,7 +2,7 @@
   "schema_version": 1,
   "task": "aerial-cactus-identification",
   "timestamp": "20260519_202133",
-  "run_dir": "/data3/qi/ML-agent-code/aerial-cactus-identification/20260519_202133",
+  "run_dir": "/workspace/ML-agent-code/aerial-cactus-identification/20260519_202133",
   "model": "claude-haiku-4-5",
   "model_role_map": null,
   "result": {

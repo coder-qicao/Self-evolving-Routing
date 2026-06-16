@@ -1,0 +1,60 @@
+{
+  "id": "E028",
+  "claim": "FIRST per-node LLM router run with engine hook live (ab47e9220) on nomad2018: the router DID diverge per-node — startup decision was sonnet-all (matching E003 family default), but the async per-node decision for node_1 was haiku-all (cross-the-board downgrade for shallow exploration). The mechanism works. HOWEVER haiku-coder produced train.py with `import yaml`, yaml not in env, training crashed, no further nodes attempted (selector_round_2 evidently didn't propose new nodes after node_1 failure or other crashes), aggregator refused to ensemble nothing, pipeline failed with no submission. Total $3.82 burned, no medal. This validates the routing infrastructure but exposes a real LLM-router failure mode: aggressive cross-role haiku downgrade without env-awareness lets haiku coder write code with non-installed deps. The router prompt needs an 'environment guarantee' constraint OR per-node routing should not downgrade coder below a floor.",
+  "support": {
+    "experiment_id": "E-PN4-nomad",
+    "run_dir": "/workspace/mlebench-playground/nomad2018-predict-transparent-conductors/20260603T234128Z_0000",
+    "config": {
+      "task": "nomad2018-predict-transparent-conductors",
+      "router_strategy": "llm",
+      "per_node_routing": true,
+      "config_model_default": "claude-sonnet-4-6",
+      "max_nodes": 8,
+      "pipeline_budget_minutes": 60
+    },
+    "router_decisions": [
+      {
+        "context": "startup (sync route())",
+        "decision": "all 9 roles = claude-sonnet-4-6",
+        "matches": "family E003 default for tabular-regression",
+        "diverges": false
+      },
+      {
+        "context": "node_1 (async route_async with NodeRoutingContext)",
+        "decision": "all 9 roles = claude-haiku-4-5",
+        "matches": "no — DIVERGED from startup decision and family default",
+        "diverges": true,
+        "interpretation": "router downgraded for shallow exploration (depth=1, no parent_metric yet); consistent with P1 cost-protection but too aggressive: coder also went haiku"
+      }
+    ],
+    "failure_mode": {
+      "node_1_train_py_error": "ModuleNotFoundError: No module named 'yaml'",
+      "consequence": "trainer exited 1 → node 1 status=failed → no metric → no other nodes succeeded → aggregator refused to ensemble nothing → Pipeline failed",
+      "root_cause_hypothesis": "haiku-coder, lacking the rigor of sonnet/opus, wrote a train.py that imported yaml without checking availability. Sonnet/opus typically inspect the env or use json/pickle. The LLM router did not warn the coder of env constraints because the routing-policy prompt and the per-node context do not carry env info."
+    },
+    "total_cost_usd": 3.82,
+    "valid_submission": false,
+    "medal": "none",
+    "pipeline_terminal": "failed"
+  },
+  "scope": "Single run. Validates the M2-followup engine hook (per-node decisions are recorded and applied) and exposes a real LLM-router-prompt-design issue.",
+  "limitations": [
+    "n=1.",
+    "Cannot tell if the failure was bad luck (haiku ALWAYS uses yaml here?) or a systematic haiku-coder pattern. A rerun with sonnet-on-coder pinned would isolate the env issue from the routing logic.",
+    "Did not inspect the router_cache for the prompt/reasoning the LLM emitted (the router_cache lives at memory/routing/router_cache/calls/<task>/...)."
+  ],
+  "confidence": "medium-high (the divergence mechanism is confirmed; the failure-mode attribution is plausible but n=1)",
+  "last_updated": "2026-06-04",
+  "policy_promoted": false,
+  "implications": {
+    "E_PN4_nomad_status": "completed_negative_pipeline_failed",
+    "design_finding_for_per_node_router": "Cross-the-board haiku downgrade on shallow nodes is dangerous because haiku-coder may write code with unverified deps. Mitigation candidates: (a) add an 'env constraint' line to routing_policy.md so the LLM router avoids haiku-coder for unfamiliar tasks; (b) introduce a coder-floor static rule in policy.json § per_node (coder >= sonnet); (c) feed an env-fingerprint into NodeRoutingContext so the router has signal.",
+    "follow_up": "E-PN4-nomad-rerun-with-coder-floor: same task, router_strategy=llm + per_node_routing=true, BUT add a static coder-floor rule (coder cannot go below sonnet). Expect: valid submission, medal=gold ($16 ish), confirming the failure was the haiku-coder, not the routing logic."
+  },
+  "next_actions": [
+    "Mark E-PN4-nomad status=completed_negative_pipeline_failed.",
+    "Design experiment 2: E-PN4-nomad-rerun (coder pinned to sonnet via models_by_role override, per_node_routing still on for the other 8 roles).",
+    "If experiment 2 succeeds → write E029 confirming the haiku-coder hypothesis, propose a coder-floor rule for the per_node static block."
+  ],
+  "related_evidence": ["E003", "E027"]
+}

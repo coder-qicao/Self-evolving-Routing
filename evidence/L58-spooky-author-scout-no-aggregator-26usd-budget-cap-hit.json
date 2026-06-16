@@ -1,0 +1,37 @@
+{
+  "evidence_id": "L58",
+  "campaign": "router-24h-2026-06-05",
+  "lane": "A",
+  "stratum": "text",
+  "task": "spooky-author-identification",
+  "task_status": "KNOWN (member of text-classification family; in member_tasks)",
+  "note_on_kvness": "This is a KNOWN task, but I include it in the Lane A rotation because the task_memory shows opus-everywhere SILVER and sonnet-everywhere INVALID (E045/E046). Question: does the agentic per-node router solve this without needing opus-everywhere?",
+  "n": 1,
+  "promoted": false,
+  "promotion_block_reason": "Pipeline ran out of budget before aggregator completed. No submission.csv produced.",
+  "command": "scripts/test_router.sh --task spooky-author-identification --designs 2 --nodes 6 --budget 10 --no-ingest",
+  "duration_hours": 1.95,
+  "router_decisions": "Per-node router escalated opus-coder + opus-designer + opus-reviser on node 6 (designer=opus-4-8, coder=opus-4-8, reviser=opus-4-8) — heaviest escalation seen in the campaign so far. Hypothesis: router senses spooky-author as harder than aerial-cactus/cactus tasks (consistent with task_memory marking spooky as sonnet-INVALID).",
+  "outcome": {
+    "medal": null,
+    "valid_submission": false,
+    "pipeline_status": "budget_exhausted_then_killed",
+    "fail_reason": "Engine declared 'Budget exhausted, stopping' at +1h51m. Drained 1 straggler for ~6min then SIGKILL by wrapper at +1h57m. No aggregator run → no submission.csv.",
+    "total_cost_usd": 25.65,
+    "successful_nodes": ["node_1", "node_3", "node_5", "node_6"],
+    "failed_nodes": {
+      "node_2": "training crashed — HF transformers AutoModelForSequenceClassification.from_pretrained failed (likely tokenizer/model name issue in agent code)"
+    }
+  },
+  "interpretation": "The router did exactly what task_memory implied: ratchet up to opus-everywhere on coder/designer/reviser, predicting spooky-author needs higher capability. But the per-node-routing latency + opus latency + 6-node search depth exceeded the 2h pipeline budget BEFORE aggregator could run.\n\nThis is a budget/latency problem, not a router quality problem. The signal that the router 'knows' spooky-author is hard is itself valuable — but at the current 6-node, 10-min-per-node, opus-on-3-roles configuration, the wall-clock budget runs out.",
+  "key_observations": [
+    "spooky-author CONFIRMS router uses task-knowledge: it predicted opus-needed and routed accordingly.",
+    "But this revealed a NEW failure mode: budget-cap-before-aggregator. 4 nodes succeeded with good models but no merge.",
+    "Workaround for future spooky-author runs: either (a) reduce designs+nodes to fit budget, (b) raise budget to 3-4h, or (c) accept Lane A scout incomplete and move to Lane B target run."
+  ],
+  "actions_for_future_runs": [
+    "Consider --budget 20 --nodes 4 for known-hard text tasks like spooky-author and jigsaw.",
+    "Skip retry under same settings — would just repeat the wall-clock cap."
+  ],
+  "links": ["[[L50-text-norm-en-scout]]", "[[L57-aerial-cactus-n2-GOLD-confirmed]]", "[[text-classification]]"]
+}

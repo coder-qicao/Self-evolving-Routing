@@ -1,7 +1,7 @@
 {
   "family": "tabular-regression",
   "schema_version": 1,
-  "last_updated": "2026-05-21 (haiku silver on nomad2018 — see E007)",
+  "last_updated": "2026-06-04 (E029 promoted: LLM-router mixed routing GOLD $5.07 — 68% cheaper than sonnet-all)",
   "fingerprint": {
     "modality": "tabular",
     "data_size_bucket": "tiny<10MB | small<100MB",
@@ -12,8 +12,23 @@
     {"name": "nomad2018-predict-transparent-conductors", "category": "molecular-biochemical-prediction", "size_mb": 10, "metric": "rmsle"}
   ],
   "default_routing": {
+    "by_role": {
+      "setup": "claude-haiku-4-5",
+      "splitter": "claude-sonnet-4-6",
+      "designer": "claude-sonnet-4-6",
+      "coder": "claude-sonnet-4-6",
+      "evaluator": "claude-haiku-4-5",
+      "judge": "claude-haiku-4-5",
+      "selector": "claude-haiku-4-5",
+      "reviser": "claude-haiku-4-5",
+      "aggregator": "claude-haiku-4-5"
+    },
+    "rationale": "E029 promoted from agentic LLM router run. LLM router on nomad2018 picked mixed designer+coder=sonnet, rest=haiku and produced GOLD at $5.07 — 68% cheaper than the prior sonnet-all (gold $16, E003). The agent's reasoning: designer plans + coder writes train.py are quality-critical; the other 7 roles evaluate/select/judge rather than generate code, so haiku is sufficient. Splitter bumped from haiku→sonnet to stabilize against the rare haiku-splitter validation failure observed in E033.",
+    "evidence_refs": ["E003", "E029", "E033"]
+  },
+  "fallback_routing": {
     "all_roles": "claude-sonnet-4-6",
-    "rationale": "Sonnet gold @ $16 vs opus gold @ $51 on the only tabular regression task we have. Strong cost win, identical medal (E003).",
+    "rationale": "Pre-E029 default. Use when the mixed routing produces an invalid sub or fails verification.",
     "evidence_refs": ["E003"]
   },
   "cost_floor_option": {
@@ -25,11 +40,13 @@
   "known_overrides": {},
   "open_questions": [
     "Confirm haiku silver on nomad2018 with a second run (E007 is currently n=1).",
-    "We have only ONE task in this family. Need more tabular tasks before generalizing the haiku-silver pattern — e.g. nyc-taxi-fare or playground-series-s6e2."
+    "We have only ONE task in this family. Need more tabular tasks before generalizing the haiku-silver pattern — e.g. nyc-taxi-fare or playground-series-s6e2.",
+    "WARNING (E041, 2026-06-04): nomad2018 splitter has 60% failure rate (3 of 5 runs halted at splitter validation). Failure occurs with both haiku (1/2) and sonnet (0/2) splitters — independent of model. E029's cost saving is real WHEN it works ($5.07 gold) but operational reliability is poor. Test opus-splitter (untried) or raise pipeline_reliability.splitter_max_retries before recommending the mixed routing for production."
   ],
   "observations": {
     "claude-haiku-4-5":  {"silver": 1, "n_total": 1, "tasks_covered": ["nomad2018"], "salvaged": true},
     "claude-sonnet-4-6": {"gold": 1, "n_total": 1, "tasks_covered": ["nomad2018"]},
-    "claude-opus-4-7":  {"gold": 1, "n_total": 1, "tasks_covered": ["nomad2018"]}
+    "claude-opus-4-7":  {"gold": 1, "n_total": 1, "tasks_covered": ["nomad2018"]},
+    "mixed-llm-router-E029":  {"gold": 1, "n_total": 1, "cost_usd": 5.07, "tasks_covered": ["nomad2018"], "routing": "designer+coder=sonnet, rest=haiku"}
   }
 }

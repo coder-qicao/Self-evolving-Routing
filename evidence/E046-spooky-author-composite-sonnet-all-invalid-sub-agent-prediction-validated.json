@@ -1,0 +1,46 @@
+{
+  "id": "E046",
+  "claim": "VALIDATION: the agentic LLM router's E045 prediction was CORRECT. composite-router on spooky-author-identification returned the text-classification family default (sonnet-all) and produced INVALID submission at $7.84 — failure: 'Each row in submission should sum to one, as probabilities'. The agent had predicted opus-all is needed (E045) — this run confirms sonnet-all fails on spooky-author. Failure mode is slightly different from detecting's schema gate (E020); here it's a probability normalization issue. Multiple nodes hit transformers env import errors (DebertaV2 imports failing in the spooky-author conda env), which contributed but is not the only issue — the final aggregated submission was written but failed grader format check.",
+  "support": {
+    "experiment_id": "E-PN19-spooky-composite",
+    "run_dir": "/workspace/mlebench-playground/spooky-author-identification/20260604T140019Z_0000",
+    "config": {
+      "task": "spooky-author-identification",
+      "router_strategy": "composite",
+      "per_node_routing": false
+    },
+    "composite_decision": "sonnet-all (text-classification family default per E003)",
+    "agent_prediction_from_E045": "opus-4-7-all",
+    "result": {
+      "medal": "none",
+      "score": null,
+      "valid_submission": false,
+      "grader_error": "Each row in submission should sum to one, as probabilities.",
+      "total_cost_usd": 7.84,
+      "pipeline_terminal": "completed (wall-clock cap)"
+    },
+    "node_failures": "Multiple nodes hit transformers env DebertaV2 import errors (env-level, not model-tied)",
+    "predicted_outcome_at_opus_all": "valid submission OR substantially better — but unconfirmed (would cost ~$50-100 to run)"
+  },
+  "design_finding": "On spooky-author, the family default sonnet-all is INSUFFICIENT — confirms the agent's E045 prediction was correct. The text-classification family memory needs updating: sonnet-all default applies to detecting (which has its own override to opus-all now) but does NOT generalize to spooky-author. The family memory should either (a) be promoted to opus-all by default (with text-classification's known_overrides reverted to whatever else works), OR (b) the family default rationale should explicitly note 'sonnet-all unproven on spooky/jigsaw; LLM-with-data should fire for new text-classification tasks.'",
+  "scope": "Single cli.py validation of the family default. Confirms the agentic router's E045 prediction.",
+  "limitations": [
+    "Did not run opus-all on spooky-author to confirm it produces valid sub.",
+    "Failure includes env-level transformers issues (not model-tied) — possible the sonnet-all routing could have succeeded with a different env.",
+    "n=1."
+  ],
+  "confidence": "high (the family default is broken on this task; agent prediction validated)",
+  "last_updated": "2026-06-04",
+  "policy_promoted": false,
+  "implications": {
+    "E_PN19_status": "completed_negative_family_default_insufficient_agent_prediction_validated",
+    "text_classification_family_amendment": "Update task_memory/text-classification.json default_routing rationale to note sonnet-all is unproven on spooky-author (invalid sub at \\$7.84 per E046) and proven failing on detecting (E020/E026 — opus-everywhere needed). Family default sonnet-all should be revised OR LLM-with-data should be the production path for unproven text-classification tasks.",
+    "next_experiment": "Consider running opus-all on spooky-author for direct validation, OR pivot to other family-default sweeps."
+  },
+  "next_actions": [
+    "Mark E-PN19 status=completed_negative_family_default_insufficient_agent_prediction_validated.",
+    "Amend text-classification.json default_routing rationale.",
+    "Next: explore the family default ablation further OR end the loop with a comprehensive E047 summary."
+  ],
+  "related_evidence": ["E040", "E044", "E045"]
+}

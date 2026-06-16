@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "task": "nomad2018-predict-transparent-conductors",
+  "timestamp": "20260604T064734Z_0000",
+  "run_dir": "/workspace/mlebench-playground/nomad2018-predict-transparent-conductors/20260604T064734Z_0000",
+  "model": "unknown",
+  "model_role_map": null,
+  "result": {
+    "score": null,
+    "metric_name": null,
+    "metric_direction": null,
+    "medal": "ungraded",
+    "above_median": null,
+    "bronze_threshold": null
+  },
+  "pipeline": {
+    "num_candidates": 1,
+    "alive_at_end": null,
+    "agent_calls": null,
+    "max_agent_calls": null,
+    "tuner_runs": null,
+    "reviser_runs": null,
+    "consumed_seconds": 145.43245987873524,
+    "wall_elapsed_seconds": null,
+    "terminal": "failed"
+  },
+  "cost": {
+    "total_usd": 0.42665849999999994,
+    "total_input_tokens": 400,
+    "total_output_tokens": 9684,
+    "cache_read_input_tokens": 837977,
+    "cache_creation_input_tokens": 80210,
+    "total_turns": 36,
+    "errors_count": 0,
+    "per_role": {
+      "manager": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "setup": {
+        "calls": 1,
+        "cost_usd": 0.14443404999999998,
+        "input_tokens": 387,
+        "output_tokens": 7107,
+        "cache_read_input_tokens": 515863,
+        "cache_creation_input_tokens": 42651,
+        "turns": 25,
+        "errors": 0
+      },
+      "designer": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "reviser": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "coder": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "tuner": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "aggregator": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "splitter": {
+        "calls": 1,
+        "cost_usd": 0.28222444999999996,
+        "input_tokens": 13,
+        "output_tokens": 2577,
+        "cache_read_input_tokens": 322114,
+        "cache_creation_input_tokens": 37559,
+        "turns": 11,
+        "errors": 0
+      }
+    }
+  },
+  "per_node": [
+    {
+      "node_id": 0,
+      "depth": 0,
+      "parent_node_id": null,
+      "status": "done",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {},
+      "coder_model": null
+    }
+  ],
+  "provenance": {
+    "manager_state_sha256": "b04da523bc27edc1a53c521cdf528e64eb08b3aa40d85715e74a3238a32812ed",
+    "ingest_unix": 1780555814,
+    "source": "cli"
+  }
+}

@@ -15,14 +15,14 @@
   ],
   "default_routing": {
     "all_roles": "claude-sonnet-4-6",
-    "rationale": "Cheapest model in our data that achieved gold/silver/bronze on a text-classification task (detecting-insults gold, spooky none). See E003.",
-    "evidence_refs": ["E003"]
+    "rationale": "ORIGINAL v2 rationale: cheapest model in our data that achieved gold/silver/bronze (E003). HOWEVER as of 2026-06-04 the v3 evidence has SUBSTANTIALLY UPDATED this picture: (a) detecting-insults — sonnet-all and all single/dual-role opus configs INVALID submission (E019/E020/E026); only opus-everywhere works ($341 gold). Override added: tasks.detecting-insults.default = opus-4-8 (E035). (b) spooky-author — E045 LLM agent predicted opus-all needed; E046 cli.py confirmed sonnet-all → INVALID submission ($7.84). So sonnet-all is now PROVEN insufficient on 2 of 3 known text-classification members. Use the agentic router (router_strategy=llm + inspect_data=True) for new text-classification tasks; do NOT trust the family default.",
+    "evidence_refs": ["E003", "E020", "E026", "E035", "E045", "E046"]
   },
   "known_overrides": {
     "detecting-insults-in-social-commentary": {
-      "all_roles": "claude-haiku-4-5",
-      "evidence_refs": ["E001"],
-      "notes": "Three haiku gold runs at $4.51 / $5.88 / $4.57 (avg $4.99, range $4.51-$5.88). Confidence raised on 2026-05-21 with the third reproduction."
+      "all_roles": "claude-opus-4-8",
+      "evidence_refs": ["E019", "E020", "E026", "E034"],
+      "notes": "v3 SCHEMA GATE: 10 single/dual-role routings (haiku-all, sonnet-all, opus-aggregator, opus-coder, ...) ALL produced invalid_submission (missing 'Comment' column); only opus-everywhere yields a valid gold submission. Matches policy.json. SUPERSEDES the old E001 haiku-all override, which was v2-only — the v3 splitter/evaluator/selector surface introduced a schema gate haiku cannot clear. Do NOT downgrade this task on cost grounds: a cheaper routing forfeits the whole run (invalid submission = zero result)."
     }
   },
   "open_questions": [

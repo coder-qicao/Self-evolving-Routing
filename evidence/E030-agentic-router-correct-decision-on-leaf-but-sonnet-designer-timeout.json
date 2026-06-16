@@ -1,0 +1,58 @@
+{
+  "id": "E030",
+  "claim": "Agentic LLM router on leaf-classification made an INFORMED decision — coder+aggregator=opus (image classification needs CV depth, ensemble step needs CV depth), other 7 roles=sonnet (mid-cost). This MATCHES E022 X215's successful routing ($12 valid sub, medal=none). The agent demonstrably READ memory/routing/evidence/E022 and reused the pattern. HOWEVER the run failed because designer (sonnet) hit the 15min wall-clock budget + 10min grace and timed out at +0:29:33 — Pipeline failed before any node was attempted. Total $2.76 burned (setup $0.73, splitter $0.32, designer $1.70). This is a sonnet-designer timeout regression, NOT a routing-logic failure — the LLM router would have likely succeeded had the designer's wall-clock budget been bigger or had it been on opus. E022 X215 used sonnet designer too at this budget without timeout — variance.",
+  "support": {
+    "experiment_id": "E-PN4-leaf",
+    "run_dir": "/workspace/mlebench-playground/leaf-classification/20260604T013710Z_0000",
+    "config": {
+      "task": "leaf-classification",
+      "router_strategy": "llm",
+      "per_node_routing": false,
+      "pipeline_budget_minutes": 120
+    },
+    "llm_router_startup_decision": {
+      "setup": "claude-sonnet-4-6",
+      "splitter": "claude-sonnet-4-6",
+      "designer": "claude-sonnet-4-6",
+      "coder": "claude-opus-4-8",
+      "evaluator": "claude-sonnet-4-6",
+      "judge": "claude-sonnet-4-6",
+      "selector": "claude-sonnet-4-6",
+      "reviser": "claude-sonnet-4-6",
+      "aggregator": "claude-opus-4-8"
+    },
+    "interpretation": "EXACT MATCH for E022 X215's coder+aggregator=opus, rest=sonnet. The LLM router successfully read evidence/E022 and reused the known-good routing pattern — this is the §9 agentic raw-memory-reader working as designed.",
+    "failure": {
+      "phase": "designer",
+      "cause": "asyncio.TimeoutError: agent exceeded 900.0s budget + 600.0s grace",
+      "elapsed": "29:33 from pipeline start; designer alone consumed ~22min of wall-clock",
+      "cost_at_failure_usd": 2.76
+    },
+    "result": {
+      "medal": "none",
+      "valid_submission": false,
+      "pipeline_terminal": "failed",
+      "total_cost_usd": 2.76
+    }
+  },
+  "scope": "Single Phase 2 run. The routing decision is the headline finding; the timeout is an unrelated infrastructure variance.",
+  "limitations": [
+    "n=1.",
+    "Sonnet designer on leaf can hit the 15min budget (P7 wall-clock concern). E022 X215 succeeded with sonnet designer — this run did not. Variance unexplained.",
+    "Cannot tell if the LLM router would have produced gold given a successful designer."
+  ],
+  "confidence": "high (routing decision validation) / low (success-on-this-run, since pipeline aborted at designer)",
+  "last_updated": "2026-06-04",
+  "policy_promoted": false,
+  "implications": {
+    "E_PN4_leaf_status": "completed_negative_designer_timeout",
+    "agentic_router_finding_confirmed": "Combined with E029 (nomad2018 router picked task-appropriate mixed routing), the agentic LLM router has now demonstrated competent reading of memory + family default + per-task evidence on TWO tasks. It picked the right thing on leaf (matching X215) without being told.",
+    "next_experiment_design": "Switch to DENOISING (E025 X205 baseline opus-all gold $10.59). Denoising pipeline budget is 60min so designer timeout is less likely. Test: does the LLM router pick opus-all (matching family memory's denoising entry) or downgrade? If downgrade succeeds at lower cost, the router has discovered something new."
+  },
+  "next_actions": [
+    "Mark E-PN4-leaf status=completed_negative_designer_timeout.",
+    "Launch E-PN4-denoising: same router config (router_strategy=llm, per_node_routing=false). Denoising 60min budget, n=2 family baseline opus-all gold $10.59.",
+    "If E-PN4-denoising also fails with timeout, the leaf failure was infrastructure-wide not leaf-specific."
+  ],
+  "related_evidence": ["E022", "E023", "E025", "E029"]
+}

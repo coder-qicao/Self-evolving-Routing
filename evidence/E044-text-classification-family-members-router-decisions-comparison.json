@@ -1,0 +1,56 @@
+{
+  "id": "E044",
+  "claim": "Router decision comparison on the OTHER two text-classification family members (spooky-author and jigsaw-toxic) — both currently unrun. Composite returns family default sonnet-all for both (no known_override and policy.json[detecting] doesn't apply). LLM-with-inspect_data=True diverges sharply: on spooky-author it UPGRADES to opus-4-7-all (matching detecting opus-everywhere pattern — suggests agent sees author identification needs deep language modeling), on jigsaw-toxic it picks a SOPHISTICATED MIXED routing (designer+coder+aggregator=opus-4-8, evaluator+reviser=sonnet, setup/splitter/judge/selector=haiku — quality-critical creative roles get opus, evaluation roles get sonnet, cheap-deterministic get haiku). The LLM-with-data agent is now making P2-style role-importance decisions that family default cannot. CONCRETE: jigsaw-toxic's routing is the MOST SOPHISTICATED yet observed from the agentic router — 3 tiers across 9 roles, hand-tuned per the data the agent inspected.",
+  "support": {
+    "experiment_id": "E-PN17-text-classification-router-decisions",
+    "method": "Direct python invocation of make_composite_router + make_llm_router(inspect_data=True). No cli.py runs. Total cost: ~$0.20.",
+    "decisions": [
+      {
+        "task": "spooky-author-identification",
+        "family": "text-classification",
+        "composite": "sonnet-all (family default per E003)",
+        "llm_inspect_data_true": "opus-4-7-all",
+        "diverges": true,
+        "interpretation": "Agent reads task description + train.csv (English author-text classification) and decides 'this needs deep language modeling like detecting' → upgrades family default."
+      },
+      {
+        "task": "jigsaw-toxic-comment-classification-challenge",
+        "family": "text-classification",
+        "composite": "sonnet-all (family default)",
+        "llm_inspect_data_true": {
+          "setup": "sonnet",
+          "splitter": "haiku",
+          "designer": "opus-4-8",
+          "coder": "opus-4-8",
+          "evaluator": "sonnet",
+          "judge": "haiku",
+          "selector": "haiku",
+          "reviser": "sonnet",
+          "aggregator": "opus-4-8"
+        },
+        "diverges": true,
+        "interpretation": "Sophisticated 3-tier routing. designer+coder+aggregator=opus (high-stakes creative writing roles). evaluator+reviser=sonnet (judgment-quality mid-tier). setup+splitter+judge+selector=haiku (cheap deterministic). The agent inferred that jigsaw's multi-label toxic-comment classification needs SOME opus but doesn't need it on every role — exactly the kind of P1-P7 reasoning the per-node design aims at."
+      }
+    ]
+  },
+  "design_finding": "The Static (composite) layer's family default sonnet-all is increasingly STALE for text-classification family. detecting-insults already has a known_override to opus-all. spooky-author and jigsaw-toxic are unrun but the agent strongly predicts opus is needed (in different patterns). Family memory should be amended: either (a) raise the family default to opus-all OR (b) note that the LLM router with inspect_data should be the production path for unproven text-classification members.",
+  "scope": "Router-side ablation only — no cli.py runs. The actual outcome on running these routings is unknown.",
+  "limitations": [
+    "n=1 per cell.",
+    "Did not run cli.py to validate — both spooky-author and jigsaw-toxic are expensive ($30-300 depending on routing).",
+    "Did not test whether the sophisticated jigsaw-toxic routing actually beats opus-everywhere on the same task."
+  ],
+  "confidence": "high (the decisions are deterministic; the interpretation is the agent's own reasoning)",
+  "last_updated": "2026-06-04",
+  "policy_promoted": false,
+  "implications": {
+    "E_PN17_status": "completed_positive_ablation_complete",
+    "next_experiment": "TWO PATHS:\n  (a) Cheap: continue mapping router decisions across other unrun task families (dog-breed, dogs-vs-cats, plant-pathology, etc.) — builds the router-decision-vs-family-default comparison table.\n  (b) Expensive: validate the jigsaw-toxic sophisticated routing actually works via cli.py ($30+ for sonnet-all baseline; unknown for the mixed agent routing).\n",
+    "production_recommendation_for_text_classification": "For unrun text-classification tasks, prefer router_strategy=llm with inspect_data=True. Static family default sonnet-all is at risk of being insufficient (see detecting evidence). The LLM-with-data agent is making increasingly sophisticated per-role tradeoffs that the static layer cannot."
+  },
+  "next_actions": [
+    "Mark E-PN17 status=completed_positive_ablation_complete.",
+    "Run E-PN18 — extend ablation to image-classification members (aerial-cactus, dog-breed if available)."
+  ],
+  "related_evidence": ["E020", "E029", "E034", "E039", "E040"]
+}

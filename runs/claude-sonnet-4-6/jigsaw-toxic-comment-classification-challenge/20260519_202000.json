@@ -2,7 +2,7 @@
   "schema_version": 1,
   "task": "jigsaw-toxic-comment-classification-challenge",
   "timestamp": "20260519_202000",
-  "run_dir": "/data3/qi/ML-agent-code/jigsaw-toxic-comment-classification-challenge/20260519_202000",
+  "run_dir": "/workspace/ML-agent-code/jigsaw-toxic-comment-classification-challenge/20260519_202000",
   "model": "claude-sonnet-4-6",
   "model_role_map": null,
   "result": {

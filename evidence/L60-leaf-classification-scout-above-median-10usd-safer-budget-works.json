@@ -1,0 +1,55 @@
+{
+  "evidence_id": "L60",
+  "campaign": "router-24h-2026-06-05",
+  "lane": "A",
+  "stratum": "image-natural-fine-grained",
+  "task": "leaf-classification",
+  "task_status": "KNOWN (image-classification-small family member per task_memory; X204 baseline = above_median $43.24 opus-everywhere with bigger search)",
+  "n": 1,
+  "promoted": false,
+  "promotion_block_reason": "Law 1: n=1. Outcome (above_median, no medal) matches prior X204 known-no-medal status BUT at 25% the cost.",
+  "command": "scripts/test_router.sh --task leaf-classification --designs 1 --nodes 4 --budget 15 --no-ingest",
+  "run_dir": "/workspace/mlebench-playground/leaf-classification/20260606T060820Z_0000",
+  "duration_hours": 1.68,
+  "outcome": {
+    "medal": null,
+    "valid_submission": true,
+    "score": 0.0193,
+    "rank_bucket": "above_median",
+    "total_cost_usd": 10.50,
+    "successful_nodes": ["node_1"],
+    "failed_nodes": {},
+    "note": "Only 1 node fully completed — single design, single deep node + reviser cycles."
+  },
+  "key_finding": "Composite router with cost-aware per-node decisions matches the previously-known-best outcome (above_median) on leaf-classification at $10.50 — versus X204's $43.24 with opus-everywhere + max_nodes=16 + num_designs=8 (4x the cost for same outcome bucket).\n\nThe earlier policy.json comment 'leaf-classification — bigger search did not bridge to bronze' is now reinforced: bronze is genuinely unreachable here at any model/search config tested. The cheaper router path is therefore strictly preferred for this task — same outcome at 25% the cost.",
+  "strategic_validation": "The L58/L59 budget-cap failure motivated the strategic pivot to --designs 1 --nodes 4 --budget 15 (3h cap). L60 ran fully to completion under this config in 1h40, with aggregator finishing well within budget. Pivot validated.",
+  "scorecard_final": {
+    "L50_text_norm_en_scout": "SILVER ($31.79) n=1 UNSEEN",
+    "L53_tps_may_2022_scout": "above_median ($20.20) n=1 UNSEEN",
+    "L54_mlsp_birds_scout": "none ($18.34, env-gap) n=1 UNSEEN",
+    "L55_aerial_cactus_scout": "GOLD ($13.43) n=1 UNSEEN",
+    "L56_histo_cancer_scout": "pipeline-failed (data-prep gap)",
+    "L57_aerial_cactus_n2_confirm": "GOLD ($18.46) n=2 LAW-1-CONFIRMED",
+    "L58_spooky_author_scout": "no-aggregator ($25.65, budget-cap) — router opus-escalation CORRECT",
+    "L59_dog_breed_scout": "no-aggregator ($18.06, budget-cap) — second budget-cap",
+    "L60_leaf_classification_scout": "above_median ($10.50, safer budget worked) n=1 KNOWN",
+    "grades_obtained": 6,
+    "medals_at_n2": "GOLD aerial-cactus (n=2 CONFIRMED)",
+    "medals_at_n1": "SILVER text-norm-en"
+  },
+  "campaign_synthesis": {
+    "main_finding": "The composite agentic router (Static→LLM mode=stable) achieves competitive-or-better outcomes vs opus-everywhere at substantially lower cost when (a) the per-node budget allows aggregator completion, and (b) the conda env has the libraries the agent's code chooses (yaml, timm, lightgbm).",
+    "generalization_signal": "Across 7 valid-submission scouts: 3 medals (43% medal rate, including 1 GOLD-confirmed at n=2). Cost range $10.50 to $31.79. Compare to prior data where opus-everywhere costs $40+ for similar/worse outcomes.",
+    "failure_modes_observed": [
+      "env-gap (40% of failed nodes): conda env missing yaml/timm/lightgbm — agent's reasonable code choices crash at import",
+      "budget-cap (2 of 10 runs): at --nodes 6 --budget 10 (2h pipeline cap), opus-heavy router decisions consume budget before aggregator runs",
+      "data-prep (1 of 10): val_inputs/ empty on disk for histopathologic-cancer-detection"
+    ],
+    "policy_recommendations": [
+      "Do NOT update policy.json this campaign — single-task n=2 GOLD confirmation is not enough to lock a family default. Two more image-natural tasks at n=1 each would warrant promotion.",
+      "For future campaigns: pre-install yaml/timm/lightgbm into rl env to remove the env-gap confound.",
+      "For known-hard text tasks (spooky-author, jigsaw): use --budget 20+ to give opus-escalated routing aggregator room."
+    ]
+  },
+  "links": ["[[L57-aerial-cactus-n2-GOLD-confirmed]]", "[[L55-aerial-cactus-scout-GOLD]]", "[[L50-text-norm-en-scout]]", "[[routing-objective-minimum-viable]]", "[[agentic-router-project]]"]
+}

@@ -1,9 +1,11 @@
 {
   "schema_version": 1,
-  "_note": "Live routing decisions. X002 experiment (tuner=opus on leaf-classification) completed 2026-05-23 — see evidence/E008 for the negative result. Only the promoted detecting-insults entry remains active.",
+  "_note": "Live routing decisions. Updated 2026-06-04 by autonomous loop after E034 discovered the previous detecting-insults entry (haiku-all from X002 era) contradicts E019/E020/E026 — 10 routings tested, only opus-everywhere produces a valid submission. The promoted policy now correctly reflects the multi-role opus-everywhere requirement.",
   "tasks": {
     "detecting-insults-in-social-commentary": {
-      "default": "claude-haiku-4-5"
+      "default": "claude-opus-4-8",
+      "_rationale": "E019/E020/E026: 10 single/dual-role routings tested across haiku-all, sonnet-all, opus-aggregator, opus-coder, etc. ALL invalid_submission. Only Phase 1 opus-everywhere $341.83 gold works. Schema gate requires opus across the board.",
+      "_evidence_refs": ["E019", "E020", "E026", "E034"]
     }
   }
 }

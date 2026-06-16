@@ -1,0 +1,44 @@
+{
+  "id": "E024",
+  "note": "Renumbered from a duplicate E013 (id collision with E013-v3-detecting-aggregator-sonnet-not-the-schema-bridge, the X209-specific card created first). Same X209 finding, broader X202+X209 framing.",
+  "claim": "Lifting only the aggregator role to sonnet does NOT fix v3 detecting-insults' invalid-submission failure. Both X202 (haiku-everywhere, $3.80) and X209 (haiku-everywhere + sonnet aggregator, $3.98) produced submission.csv files missing the 'Comment' column, which the mlebench grader rejects with 'Submission should have an Comment column'. The schema gate for v3 detecting-insults is therefore NOT aggregator.",
+  "scope": "task=detecting-insults-in-social-commentary, family=text-classification",
+  "support": {
+    "X202": {
+      "routing": "haiku-everywhere",
+      "total_cost_usd": 3.80,
+      "submission_valid": false,
+      "error": "Submission should have an Comment column"
+    },
+    "X209": {
+      "routing": "haiku-everywhere + sonnet-aggregator",
+      "total_cost_usd": 3.98,
+      "submission_valid": false,
+      "error": "Submission should have an Comment column",
+      "aggregator_cost_usd": 0.68,
+      "aggregator_model": "claude-sonnet-4-6"
+    },
+    "v2_baseline_E001": {
+      "routing": "haiku-everywhere on v2",
+      "medal": "gold",
+      "submission_valid": true,
+      "note": "v2 had no splitter/evaluator/selector; v3's added roles changed the task shape contract"
+    }
+  },
+  "next_experiments_implied": [
+    "X209b: haiku-everywhere + sonnet-designer (test if designer writes the submission template)",
+    "X209c: haiku-everywhere + sonnet-coder (test if the train.py output format is the gate)",
+    "X209d: bisect — sonnet on coder AND aggregator, haiku rest"
+  ],
+  "limitations": [
+    "Only single runs of each variant; could be intermittent failure but the same failure mode across both X202 and X209 makes that unlikely.",
+    "Have not inspected the actual nodes/<id>/attempt_full/submission shape — could verify by reading what train.py wrote vs what aggregator emitted."
+  ],
+  "confidence": "medium",
+  "last_updated": "2026-06-02",
+  "policy_promoted": false,
+  "implications_for_existing_evidence": {
+    "E010": "Reinforces — X202 result was not aggregator-fixable; the schema mismatch is upstream.",
+    "E001": "Underscores v3 surface-change cost — v2 haiku-everywhere worked because the v2 single-stage flow didn't have the intermediate splitter+evaluator+selector layers reshaping output expectations."
+  }
+}

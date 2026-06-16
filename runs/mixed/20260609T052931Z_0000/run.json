@@ -1,0 +1,290 @@
+{
+  "schema_version": 1,
+  "task": "20260609T052931Z_0000",
+  "timestamp": "run",
+  "run_dir": "/workspace/mlebench-playground/aptos2019-blindness-detection/20260609T052931Z_0000/run",
+  "model": "mixed",
+  "model_role_map": {
+    "setup": "claude-haiku-4-5",
+    "splitter": "claude-haiku-4-5",
+    "designer": "claude-sonnet-4-6",
+    "aggregator": "claude-haiku-4-5",
+    "coder": "claude-opus-4-8",
+    "evaluator_review_0": "claude-haiku-4-5",
+    "evaluator_review_1": "claude-haiku-4-5"
+  },
+  "result": {
+    "score": 0.56107,
+    "metric_name": null,
+    "metric_direction": null,
+    "medal": "none",
+    "above_median": false,
+    "bronze_threshold": 0.914492
+  },
+  "pipeline": {
+    "num_candidates": 7,
+    "alive_at_end": null,
+    "agent_calls": null,
+    "max_agent_calls": null,
+    "tuner_runs": null,
+    "reviser_runs": null,
+    "consumed_seconds": 8242.237626556307,
+    "wall_elapsed_seconds": null,
+    "terminal": "completed"
+  },
+  "cost": {
+    "total_usd": 11.7107998,
+    "total_input_tokens": 777,
+    "total_output_tokens": 203026,
+    "cache_read_input_tokens": 21696790,
+    "cache_creation_input_tokens": 897496,
+    "total_turns": 441,
+    "errors_count": 0,
+    "per_role": {
+      "manager": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "setup": {
+        "calls": 1,
+        "cost_usd": 0.10893495,
+        "input_tokens": 52,
+        "output_tokens": 4802,
+        "cache_read_input_tokens": 358487,
+        "cache_creation_input_tokens": 36129,
+        "turns": 20,
+        "errors": 0
+      },
+      "designer": {
+        "calls": 1,
+        "cost_usd": 0.34474744999999996,
+        "input_tokens": 10,
+        "output_tokens": 6346,
+        "cache_read_input_tokens": 239209,
+        "cache_creation_input_tokens": 46369,
+        "turns": 14,
+        "errors": 0
+      },
+      "reviser": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "coder": {
+        "calls": 4,
+        "cost_usd": 9.26099525,
+        "input_tokens": 235,
+        "output_tokens": 83626,
+        "cache_read_input_tokens": 12257790,
+        "cache_creation_input_tokens": 379371,
+        "turns": 196,
+        "errors": 0
+      },
+      "tuner": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "aggregator": {
+        "calls": 1,
+        "cost_usd": 0.44183214999999987,
+        "input_tokens": 89,
+        "output_tokens": 21423,
+        "cache_read_input_tokens": 2357129,
+        "cache_creation_input_tokens": 75993,
+        "turns": 46,
+        "errors": 0
+      },
+      "splitter": {
+        "calls": 1,
+        "cost_usd": 0.11224495000000001,
+        "input_tokens": 41,
+        "output_tokens": 4412,
+        "cache_read_input_tokens": 346687,
+        "cache_creation_input_tokens": 38433,
+        "turns": 11,
+        "errors": 0
+      },
+      "evaluator_review_0": {
+        "calls": 4,
+        "cost_usd": 1.1251500499999998,
+        "input_tokens": 258,
+        "output_tokens": 60885,
+        "cache_read_input_tokens": 4870893,
+        "cache_creation_input_tokens": 257503,
+        "turns": 122,
+        "errors": 0
+      },
+      "evaluator_review_1": {
+        "calls": 1,
+        "cost_usd": 0.3168950000000001,
+        "input_tokens": 92,
+        "output_tokens": 21532,
+        "cache_read_input_tokens": 1266595,
+        "cache_creation_input_tokens": 63698,
+        "turns": 32,
+        "errors": 0
+      }
+    }
+  },
+  "per_node": [
+    {
+      "node_id": 0,
+      "depth": 0,
+      "parent_node_id": null,
+      "status": "done",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {
+        "setup": "claude-haiku-4-5",
+        "splitter": "claude-haiku-4-5",
+        "designer": "claude-sonnet-4-6",
+        "aggregator": "claude-haiku-4-5"
+      },
+      "coder_model": null
+    },
+    {
+      "node_id": 1,
+      "depth": 1,
+      "parent_node_id": 0,
+      "status": "failed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 1.8968327500000002,
+      "coder_turns": 27,
+      "coder_duration_s": 590.639,
+      "trainer_return_code": 1,
+      "trainer_duration_s": 1.644932079128921,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {
+        "coder": "claude-opus-4-8",
+        "evaluator_review_0": "claude-haiku-4-5"
+      },
+      "coder_model": "claude-opus-4-8"
+    },
+    {
+      "node_id": 2,
+      "depth": 2,
+      "parent_node_id": 1,
+      "status": "done",
+      "metric": 0.014431,
+      "metric_source": "holdout",
+      "coder_cost_usd": 2.08997525,
+      "coder_turns": 77,
+      "coder_duration_s": 955.167,
+      "trainer_return_code": 0,
+      "trainer_duration_s": 222.8692023595795,
+      "holdout_inference_rc": 0,
+      "holdout_grader_rc": 0,
+      "models_by_role": {
+        "coder": "claude-sonnet-4-6",
+        "evaluator_review_0": "claude-haiku-4-5",
+        "evaluator_review_1": "claude-haiku-4-5"
+      },
+      "coder_model": "claude-sonnet-4-6"
+    },
+    {
+      "node_id": 3,
+      "depth": 3,
+      "parent_node_id": 2,
+      "status": "failed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 2.4981717500000005,
+      "coder_turns": 48,
+      "coder_duration_s": 581.366,
+      "trainer_return_code": 0,
+      "trainer_duration_s": 539.2310161637142,
+      "holdout_inference_rc": 0,
+      "holdout_grader_rc": 0,
+      "models_by_role": {
+        "coder": "claude-opus-4-7",
+        "evaluator_review_0": "claude-haiku-4-5"
+      },
+      "coder_model": "claude-opus-4-7"
+    },
+    {
+      "node_id": 4,
+      "depth": 3,
+      "parent_node_id": 2,
+      "status": "failed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 2.776015499999999,
+      "coder_turns": 44,
+      "coder_duration_s": 825.479,
+      "trainer_return_code": 0,
+      "trainer_duration_s": 698.2499600984156,
+      "holdout_inference_rc": 0,
+      "holdout_grader_rc": 0,
+      "models_by_role": {
+        "coder": "claude-opus-4-8",
+        "evaluator_review_0": "claude-haiku-4-5"
+      },
+      "coder_model": "claude-opus-4-8"
+    },
+    {
+      "node_id": 5,
+      "depth": 4,
+      "parent_node_id": 3,
+      "status": "proposed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {},
+      "coder_model": null
+    },
+    {
+      "node_id": 6,
+      "depth": 4,
+      "parent_node_id": 4,
+      "status": "proposed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {},
+      "coder_model": null
+    }
+  ],
+  "provenance": {
+    "manager_state_sha256": "0b4f2d83e4a502712b57639ebea42d7c0c4369bf85b994e20c5391ffc2840a93",
+    "ingest_unix": 1780991272,
+    "source": "cli"
+  }
+}

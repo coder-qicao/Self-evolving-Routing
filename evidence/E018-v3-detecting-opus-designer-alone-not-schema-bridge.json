@@ -1,0 +1,69 @@
+{
+  "id": "E018",
+  "claim": "On v3 detecting-insults, opus on designer alone (with sonnet on all other 8 roles) DOES NOT fix the schema gate. Pipeline ran to completion at $7.01 with valid_submission=False (missing Comment column). Designer alone is not the schema bridge — neither at the sonnet level (X217) nor at the opus level (X231). The schema gate on detecting requires opus on more than designer or on a different role entirely.",
+  "support": {
+    "experiment_id": "X231",
+    "run_dir": "/workspace/mlebench-playground/detecting-insults-in-social-commentary/20260602T132155Z_0000",
+    "routing": {
+      "setup": "claude-sonnet-4-6",
+      "splitter": "claude-sonnet-4-6",
+      "designer": "claude-opus-4-8",
+      "coder": "claude-sonnet-4-6",
+      "evaluator": "claude-sonnet-4-6",
+      "judge": "claude-sonnet-4-6",
+      "selector": "claude-sonnet-4-6",
+      "reviser": "claude-sonnet-4-6",
+      "aggregator": "claude-sonnet-4-6"
+    },
+    "total_cost_usd": 7.01,
+    "per_role_usd": {
+      "coder": 2.44,
+      "evaluator_review_0": 1.72,
+      "designer": 1.36,
+      "aggregator": 0.69,
+      "setup": 0.55,
+      "splitter": 0.24
+    },
+    "medal": "none",
+    "score": null,
+    "valid_submission": false,
+    "grader_error": "Submission should have an Comment column",
+    "pipeline_terminal": "completed"
+  },
+  "scope": "Single Phase 2 run. Adds to the 7-negative-streak on detecting.",
+  "consolidated_findings_on_detecting": {
+    "all_runs": [
+      {"experiment": "Phase 1 haiku-all", "status": "splitter failed"},
+      {"experiment": "Phase 1 sonnet-all", "status": "splitter failed"},
+      {"experiment": "Phase 1 opus-all", "valid_sub": true, "cost": 341.83, "medal": "gold"},
+      {"experiment": "X202 haiku-all", "valid_sub": false, "cost": 3.80},
+      {"experiment": "X209 +sonnet-aggregator", "valid_sub": false, "cost": 3.98},
+      {"experiment": "X217 +sonnet-designer", "valid_sub": false, "cost": 3.99},
+      {"experiment": "X218 +sonnet-coder", "valid_sub": false, "cost": 6.81},
+      {"experiment": "X219 sonnet-all", "valid_sub": false, "cost": 6.83},
+      {"experiment": "X231 +opus-designer (sonnet rest)", "valid_sub": false, "cost": 7.01}
+    ],
+    "what_we_know_now": "Schema gate on detecting v3 is NOT crossable by: any haiku variant, any single sonnet lift, any sonnet-everywhere, any opus-designer-alone. Phase 1 opus-everywhere ($342) is the only known crossing.",
+    "remaining_single_opus_hypotheses": "opus-aggregator (X232 queued), opus-coder (un-queued; would be $5-10 in non-coder roles + opus-coder probably $200+)",
+    "remaining_pair_opus_hypotheses": "opus on {designer + aggregator} (X233 queued), {designer + coder}, {coder + aggregator}",
+    "pessimistic_outlook": "If even opus-on-2-roles fails, the schema gate is multi-role opus, and savings on detecting are extremely limited. The bandit may need to escalate to triple-opus."
+  },
+  "limitations": [
+    "n=1 per probe; very expensive to escalate further (each detecting cycle is now $7-10)."
+  ],
+  "confidence": "high",
+  "last_updated": "2026-06-02",
+  "policy_promoted": false,
+  "implications": {
+    "X231_status": "completed_negative",
+    "follow_up_experiments": [
+      "X232 (queued, high priority) — opus-aggregator alone probe",
+      "X233 (queued, medium priority) — opus on both designer + aggregator (if X232 also fails this is the next step up)"
+    ],
+    "consider_giving_up_on_detecting": "After X232 and X233, if all opus-on-N-roles probes fail (N=1,2), the practical recommendation may be: 'detecting requires opus on all 9 roles; cost is $342 fixed; do not attempt cost-savings on this task family.'"
+  },
+  "next_actions": [
+    "Mark X231 status=completed_negative.",
+    "Continue to X232 (opus-aggregator probe)."
+  ]
+}

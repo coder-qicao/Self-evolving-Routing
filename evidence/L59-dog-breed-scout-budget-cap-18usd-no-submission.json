@@ -1,0 +1,38 @@
+{
+  "evidence_id": "L59",
+  "campaign": "router-24h-2026-06-05",
+  "lane": "A",
+  "stratum": "image-natural",
+  "task": "dog-breed-identification",
+  "task_status": "UNSEEN (not in member_tasks of any family)",
+  "n": 1,
+  "promoted": false,
+  "promotion_block_reason": "Pipeline budget-cap killed before aggregator ran. No submission.csv. SECOND consecutive budget-cap (L58 also).",
+  "command": "scripts/test_router.sh --task dog-breed-identification --designs 2 --nodes 6 --budget 10 --no-ingest",
+  "duration_hours": 1.95,
+  "outcome": {
+    "medal": null,
+    "valid_submission": false,
+    "pipeline_status": "budget_exhausted_then_killed",
+    "total_cost_usd": 18.06,
+    "successful_nodes": ["node_2", "node_3", "node_4"],
+    "failed_nodes": {"node_1": "ModuleNotFoundError: timm"}
+  },
+  "router_pattern": "Last router decision was for node 8: designer sonnet, coder opus-4-8, reviser sonnet, aggregator opus-4-8 — heavy escalation on aggregator unusual. Suggests router was getting confidence in opus for this task.",
+  "interpretation": "TWO consecutive scout runs (L58 spooky-author + L59 dog-breed) hit the same wall-clock budget-cap-before-aggregator failure mode. Both involved opus-on-coder escalations that extended runtime. Pattern conclusion: at --nodes 6 --budget 10 (PIPELINE_BUDGET=120min), opus-heavy router decisions consume budget before aggregator finalizes.",
+  "strategic_pivot": "For remaining time budget, switch to --designs 1 --nodes 4 --budget 15 (PIPELINE_BUDGET=180min = 3h) for next scouts. This gives ~50% headroom for aggregator completion.",
+  "scorecard_so_far_after_L59": {
+    "L50_text_norm_en": "SILVER ($31.79) n=1 UNSEEN",
+    "L53_tps_may_2022": "above_median ($20.20) n=1 UNSEEN",
+    "L54_mlsp_birds": "none ($18.34, env-gap) n=1 UNSEEN",
+    "L55_aerial_cactus": "GOLD ($13.43) n=1 UNSEEN",
+    "L56_histo_cancer": "pipeline-failed (data-prep gap)",
+    "L57_aerial_cactus_n2": "GOLD ($18.46) n=2 CONFIRMED",
+    "L58_spooky_author": "no-aggregator ($25.65, budget-cap) — router opus-escalation CORRECT",
+    "L59_dog_breed": "no-aggregator ($18.06, budget-cap) — second budget-cap in row",
+    "successful_grades": 5,
+    "medals_at_n1+": "SILVER L50, GOLD L55/L57 (n=2)",
+    "campaign_finding": "Router achieves a medal on 3 of 5 valid-submission scouts (60%) when budget is sufficient. Budget exhaustion is the dominant failure mode in late-stage scouts as router gains confidence in opus escalation."
+  },
+  "links": ["[[L57-aerial-cactus-n2-GOLD-confirmed]]", "[[L58-spooky-author-scout]]"]
+}

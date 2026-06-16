@@ -1,0 +1,137 @@
+{
+  "schema_version": 1,
+  "task": "detecting-insults-in-social-commentary",
+  "timestamp": "20260528T235656Z_0000",
+  "run_dir": "/workspace/mlebench-playground/detecting-insults-in-social-commentary/20260528T235656Z_0000",
+  "model": "claude-sonnet-4-6",
+  "model_role_map": null,
+  "result": {
+    "score": null,
+    "metric_name": null,
+    "metric_direction": null,
+    "medal": "ungraded",
+    "above_median": null,
+    "bronze_threshold": null
+  },
+  "pipeline": {
+    "num_candidates": 1,
+    "alive_at_end": null,
+    "agent_calls": null,
+    "max_agent_calls": null,
+    "tuner_runs": null,
+    "reviser_runs": null,
+    "consumed_seconds": 253.0660381889902,
+    "wall_elapsed_seconds": null,
+    "terminal": "failed"
+  },
+  "cost": {
+    "total_usd": 0.9307234999999999,
+    "total_input_tokens": 43,
+    "total_output_tokens": 10493,
+    "cache_read_input_tokens": 1467145,
+    "cache_creation_input_tokens": 86432,
+    "total_turns": 41,
+    "errors_count": 0,
+    "per_role": {
+      "manager": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "setup": {
+        "calls": 1,
+        "cost_usd": 0.6324485,
+        "input_tokens": 33,
+        "output_tokens": 7156,
+        "cache_read_input_tokens": 1168300,
+        "cache_creation_input_tokens": 45762,
+        "turns": 31,
+        "errors": 0
+      },
+      "designer": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "reviser": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "coder": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "tuner": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "aggregator": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "splitter": {
+        "calls": 1,
+        "cost_usd": 0.29827499999999996,
+        "input_tokens": 10,
+        "output_tokens": 3337,
+        "cache_read_input_tokens": 298845,
+        "cache_creation_input_tokens": 40670,
+        "turns": 10,
+        "errors": 0
+      }
+    }
+  },
+  "per_node": [
+    {
+      "node_id": 0,
+      "depth": 0,
+      "parent_node_id": null,
+      "status": "done",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "coder_model": null
+    }
+  ],
+  "provenance": {
+    "manager_state_sha256": "088cbba03d8f10d144cd3a7410d9ceafc3eccc06ac50bac4b06a6b1318583acb",
+    "ingest_unix": 1780026675,
+    "source": "phase1"
+  }
+}

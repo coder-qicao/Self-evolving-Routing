@@ -1,0 +1,42 @@
+{
+  "id": "L50",
+  "claim": "Lane A scout (Law 1: NOT PROMOTED, n=1 only). L50 text-normalization-challenge-english-language: composite+per-node-routing+inspect_data=True cold-start decision produced silver score=0.99574 at total $31.79 across 25+ per-node materializations over a 6h pipeline. The router's startup decision was 3-tier mixed (designer+coder=opus, eval+reviser=sonnet, others=haiku); per-node decisions diverged DOWNWARD on most nodes (coder=sonnet for the majority) and UPGRADED coder=opus-4-8 on nodes 11/13/etc near the threshold. The agent generalized P1-P7 reasoning to an unseen text task and earned silver on first contact.",
+  "support": {
+    "experiment_id": "L50-text-norm-en-scout",
+    "run_dir": "/workspace/mlebench-playground/text-normalization-challenge-english-language/20260605T000040Z_0000",
+    "task": "text-normalization-challenge-english-language (UNSEEN, no family member match)",
+    "config": {"router_strategy": "composite", "per_node_routing": true, "inspect_data": true, "designs": 4, "max_nodes": 15, "budget": 30, "pipeline_budget_minutes": 360},
+    "router_startup_decision": {
+      "setup": "haiku-4-5",
+      "splitter": "haiku-4-5",
+      "designer": "opus-4-8",
+      "coder": "opus-4-8",
+      "evaluator": "sonnet-4-6",
+      "judge": "haiku-4-5",
+      "selector": "haiku-4-5",
+      "reviser": "sonnet-4-6",
+      "aggregator": "haiku-4-5"
+    },
+    "per_node_pattern": "Majority of nodes: designer+coder+reviser=sonnet, rest=haiku (downgrade from startup). Nodes 11, 13 (later in search): coder upgraded to opus-4-8. Node 7: aggregator promoted to sonnet. Total 25+ per-node router calls.",
+    "result": {"medal": "silver", "score": 0.99574, "valid_submission": true, "total_cost_usd": 31.79, "pipeline_terminal": "completed (wall-clock budget reached)", "wall_clock_seconds": 21868}
+  },
+  "scope": "Single Lane A scout. Per Law 1 (n≥2 before tier claim), this is NOT promoted to family memory. Recorded for scorecard.",
+  "limitations": [
+    "n=1 — variance unknown.",
+    "No counterfactual bracket yet (per Law 2: bracket required before 'minimum-viable' claim).",
+    "No comparable baseline on this task (truly unseen)."
+  ],
+  "confidence": "medium (single-run silver is encouraging but unconfirmed).",
+  "last_updated": "2026-06-05",
+  "policy_promoted": false,
+  "implications": {
+    "L50_status": "completed_positive_scout_silver_NOT_promoted",
+    "for_generalization_scorecard": "1 of 1 unseen-task scouts so far → medal tier on first contact.",
+    "next_experiment": "Lane A scout L53: tabular stratum (rotation per spec). Options: tabular-playground-series-may-2022 OR new-york-city-taxi-fare-prediction. Use capped budget --designs 2 --nodes 6 --budget 10 to avoid 6h marathon."
+  ],
+  "next_actions": [
+    "Launch L53 tabular scout.",
+    "After Lane A coverage: pick L50 for Lane B bracket (rerun for n=2 + counterfactual cheaper sonnet-all OR opus-everywhere)."
+  ],
+  "related_evidence": []
+}

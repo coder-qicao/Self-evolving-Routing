@@ -1,0 +1,60 @@
+{
+  "id": "E014",
+  "claim": "v3 detecting-insults with haiku on 8 roles + sonnet ONLY on designer also does NOT fix the malformed-submission failure that X202 (haiku-everywhere) and X209 (aggregator=sonnet only) exhibited. Pipeline runs to completion at $3.99 total, but the submission.csv lacks the 'Comment' column. Medal=none (invalid_submission). The schema gate is therefore NOT designer either. By elimination, coder is the next-most-likely schema-defining role on the v3 text-classification path. X218 (coder=sonnet) is the next isolation experiment.",
+  "support": {
+    "experiment_id": "X217",
+    "run_dir": "/workspace/mlebench-playground/detecting-insults-in-social-commentary/20260602T073439Z_0000",
+    "routing": {
+      "setup": "claude-haiku-4-5",
+      "splitter": "claude-haiku-4-5",
+      "designer": "claude-sonnet-4-6",
+      "coder": "claude-haiku-4-5",
+      "evaluator": "claude-haiku-4-5",
+      "judge": "claude-haiku-4-5",
+      "selector": "claude-haiku-4-5",
+      "reviser": "claude-haiku-4-5",
+      "aggregator": "claude-haiku-4-5"
+    },
+    "total_cost_usd": 3.99,
+    "per_role_usd": {
+      "coder": 1.67,
+      "evaluator_review_0": 1.19,
+      "designer": 0.44,
+      "aggregator": 0.39,
+      "setup": 0.15,
+      "splitter": 0.14
+    },
+    "medal": "none",
+    "score": null,
+    "valid_submission": false,
+    "grader_error": "Submission should have an Comment column",
+    "pipeline_terminal": "completed"
+  },
+  "scope": "Single Phase 2 run. Three consecutive runs on detecting-insults (X202 haiku-all, X209 sonnet-agg-only, X217 sonnet-designer-only) all produce the same invalid_submission. Designer is ruled out as the schema gate.",
+  "comparison": {
+    "vs_x209": {
+      "x209_total_cost": 3.98,
+      "x217_total_cost": 3.99,
+      "verdict": "Nearly identical total cost; nearly identical sonnet-role cost ($0.27 for sonnet-aggregator vs $0.44 for sonnet-designer). Neither role lift fixed the schema."
+    }
+  },
+  "limitations": [
+    "n=1 per routing variant.",
+    "coder is the remaining single-role candidate. X218 will isolate it."
+  ],
+  "confidence": "medium",
+  "last_updated": "2026-06-02",
+  "policy_promoted": false,
+  "implications": {
+    "X217_status": "completed_negative",
+    "schema_gate_localization": "Designer ruled out. Coder is the most likely remaining single-role candidate (writes inference.py / submission.csv generation). If X218 (coder=sonnet) also fails, the gate is multi-role and the cost-savings hypothesis on detecting (sonnet-only-on-N-roles, rest haiku) cannot be realized.",
+    "follow_up_experiments": [
+      "X218 (queued) — coder=sonnet probe",
+      "If X218 fails: X220 candidate — designer + coder + aggregator all sonnet"
+    ]
+  },
+  "next_actions": [
+    "Mark X217 status=completed_negative in queue.",
+    "Continue to X218 (coder=sonnet)."
+  ]
+}

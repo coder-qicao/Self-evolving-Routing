@@ -1,0 +1,31 @@
+{
+  "evidence_id": "L68",
+  "campaign": "router-aggressive-exploration-2026-06-09",
+  "lane": "A",
+  "stratum": "text",
+  "task": "random-acts-of-pizza",
+  "task_status": "UNSEEN",
+  "n": 1,
+  "promoted": false,
+  "command": "scripts/test_router.sh --task random-acts-of-pizza --mode aggressive --designs 1 --nodes 4 --budget 15 --no-ingest",
+  "duration_hours": 1.98,
+  "outcome": {
+    "medal": null,
+    "valid_submission": true,
+    "score": 0.59532,
+    "rank_bucket": "none",
+    "total_cost_usd": 12.66,
+    "successful_nodes": ["node_3", "node_4"],
+    "failed_nodes": {"node_1": "DistilBertModel import error", "node_2": "DistilBertModel import error"}
+  },
+  "aggressive_mode_router_observations": {
+    "node_1": {"coder": "sonnet", "designer": "sonnet"},
+    "node_2": {"coder": "haiku", "reviser": "sonnet"},
+    "node_3": {"coder": "opus-4-8", "reviser": "sonnet", "aggregator": "sonnet"},
+    "node_4": {"coder": "haiku", "reviser": "sonnet"},
+    "key_observation": "SECOND campaign run where aggressive's haiku-coder produced valid output (after L66 spaceship-titanic). On random-acts-of-pizza (text/binary classification), node 4 with haiku-coder completed successfully. The haiku-coder pattern is now n=2 successful across two different strata (tabular + text)."
+  },
+  "interpretation": "Random-acts-of-pizza is a relatively simple text binary classification task (Reddit text + metadata → success prediction). DistilBert import failures (nodes 1,2) were the agent choosing transformer-based approaches that need transformers library setup. Nodes that DIDN'T require transformer downloads (3 = opus tried sklearn-style, 4 = haiku tried simpler approach) completed.",
+  "haiku_coder_emerging_pattern": "L66 spaceship-titanic + L68 random-acts-of-pizza: both have haiku-coder successful nodes contributing to valid submission. Hypothesis: for tasks where the model recipe is simple (no DL, no transformers, no timm), haiku-coder is sufficient AND substantially cheaper. Would be worth a deliberate test next campaign.",
+  "links": ["[[L66-spaceship-titanic-aggressive-above-median-8usd-haiku-coder-novel]]", "[[L67-plant-pathology-aggressive-pipeline-failed-9usd-grader-bug]]"]
+}

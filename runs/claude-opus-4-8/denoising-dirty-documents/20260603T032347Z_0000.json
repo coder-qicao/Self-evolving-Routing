@@ -1,0 +1,272 @@
+{
+  "schema_version": 1,
+  "task": "denoising-dirty-documents",
+  "timestamp": "20260603T032347Z_0000",
+  "run_dir": "/workspace/mlebench-playground/denoising-dirty-documents/20260603T032347Z_0000",
+  "model": "claude-opus-4-8",
+  "model_role_map": {
+    "setup": "claude-opus-4-8",
+    "splitter": "claude-opus-4-8",
+    "designer": "claude-opus-4-8",
+    "aggregator": "claude-opus-4-8",
+    "coder": "claude-opus-4-8",
+    "evaluator_review_0": "claude-opus-4-8"
+  },
+  "result": {
+    "score": 0.01227,
+    "metric_name": null,
+    "metric_direction": null,
+    "medal": "gold",
+    "above_median": true,
+    "bronze_threshold": 0.04517
+  },
+  "pipeline": {
+    "num_candidates": 7,
+    "alive_at_end": null,
+    "agent_calls": null,
+    "max_agent_calls": null,
+    "tuner_runs": null,
+    "reviser_runs": null,
+    "consumed_seconds": 4221.676237466745,
+    "wall_elapsed_seconds": null,
+    "terminal": "completed"
+  },
+  "cost": {
+    "total_usd": 10.594425500000002,
+    "total_input_tokens": 262,
+    "total_output_tokens": 89616,
+    "cache_read_input_tokens": 8346612,
+    "cache_creation_input_tokens": 612878,
+    "total_turns": 176,
+    "errors_count": 0,
+    "per_role": {
+      "manager": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "setup": {
+        "calls": 1,
+        "cost_usd": 0.843693,
+        "input_tokens": 31,
+        "output_tokens": 6736,
+        "cache_read_input_tokens": 697307,
+        "cache_creation_input_tokens": 51666,
+        "turns": 18,
+        "errors": 0
+      },
+      "designer": {
+        "calls": 1,
+        "cost_usd": 1.41941075,
+        "input_tokens": 23,
+        "output_tokens": 15619,
+        "cache_read_input_tokens": 583559,
+        "cache_creation_input_tokens": 68373,
+        "turns": 16,
+        "errors": 0
+      },
+      "reviser": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "coder": {
+        "calls": 2,
+        "cost_usd": 4.943588750000001,
+        "input_tokens": 123,
+        "output_tokens": 41004,
+        "cache_read_input_tokens": 4712095,
+        "cache_creation_input_tokens": 246217,
+        "turns": 70,
+        "errors": 0
+      },
+      "tuner": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "aggregator": {
+        "calls": 1,
+        "cost_usd": 1.3301267499999998,
+        "input_tokens": 38,
+        "output_tokens": 12222,
+        "cache_read_input_tokens": 1127165,
+        "cache_creation_input_tokens": 73205,
+        "turns": 24,
+        "errors": 0
+      },
+      "splitter": {
+        "calls": 1,
+        "cost_usd": 0.5593,
+        "input_tokens": 13,
+        "output_tokens": 4116,
+        "cache_read_input_tokens": 276033,
+        "cache_creation_input_tokens": 50130,
+        "turns": 10,
+        "errors": 0
+      },
+      "evaluator_review_0": {
+        "calls": 2,
+        "cost_usd": 1.4983062500000002,
+        "input_tokens": 34,
+        "output_tokens": 9919,
+        "cache_read_input_tokens": 950453,
+        "cache_creation_input_tokens": 123287,
+        "turns": 38,
+        "errors": 0
+      }
+    }
+  },
+  "per_node": [
+    {
+      "node_id": 0,
+      "depth": 0,
+      "parent_node_id": null,
+      "status": "done",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {
+        "setup": "claude-opus-4-8",
+        "splitter": "claude-opus-4-8",
+        "designer": "claude-opus-4-8",
+        "aggregator": "claude-opus-4-8"
+      },
+      "coder_model": null
+    },
+    {
+      "node_id": 1,
+      "depth": 1,
+      "parent_node_id": 0,
+      "status": "proposed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {},
+      "coder_model": null
+    },
+    {
+      "node_id": 2,
+      "depth": 1,
+      "parent_node_id": 0,
+      "status": "done",
+      "metric": 0.01206669,
+      "metric_source": "holdout",
+      "coder_cost_usd": 1.7653314999999998,
+      "coder_turns": 24,
+      "coder_duration_s": 345.97,
+      "trainer_return_code": 0,
+      "trainer_duration_s": 675.599008471705,
+      "holdout_inference_rc": 0,
+      "holdout_grader_rc": 0,
+      "models_by_role": {
+        "coder": "claude-opus-4-8",
+        "evaluator_review_0": "claude-opus-4-8"
+      },
+      "coder_model": "claude-opus-4-8"
+    },
+    {
+      "node_id": 3,
+      "depth": 1,
+      "parent_node_id": 0,
+      "status": "proposed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {},
+      "coder_model": null
+    },
+    {
+      "node_id": 4,
+      "depth": 1,
+      "parent_node_id": 0,
+      "status": "proposed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {},
+      "coder_model": null
+    },
+    {
+      "node_id": 5,
+      "depth": 2,
+      "parent_node_id": 2,
+      "status": "done",
+      "metric": 0.01299787,
+      "metric_source": "holdout",
+      "coder_cost_usd": 3.178257250000001,
+      "coder_turns": 46,
+      "coder_duration_s": 460.86,
+      "trainer_return_code": 0,
+      "trainer_duration_s": 1365.078389370814,
+      "holdout_inference_rc": 0,
+      "holdout_grader_rc": 0,
+      "models_by_role": {
+        "coder": "claude-opus-4-8",
+        "evaluator_review_0": "claude-opus-4-8"
+      },
+      "coder_model": "claude-opus-4-8"
+    },
+    {
+      "node_id": 6,
+      "depth": 3,
+      "parent_node_id": 5,
+      "status": "proposed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {},
+      "coder_model": null
+    }
+  ],
+  "provenance": {
+    "manager_state_sha256": "b2c26c681619fd46be809d1ba4bb604401fb514eb20f1719ae402181fdcb0709",
+    "ingest_unix": 1780686052,
+    "source": "backfill-v3"
+  }
+}

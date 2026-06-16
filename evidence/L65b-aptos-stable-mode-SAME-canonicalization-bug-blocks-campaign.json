@@ -1,0 +1,33 @@
+{
+  "evidence_id": "L65b",
+  "campaign": "router-aggressive-exploration-2026-06-09",
+  "lane": "A",
+  "stratum": "image-medical",
+  "task": "aptos2019-blindness-detection",
+  "task_status": "UNSEEN",
+  "n": 0,
+  "promoted": false,
+  "promotion_block_reason": "Pipeline crashed at setup with SAME engine bug as L65a — bug is NOT mode-specific.",
+  "command": "scripts/test_router.sh --task aptos2019-blindness-detection --mode stable --designs 1 --nodes 4 --budget 15 --no-ingest",
+  "duration_minutes": 1.9,
+  "outcome": {
+    "pipeline_status": "crash",
+    "fail_reason": "AssertionError: model_usage key collision after canonicalization: 'claude-haiku-4-5' -> 'claude-haiku-4-5' already present",
+    "fail_site": "backends/claude/event_adapter.py:195 _translate_result()",
+    "total_cost_usd": 0.36
+  },
+  "key_finding_for_campaign_BLOCKER": {
+    "scope": "BLOCKS ALL new runs — the bug fires in the setup phase regardless of router mode (aggressive OR stable).",
+    "root_cause_diagnosis": "The Claude SDK ResultMessage.usage field is reporting per-model usage with TWO keys that canonicalize to the same id (e.g. 'claude-haiku-4-5-20251001' and 'claude-haiku-4-5'). _translate_result calls canonical_model_name() on each, hits the canonical name already in the dict, and raises rather than merging.",
+    "why_now": "Probable trigger: recent SDK version update or model alias change that started emitting both dated and bare ids in a single ResultMessage. The 24h-campaign earlier (L50-L64) ran on the prior SDK and never hit this. The most recent local commit on this branch is 2c5de94b1 (Merge from origin/main); the bug likely lives in the SDK + canonicalization assertion pair.",
+    "fix_options": [
+      "FIX A (likely correct): In backends/claude/event_adapter.py:_translate_result, when canonical name already present, MERGE by adding token counts and costUSD instead of asserting. Two SDK keys with the same canonical are the same logical model (same pricing tier per canonical_model_name docstring); summation is the right per-model usage value.",
+      "FIX B (alternative): Keep the assertion but tighten canonical_model_name to preserve a distinguishing suffix when two raw keys actually differ. This is what the assertion's error message recommends but seems to contradict the docstring's stated intent ('so an aliased request id and the dated snapshot the SDK reports back don’t split into two rows').",
+      "FIX C (workaround): Pin SDK to a prior version that only emits one key per model."
+    ],
+    "scope_of_fix": "Small (~5 LOC in backends/claude/event_adapter.py), but it's a code change to engine, not memory — needs PR + tests, not memory-only direct-push."
+  },
+  "user_action_needed": "Pick a fix path (A/B/C) so the campaign can resume. Until then, NO new aptos2019/spaceship-titanic/plant-pathology/random-acts scout will produce a submission — they all crash at setup.",
+  "loop_halt": "Wakeup loop ended without re-arming. Campaign awaits engine fix.",
+  "links": ["[[L65a-aptos-aggressive-mode-engine-bug-canonicalization]]"]
+}

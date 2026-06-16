@@ -1,7 +1,7 @@
 {
   "family": "image-denoising-restoration",
   "schema_version": 1,
-  "last_updated": "2026-05-21 (haiku data added)",
+  "last_updated": "2026-06-04 (opus-4-8-all promoted: X205/E025 + E031 confirmed gold @ ~$10, E003's sonnet/opus 'silver' figures are obsolete for v3 because the new opus-4-8 reaches gold)",
   "fingerprint": {
     "modality": "image",
     "data_size_bucket": "small<100MB | medium<1GB",
@@ -12,8 +12,13 @@
     {"name": "denoising-dirty-documents", "category": "document-text-image-analysis", "size_mb": 96, "metric": "rmse"}
   ],
   "default_routing": {
+    "all_roles": "claude-opus-4-8",
+    "rationale": "v3 opus-everywhere reaches GOLD at ~$10 on denoising — confirmed n=3 (X205 $10.59 gold, E-PN1 $10.67 gold, E031 $9.20 gold). The earlier sonnet/opus-silver figures (E003 v2) are obsolete for v3 because the new opus-4-8 unlocks gold. Per-node downgrade hurt tier here (E032 silver $8.84) — keep opus across the board on this family.",
+    "evidence_refs": ["E025", "E029-discarded", "E031", "E032"]
+  },
+  "fallback_routing_v2_era": {
     "all_roles": "claude-sonnet-4-6",
-    "rationale": "Sonnet silver @ $18 vs opus silver @ $43 — same medal, 2.4× cheaper (E003).",
+    "rationale": "Pre-v3 / pre-opus-4-8 default. Use when opus is unavailable.",
     "evidence_refs": ["E003"]
   },
   "known_overrides": {},
@@ -30,6 +35,7 @@
   "observations": {
     "claude-haiku-4-5":  {"bronze": 1, "n_total": 1, "tasks_covered": ["denoising-dirty-documents"]},
     "claude-sonnet-4-6": {"silver": 1, "n_total": 1, "tasks_covered": ["denoising-dirty-documents"]},
-    "claude-opus-4-7":  {"silver": 1, "n_total": 1, "tasks_covered": ["denoising-dirty-documents"]}
+    "claude-opus-4-7":  {"silver": 1, "n_total": 1, "tasks_covered": ["denoising-dirty-documents"]},
+    "claude-opus-4-8":  {"gold": 3, "n_total": 3, "tasks_covered": ["denoising-dirty-documents"], "mean_cost_usd": 10.15, "evidence_refs": ["E025", "E031"]}
   }
 }

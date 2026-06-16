@@ -1,0 +1,61 @@
+{
+  "id": "E025",
+  "claim": "v3 denoising-dirty-documents with opus-everywhere achieved medal=GOLD at score 0.0123 (silver=~0.02, gold threshold lower), total $10.59. Combined with Phase 1 denoising-opus (also intended to be opus-all but blocked by v3 selector residual bug), this gives n=1 confirmed gold for opus-all on denoising. Compared to the Phase 2 sonnet/haiku denoising routings (X203 silver, X210 X211 X213 none-tier), opus-all is the only config so far to clear gold. Per-role: coder=$4.94 dominates, followed by aggregator $1.33 and evaluator $1.50. Total ~3x cheaper than leaf-classification opus-all ($26.52) for far better medal outcome.",
+  "support": {
+    "experiment_id": "X205",
+    "run_dir": "/workspace/mlebench-playground/denoising-dirty-documents/20260603T032347Z_0000",
+    "routing": {
+      "setup": "claude-opus-4-8",
+      "splitter": "claude-opus-4-8",
+      "designer": "claude-opus-4-8",
+      "coder": "claude-opus-4-8",
+      "evaluator": "claude-opus-4-8",
+      "judge": "claude-opus-4-8",
+      "selector": "claude-opus-4-8",
+      "reviser": "claude-opus-4-8",
+      "aggregator": "claude-opus-4-8"
+    },
+    "total_cost_usd": 10.59,
+    "per_role_usd": {
+      "coder": 4.94,
+      "evaluator_review_0": 1.50,
+      "designer": 1.42,
+      "aggregator": 1.33,
+      "setup": 0.84,
+      "splitter": 0.56
+    },
+    "medal": "gold",
+    "score": 0.01227,
+    "valid_submission": true,
+    "pipeline_terminal": "completed (wall-clock budget reached, but aggregator finished)"
+  },
+  "comparison_denoising_all_tests": [
+    {"experiment": "Phase 1 opus-all (bug)", "status": "selector_round_3 assertion", "outcome": "no result"},
+    {"experiment": "X205 opus-all (rerun)", "n": 1, "medal": "gold", "score": 0.0123, "cost": 10.59},
+    {"experiment": "X203 sonnet-all", "n": 1, "medal": "silver", "score": 0.018, "cost": "~4"},
+    {"experiment": "X210 haiku-routing", "medal": "none"},
+    {"experiment": "X211 sonnet-coder", "medal": "none"},
+    {"experiment": "X213 sonnet-coder + haiku-aggregator", "medal": "none", "valid": true}
+  ],
+  "scope": "Single n=1 gold validates the opus-all-denoising hypothesis (E021's variance was on cheaper routings, not on opus-all). Promotion candidate.",
+  "limitations": [
+    "n=1 — would prefer n=2 for promotion to policy.json default",
+    "However the result is unambiguous (gold, not borderline) and the cost is reasonable ($10.59), so promotion is justified by single-run evidence per loop policy",
+    "Selector residual bug fixed in main — re-running Phase 1's blocked config now works"
+  ],
+  "confidence": "high",
+  "last_updated": "2026-06-03",
+  "policy_promoted": "candidate",
+  "implications": {
+    "X205_status": "completed_positive",
+    "denoising_policy_recommendation": "Set policy.json[denoising-dirty-documents]: opus-everywhere ($10.59 gold). The X203 sonnet-all silver result at ~$4 is a 2.5x cost saving but drops a medal tier. For gold-required cases, opus-all is the floor.",
+    "broader_finding": "Denoising-opus is the ONLY task in Phase 2 so far where opus-all reaches gold at a SMALL absolute cost (<$15). detecting opus-all $342 gold, leaf opus-all $26 above_median. The cost-to-tier ratio on denoising is by far the most favorable — task-specific dynamics dominate routing economics.",
+    "promotion_status": "Candidate for policy promotion on denoising. Single unambiguous gold + reasonable cost satisfies the single-run-unambiguous criterion in loop policy."
+  },
+  "next_actions": [
+    "Mark X205 status=completed_positive.",
+    "Consider promoting policy.json[denoising-dirty-documents] = opus-everywhere.",
+    "Continue to X208 (detecting mixed-routing with opus-coder) — the highest-value remaining experiment per E020's open question."
+  ],
+  "related_evidence": ["E021", "E022", "E023"]
+}

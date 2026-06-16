@@ -2,7 +2,7 @@
   "schema_version": 1,
   "task": "denoising-dirty-documents",
   "timestamp": "20260521_100539",
-  "run_dir": "/data3/qi/ML-agent-code/denoising-dirty-documents/20260521_100539",
+  "run_dir": "/workspace/ML-agent-code/denoising-dirty-documents/20260521_100539",
   "model": "claude-haiku-4-5",
   "model_role_map": null,
   "result": {

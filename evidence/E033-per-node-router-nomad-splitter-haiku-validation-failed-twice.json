@@ -1,0 +1,32 @@
+{
+  "id": "E033",
+  "claim": "E-PN6-nomad-per-node failed at splitter verification (haiku splitter rejected twice in a row, run halted) — pipeline terminated at $0.37 before any node was attempted. The LLM router startup decision MATCHED E029 exactly (designer+coder=sonnet, rest=haiku, splitter=haiku); the failure was that the haiku splitter's split proposals couldn't pass the verifier twice. E029 ran the SAME config and the haiku splitter passed. E-PN4-nomad-rerun also ran the same and passed. This is run-to-run variance in haiku splitter outputs — n=1 unlucky failure, not a routing-logic defect. INCONCLUSIVE on the per_node_routing=true question for nomad2018.",
+  "support": {
+    "experiment_id": "E-PN6-nomad-per-node",
+    "run_dir": "/workspace/mlebench-playground/nomad2018-predict-transparent-conductors/20260604T043527Z_0000",
+    "config": {
+      "task": "nomad2018-predict-transparent-conductors",
+      "router_strategy": "llm",
+      "per_node_routing": true,
+      "enable_router": true
+    },
+    "llm_router_startup_decision": "Same as E029: designer+coder=sonnet, rest including splitter=haiku",
+    "failure": {
+      "phase": "splitter",
+      "cause": "RuntimeError: splitter agent failed verification twice; halting run.",
+      "interpretation": "Haiku splitter produced bad splits two attempts in a row; engine halted the run to protect downstream coders. E029 and E-PN4-nomad-rerun also used haiku splitter and PASSED — this is unlucky run-to-run variance for haiku-on-splitter, not a routing-logic issue."
+    },
+    "result": {"medal": "none", "valid_submission": false, "total_cost_usd": 0.37, "pipeline_terminal": "failed"}
+  },
+  "scope": "INCONCLUSIVE — pipeline aborted before any per-node decision could be made. Not a per-node routing test.",
+  "implications": {
+    "E_PN6_status": "completed_negative_splitter_validation_failed (inconclusive on per-node hypothesis)",
+    "design_finding": "Haiku-splitter on nomad2018 has run-to-run failure rate. n=2 success / n=1 failure across E029, E-PN4-nomad-rerun, E-PN6 — non-trivial fail rate. Static rule candidate: bump splitter from haiku to sonnet on tabular-regression to stabilize.",
+    "next_experiment": "Pivot to a fresh design test: LLM router on detecting-insults. E020 showed detecting requires opus-everywhere ($342). Does the agent READ E020/E026 and pick opus-all (smart)? Or does it overlook the evidence and pick a cheaper config that will fail? This tests the agent's evidence-following ability on a task where the right answer is expensive."
+  },
+  "next_actions": [
+    "Mark E-PN6 status=completed_negative_splitter_validation_failed_inconclusive.",
+    "Launch E-PN7-detecting: router_strategy=llm + per_node_routing=false on detecting-insults. Tests agentic reasoning on a task where the right answer is opus-everywhere ($342)."
+  ],
+  "related_evidence": ["E029"]
+}

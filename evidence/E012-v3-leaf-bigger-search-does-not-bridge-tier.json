@@ -1,0 +1,81 @@
+{
+  "id": "E012",
+  "claim": "On leaf-classification, doubling the search depth (max_nodes=16, num_designs=8, pipeline_budget=180min) while keeping only opus on the coder role does NOT bridge above_median → bronze. The run reached medal=none (score 0.296) at $43.24 total cost — WORSE than Phase 1 opus-everywhere (above_median, 0.069, $16.50), and substantially worse than Phase 1 sonnet-everywhere (none, 0.199, $9.35). Bigger search alone, with opus only on coder, increased cost 2.6x but degraded final score by 4x. The hypothesis that 'ceiling is search depth, not model' is refuted in its strong form.",
+  "support": {
+    "experiment_id": "X204",
+    "run_dir": "/workspace/mlebench-playground/leaf-classification/20260602T034507Z_0000",
+    "routing": {
+      "setup": "claude-sonnet-4-6",
+      "splitter": "claude-sonnet-4-6",
+      "designer": "claude-sonnet-4-6",
+      "coder": "claude-opus-4-8",
+      "evaluator": "claude-sonnet-4-6",
+      "judge": "claude-sonnet-4-6",
+      "selector": "claude-sonnet-4-6",
+      "reviser": "claude-sonnet-4-6",
+      "aggregator": "claude-sonnet-4-6"
+    },
+    "cli_overrides": {"max_nodes": 16, "num_designs": 8, "parallel": 4, "pipeline_budget_minutes": 180},
+    "total_cost_usd": 43.24,
+    "per_role_usd": {
+      "coder": 37.99,
+      "evaluator_review_0": 2.26,
+      "aggregator": 1.06,
+      "setup": 0.67,
+      "designer": 0.55,
+      "evaluator_review_1": 0.51,
+      "splitter": 0.19
+    },
+    "medal": "none",
+    "score": 0.29614,
+    "bronze_threshold": 0.01526,
+    "above_median": false,
+    "pipeline_terminal": "completed",
+    "per_node_summary": {
+      "total": 15,
+      "coded": 6,
+      "done": 5,
+      "with_holdout_metric": 4,
+      "metric_per_completed_node": [
+        {"node_id": 5, "metric": 2.486, "coder_usd": 2.15},
+        {"node_id": 8, "metric": 0.267, "coder_usd": 2.18},
+        {"node_id": 11, "metric": 0.539, "coder_usd": 1.92},
+        {"node_id": 13, "metric": 0.529, "coder_usd": 1.95}
+      ]
+    }
+  },
+  "scope": "Single Phase 2 run on leaf-classification with opus-coder + 2x search. n=1. Refutes the strong form of the X204 hypothesis.",
+  "comparison": {
+    "vs_phase1_opus_everywhere": {
+      "phase1_score": 0.0689,
+      "phase1_cost": 16.50,
+      "phase1_medal": "above_median",
+      "x204_score": 0.29614,
+      "x204_cost": 43.24,
+      "x204_medal": "none",
+      "interpretation": "Phase 1 had opus on ALL roles (designer/judge/reviser/selector/aggregator/coder). X204 had opus ONLY on coder. Result: a 4x score degradation suggests opus's tier advantage on leaf is NOT localized to the coder role; it requires opus also on designer (or judge, or aggregator) to bridge. The strong form of 'ceiling is search depth, not model' is refuted."
+    }
+  },
+  "limitations": [
+    "n=1. Variance on Kaggle classification can be substantial.",
+    "Search was big but only 6/16 nodes ran coder and 4/16 produced metrics — most candidates never trained. The aggregator ensemble may have been dominated by a couple of weak nodes.",
+    "Did not test 'opus on coder + designer' or 'opus on coder + aggregator' to isolate which OTHER role(s) drive opus's tier advantage on leaf."
+  ],
+  "confidence": "medium",
+  "last_updated": "2026-06-02",
+  "policy_promoted": false,
+  "implications": {
+    "X204_status": "completed_negative",
+    "policy_implication": "Do NOT promote 'opus-coder + sonnet-rest + bigger-search' as the leaf routing. The Phase 1 opus-everywhere ($16.50, above_median) remains the best-cost-per-tier we have for leaf.",
+    "follow_up_experiments": [
+      "X214: opus on coder + designer; sonnet on rest. Isolates if designer is the second-bridge role.",
+      "X215: opus on coder + aggregator; sonnet on rest. Probes if aggregator dominates for leaf the way it did on detecting.",
+      "X216: revisit Phase 1 opus-everywhere with bigger search (16 nodes). Tests whether (opus on all + bigger search) does cross bronze."
+    ]
+  },
+  "next_actions": [
+    "Mark X204 status=completed_negative in queue.",
+    "Append X214/X215/X216 to queue_v3.jsonl.",
+    "Continue Phase 2 with X208 (mixed detecting) or X209 (haiku-everywhere-except-aggregator) — both higher-priority."
+  ]
+}

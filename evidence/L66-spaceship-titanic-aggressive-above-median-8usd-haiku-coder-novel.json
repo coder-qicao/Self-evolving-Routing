@@ -1,0 +1,31 @@
+{
+  "evidence_id": "L66",
+  "campaign": "router-aggressive-exploration-2026-06-09",
+  "lane": "A",
+  "stratum": "tabular",
+  "task": "spaceship-titanic",
+  "task_status": "UNSEEN",
+  "n": 1,
+  "promoted": false,
+  "command": "scripts/test_router.sh --task spaceship-titanic --mode aggressive --designs 1 --nodes 4 --budget 15 --no-ingest",
+  "duration_hours": 1.12,
+  "outcome": {
+    "medal": null,
+    "valid_submission": true,
+    "score": 0.8092,
+    "rank_bucket": "above_median",
+    "total_cost_usd": 8.18,
+    "successful_nodes": ["node_2", "node_4", "node_5"],
+    "failed_nodes": {"node_1": "training exited 0 with no best_model.{pth,pkl,joblib}"}
+  },
+  "aggressive_mode_router_observations": {
+    "node_1": {"coder": "sonnet", "designer": "sonnet", "rest": "haiku"},
+    "node_2": {"coder": "opus-4-8", "designer": "sonnet", "rest": "haiku"},
+    "node_4": {"coder": "haiku", "designer": "sonnet", "rest": "haiku"},
+    "node_5": {"coder": "haiku", "designer": "sonnet", "rest": "haiku"},
+    "key_observation": "NOVEL: aggressive mode tried haiku-as-coder on 2 nodes for a tabular task. Previously haiku was reserved for non-code roles. The successful nodes (4,5) using haiku-coder still completed with above_median score → suggests haiku-coder is viable for simple tabular tasks at extremely low cost."
+  },
+  "cheapest_valid_in_campaign": "$8.18 — cheapest valid submission in the whole 60+ run campaign across all dates. Tabular tasks with haiku-driven coding are an unexplored cost frontier.",
+  "interpretation": "Spaceship-titanic is a Kaggle starter tabular binary classification — agent-friendly task surface. Aggressive's haiku-coder exploration paid off here: cheap AND valid AND above_median. For tabular family, this is a meaningful new data point about the haiku capacity.",
+  "links": ["[[L65c-aptos-aggressive-none-16usd-fix-validated-opus-variant-mix]]"]
+}

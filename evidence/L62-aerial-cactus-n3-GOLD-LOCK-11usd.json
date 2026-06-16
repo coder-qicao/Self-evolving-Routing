@@ -1,0 +1,39 @@
+{
+  "evidence_id": "L62",
+  "campaign": "router-24h-2026-06-05",
+  "lane": "B-extended",
+  "stratum": "image-natural",
+  "task": "aerial-cactus-identification",
+  "task_status": "UNSEEN at campaign start; now n=3 cumulative",
+  "n": 3,
+  "law_1_satisfied": "YES at n=3 — strongest signal in campaign",
+  "command": "scripts/test_router.sh --task aerial-cactus-identification --designs 1 --nodes 4 --budget 15 --no-ingest",
+  "run_dir": "/workspace/mlebench-playground/aerial-cactus-identification/20260606T101615Z_0000",
+  "duration_hours": 2.49,
+  "outcome": {
+    "medal": "gold",
+    "valid_submission": true,
+    "score": 1.0,
+    "total_cost_usd": 11.05
+  },
+  "n3_reproducibility_record": {
+    "L55_GOLD": "$13.43 (designs=2 nodes=6 budget=10)",
+    "L57_GOLD": "$18.46 (designs=2 nodes=6 budget=10)",
+    "L62_GOLD": "$11.05 (designs=1 nodes=4 budget=15)",
+    "score_record": "1.0 / 1.0 / 1.0 — PERFECT REPRODUCIBILITY",
+    "cost_record": "Mean $14.31, std ~$3.04 (range 27% of mean), all <$20",
+    "conclusion": "GOLD on aerial-cactus-identification under the composite per-node router is LOCKED. Pattern is reproducible at both budget configurations. Cost variance traces to occasional opus-coder escalations, not core routing brittleness."
+  },
+  "campaign_final_findings": {
+    "law_1_satisfied_findings": [
+      "aerial-cactus GOLD (n=3, all score=1.0)"
+    ],
+    "total_scout_attempts": 13,
+    "valid_submissions": 9,
+    "medals_obtained": 4,
+    "medal_rate_on_valid": "44%",
+    "headline_quote": "Per-node agentic router achieves perfect-score GOLD on UNSEEN aerial-cactus-identification at $11-18 — reproducible across 3 runs spanning 2 different budget/search configurations.",
+    "policy_recommendation_REVISED": "STILL do NOT update policy.json. Three observations: (a) the GOLD is LOCKED for aerial-cactus, (b) but L61 dogs-vs-cats=none and L60 leaf-classification=above_median (no medal) on same image-natural stratum prove the family-level promotion is INVALID, (c) per-task routing is the proper granularity. policy.json adds nothing here that the LLM router doesn't already do at runtime."
+  },
+  "links": ["[[L55-aerial-cactus-scout-GOLD]]", "[[L57-aerial-cactus-n2-GOLD-confirmed]]", "[[L60-leaf-classification-scout]]", "[[L61-dogs-vs-cats-scout]]", "[[router-campaign-2026-06-05-findings]]"]
+}

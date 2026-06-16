@@ -1,0 +1,30 @@
+{
+  "evidence_id": "L65a",
+  "campaign": "router-aggressive-exploration-2026-06-09",
+  "lane": "A",
+  "stratum": "image-medical",
+  "task": "aptos2019-blindness-detection",
+  "task_status": "UNSEEN",
+  "n": 0,
+  "promoted": false,
+  "promotion_block_reason": "Pipeline crashed during setup phase with engine bug; no submission produced.",
+  "command": "scripts/test_router.sh --task aptos2019-blindness-detection --mode aggressive --designs 1 --nodes 4 --budget 15 --no-ingest",
+  "duration_minutes": 4.25,
+  "outcome": {
+    "pipeline_status": "crash",
+    "fail_reason": "Setup failed in <5min with: AssertionError: model_usage key collision after canonicalization: 'claude-haiku-4-5' -> 'claude-haiku-4-5' already present. Two raw SDK keys map to one canonical name; merging would silently conflate their costUSD — fix the canonicalization rule instead.",
+    "fail_site": "backends/claude/event_adapter.py:195 _translate_result()",
+    "total_cost_usd": 0.36
+  },
+  "bug_report": {
+    "trigger": "router mode=aggressive on aptos2019-blindness-detection (UNSEEN), first hit during the setup phase.",
+    "hypothesis": "Aggressive mode cycles more model variants than stable. The SDK is emitting per-model usage with two keys for haiku-4-5 (likely the dated id 'claude-haiku-4-5-20251001' AND the bare id 'claude-haiku-4-5') that both canonicalize to 'claude-haiku-4-5', triggering the assertion.",
+    "fix_direction": "The assertion correctly refuses to silently merge. The real fix is either (a) in canonical_model_name to keep date suffix when distinguishing, OR (b) in _translate_result to ADD usage for already-present canonical key (and verify pricing is consistent). User to triage.",
+    "workaround_for_campaign": "Use mode=stable until upstream fix lands."
+  },
+  "actions_for_future_runs": [
+    "L65b retried in mode=stable to recover an UNSEEN image-medical data point.",
+    "Subsequent campaign tasks (L66+) will also use mode=stable until aggressive bug is fixed."
+  ],
+  "links": ["[[router-campaign-2026-06-05-findings]]", "[[L55-aerial-cactus-scout-GOLD]]"]
+}

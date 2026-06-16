@@ -1,0 +1,75 @@
+{
+  "id": "E023",
+  "claim": "On v3 leaf-classification, opus-everywhere with DOUBLED search (num_designs=8, max_nodes=16, pipeline_budget=180min) achieved medal=above_median at score 0.061, total $26.52. This is the FIRST leaf config to clear above_median; Phase 1 opus-all with default search (num_designs=4, max_nodes=8) achieved only medal=none (mean 0.296, n=2). Bronze threshold (0.015) still NOT reached, but the search-depth scaling is a real quality lever on leaf. Per-agent timeouts (15min budget + 10min grace) hit 4 times during X216 — opus-everywhere reviser/coder agents routinely exhaust budgets on leaf, costing ~$7 in unused work per timeout; pipeline-level recovery is robust.",
+  "support": {
+    "experiment_id": "X216",
+    "run_dir": "/workspace/mlebench-playground/leaf-classification/20260603T002531Z_0000",
+    "routing": {
+      "setup": "claude-opus-4-8",
+      "splitter": "claude-opus-4-8",
+      "designer": "claude-opus-4-8",
+      "coder": "claude-opus-4-8",
+      "evaluator": "claude-opus-4-8",
+      "judge": "claude-opus-4-8",
+      "selector": "claude-opus-4-8",
+      "reviser": "claude-opus-4-8",
+      "aggregator": "claude-opus-4-8"
+    },
+    "cli_overrides": {
+      "num_designs": 8,
+      "max_nodes": 16,
+      "parallel": 4,
+      "pipeline_budget_minutes": 180
+    },
+    "total_cost_usd": 26.52,
+    "per_role_usd": {
+      "coder": 18.34,
+      "evaluator_review_0": 3.30,
+      "aggregator": 2.02,
+      "designer": 1.48,
+      "setup": 0.74,
+      "splitter": 0.65
+    },
+    "medal": "above_median",
+    "score": 0.06092,
+    "bronze_threshold": 0.01526,
+    "valid_submission": true,
+    "pipeline_terminal": "completed",
+    "wall_clock_seconds": null,
+    "per_agent_timeouts": 4,
+    "burned_on_timeouts_usd": "~17.15 (4 per-agent timeouts: coder_1 $7.32, reviser_5 $3.00, reviser_2 $3.30, coder_6 $4.53)"
+  },
+  "comparison_leaf_all_tests": [
+    {"experiment": "Phase 1 opus-all (default search)", "n": 2, "medal": "none", "score": 0.296, "cost": 29.87},
+    {"experiment": "X215 (coder+aggregator opus, sonnet rest)", "n": 1, "medal": "none", "score": 0.169, "cost": 12.03},
+    {"experiment": "X216 (opus-all + DOUBLED search)", "n": 1, "medal": "above_median", "score": 0.061, "cost": 26.52}
+  ],
+  "scope": "Single Phase 2 run. n=1 X216 vs n=2 Phase 1 baseline.",
+  "limitations": [
+    "n=1 for X216 — score 0.061 may be lucky/unlucky",
+    "Phase 1 opus-all baseline is n=2, both medal=none, so the search-depth advantage is statistically suggestive but not confirmed",
+    "Bronze (0.015) still NOT reached even with opus-everywhere + bigger search; ~4x further reduction needed",
+    "$17 of the $26.52 was BURNED on per-agent timeouts (4 of them) — actual productive work was ~$9. If reviser/coder budgets were raised from 15min to 25min, total cost might rise or fall depending on whether more progress was made vs more time wasted."
+  ],
+  "confidence": "medium",
+  "last_updated": "2026-06-03",
+  "policy_promoted": false,
+  "implications": {
+    "X216_status": "completed_positive_partial",
+    "leaf_policy_recommendation_hierarchy": [
+      "Best cost-savings (no medal loss): X215 routing ($12, medal=none) — same medal as Phase 1 opus-all but 60% cheaper",
+      "Best quality (clear above_median): X216 opus-all + bigger search ($26.52, above_median) — first config to beat median on leaf",
+      "Bronze still unreached; no tested config clears bronze on leaf"
+    ],
+    "policy_decision": "Hold policy.json[leaf-classification] at opus-everywhere (Phase 1 baseline) but note that DOUBLED search hits above_median while keeping cost similar. If a user prioritizes cost savings: use X215 routing. If they prioritize quality: use X216 search settings.",
+    "next_steps": [
+      "Confirm X216 with a second run (n=2) before promoting bigger search as default",
+      "Consider raising per-agent budget for opus reviser/coder from 15→25min to reduce $17 timeout waste"
+    ]
+  },
+  "next_actions": [
+    "Mark X216 status=completed_positive_partial.",
+    "Document in queue: leaf-classification bronze unreached across all current configs."
+  ],
+  "related_evidence": ["E020", "E021", "E022"]
+}

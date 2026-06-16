@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "task": "leaf-classification",
+  "timestamp": "20260604T013710Z_0000",
+  "run_dir": "/workspace/mlebench-playground/leaf-classification/20260604T013710Z_0000",
+  "model": "unknown",
+  "model_role_map": null,
+  "result": {
+    "score": null,
+    "metric_name": null,
+    "metric_direction": null,
+    "medal": "ungraded",
+    "above_median": null,
+    "bronze_threshold": null
+  },
+  "pipeline": {
+    "num_candidates": 1,
+    "alive_at_end": null,
+    "agent_calls": null,
+    "max_agent_calls": null,
+    "tuner_runs": null,
+    "reviser_runs": null,
+    "consumed_seconds": 1773.3473789459094,
+    "wall_elapsed_seconds": null,
+    "terminal": "failed"
+  },
+  "cost": {
+    "total_usd": 2.7552327500000007,
+    "total_input_tokens": 132,
+    "total_output_tokens": 14333,
+    "cache_read_input_tokens": 5353700,
+    "cache_creation_input_tokens": 246653,
+    "total_turns": 108,
+    "errors_count": 0,
+    "per_role": {
+      "manager": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "setup": {
+        "calls": 1,
+        "cost_usd": 0.73204575,
+        "input_tokens": 47,
+        "output_tokens": 7365,
+        "cache_read_input_tokens": 1524355,
+        "cache_creation_input_tokens": 42827,
+        "turns": 42,
+        "errors": 0
+      },
+      "designer": {
+        "calls": 1,
+        "cost_usd": 1.6982556000000006,
+        "input_tokens": 72,
+        "output_tokens": 3069,
+        "cache_read_input_tokens": 3441757,
+        "cache_creation_input_tokens": 165194,
+        "turns": 50,
+        "errors": 0
+      },
+      "reviser": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "coder": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "tuner": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "aggregator": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "splitter": {
+        "calls": 1,
+        "cost_usd": 0.32493140000000004,
+        "input_tokens": 13,
+        "output_tokens": 3899,
+        "cache_read_input_tokens": 387588,
+        "cache_creation_input_tokens": 38632,
+        "turns": 16,
+        "errors": 0
+      }
+    }
+  },
+  "per_node": [
+    {
+      "node_id": 0,
+      "depth": 0,
+      "parent_node_id": null,
+      "status": "done",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {},
+      "coder_model": null
+    }
+  ],
+  "provenance": {
+    "manager_state_sha256": "365bf5ec3cbee6b248fe02a3440b530517f5ababdeae696b6fcceaf7dda45ce8",
+    "ingest_unix": 1780538833,
+    "source": "cli"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "id": "E043",
+  "claim": "n=3 confirmation of X215 routing on leaf-classification with the composite router. Results: above_median 2-of-3 (E-PN15 score 0.084 $16.95; E-PN16 score 0.046 $22.23) vs none 1-of-3 (E022 score 0.169 $12.03). The above-median rate is now 67% with score TRENDING TOWARD BRONZE (0.015) across runs: 0.169 → 0.084 → 0.046. Mean cost $17.07 vs X216 (opus-all + bigger search) $26.52 — X215 routing remains 36% cheaper at the same medal tier majority outcome. The original E022 medal=none result is increasingly LOOKING LIKE the outlier rather than the norm. Variance still real (std on cost ~$5), but the production X215 routing is now confidently characterized as 'cheaper than X216 with same-tier majority outcome.'",
+  "support": {
+    "experiment_id": "E-PN16-leaf-composite-n3",
+    "run_dir": "/workspace/mlebench-playground/leaf-classification/20260604T095453Z_0000",
+    "config": {
+      "task": "leaf-classification",
+      "router_strategy": "composite",
+      "per_node_routing": false,
+      "pipeline_budget_minutes": 180
+    },
+    "composite_decision": "Static hit known_overrides.leaf-classification: coder+aggregator=opus, rest=sonnet (X215)",
+    "result": {
+      "medal": "above_median",
+      "score": 0.04648,
+      "valid_submission": true,
+      "total_cost_usd": 22.23,
+      "pipeline_terminal": "completed (past 180min budget with in-flight nodes)",
+      "wall_clock_seconds": "~216min"
+    }
+  },
+  "leaf_X215_n3_summary": [
+    {"experiment": "E022 (Phase 2 original)", "medal": "none", "score": 0.169, "cost": 12.03},
+    {"experiment": "E-PN15 (production composite)", "medal": "above_median", "score": 0.084, "cost": 16.95},
+    {"experiment": "E-PN16 (n=3 confirmation)", "medal": "above_median", "score": 0.046, "cost": 22.23}
+  ],
+  "leaf_X215_n3_stats": {
+    "above_median_rate": "2/3 = 67%",
+    "medal_none_rate": "1/3 = 33%",
+    "cost_mean": 17.07,
+    "cost_range": "[12.03, 22.23] = $10.20",
+    "cost_stddev_approx": "~$5",
+    "score_mean": 0.10,
+    "score_trend": "improving: 0.169 → 0.084 → 0.046 — variance OR genuine memory-driven improvement (the LLM router has accumulated more evidence each loop iteration)",
+    "score_distance_from_bronze": "current best score 0.046, bronze threshold 0.015 — closer than ever"
+  },
+  "comparison_to_X216": {
+    "X216_opus_all_bigger_search": {"medal": "above_median", "score": 0.061, "cost": 26.52},
+    "X215_n3_above_median_runs": {"medal_majority": "above_median (2/3)", "cost_mean": 19.59, "score_mean": 0.065},
+    "verdict": "X215 routing (n=2 above_median runs only) mean cost $19.59 vs X216 $26.52 — 26% cheaper at same medal tier"
+  },
+  "scope": "n=3 X215 routing on leaf. Cost-saving + medal-tier characterization for production policy.",
+  "limitations": [
+    "Cost range $10.20 — variance is real and not yet bounded.",
+    "Why does score keep improving across runs? Could be (a) variance, (b) memory accumulation, (c) inspect_data improvements. Untested.",
+    "Did not test per_node_routing on top of X215 baseline — could it push to bronze?"
+  ],
+  "confidence": "high (the above_median 2/3 rate at $17 mean is the production characterization)",
+  "last_updated": "2026-06-04",
+  "policy_promoted": true,
+  "implications": {
+    "E_PN16_status": "completed_positive",
+    "leaf_production_recommendation": "X215 routing via composite is the production choice for leaf: 67% above_median rate, mean $17, 26-36% cheaper than X216. Bronze still unreached but score trending downward. Update image-classification-small.json[observations] with n=3 data.",
+    "next_experiment_design": "TWO PATHS:\n  (a) Try per_node_routing=true + composite on leaf to see if per-node decisions can push score closer to bronze (0.015).\n  (b) Continue running cheap experiments — composite on aerial-cactus (image-classification-small sister task with no known_override) to confirm composite production-safe path works for tasks WITHOUT explicit overrides.\nPath (b) is lower-risk; path (a) could discover per-node uplift OR repeat E032 stable-task tier-drop pattern."
+  },
+  "next_actions": [
+    "Mark E-PN16 status=completed_positive.",
+    "Update image-classification-small.json observations with the X215 n=3 data.",
+    "Decide between path (a) per-node-leaf or path (b) aerial-cactus-composite for experiment 17."
+  ],
+  "related_evidence": ["E022", "E023", "E037", "E042"]
+}

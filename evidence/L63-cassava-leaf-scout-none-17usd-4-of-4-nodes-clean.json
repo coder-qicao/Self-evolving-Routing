@@ -1,0 +1,33 @@
+{
+  "evidence_id": "L63",
+  "campaign": "router-24h-2026-06-05-extended",
+  "lane": "A",
+  "stratum": "image-natural",
+  "task": "cassava-leaf-disease-classification",
+  "task_status": "UNSEEN",
+  "n": 1,
+  "promoted": false,
+  "command": "scripts/test_router.sh --task cassava-leaf-disease-classification --designs 1 --nodes 4 --budget 15 --no-ingest",
+  "duration_hours": 1.78,
+  "outcome": {
+    "medal": null,
+    "valid_submission": true,
+    "score": 0.88901,
+    "rank_bucket": "none",
+    "total_cost_usd": 16.84,
+    "successful_nodes": ["node_1", "node_2", "node_3", "node_4"],
+    "failed_nodes": {},
+    "note": "FIRST scout in the campaign with ZERO node failures — clean 4-of-4 run."
+  },
+  "interpretation": "Clean execution + valid submission, but no medal. Score 0.889 indicates the router's models produced workable but not winning solutions. Same image-natural stratum as L55/L57/L62 GOLD (aerial-cactus) and L61 none (dogs-vs-cats) — confirming stratum heterogeneity.\n\nClean execution is itself a finding: cassava-leaf-disease apparently doesn't trigger the agent into picking timm/sklearn-extras like other image tasks. Possibly the data is simpler / more tabular-friendly, or the safer budget caused different code choices.",
+  "campaign_extended_scorecard": {
+    "L62_aerial_cactus_n3": "GOLD $11.05 (LOCKED at n=3)",
+    "L63_cassava_leaf": "none $16.84 (4-of-4 clean nodes)",
+    "image_natural_findings": "3 tasks tested: aerial-cactus GOLD x3 ($11-18), dogs-vs-cats none ($14), cassava-leaf none ($17), leaf-classification above_median ($10). Stratum is STRONGLY task-specific.",
+    "total_attempts_now": 14,
+    "valid_submissions_now": 10,
+    "medal_count_now": 4
+  },
+  "campaign_close_decision": "L63 closes the extended campaign. Two more image-natural data points (cassava-leaf clean-fail, prior dogs-vs-cats env-degraded-fail) both confirm the family-level promotion is unjustified for image-natural. Per-task LLM routing remains the proper granularity.",
+  "links": ["[[L62-aerial-cactus-n3-GOLD-LOCK]]", "[[L61-dogs-vs-cats-scout]]", "[[L60-leaf-classification-scout]]", "[[router-campaign-2026-06-05-findings]]"]
+}

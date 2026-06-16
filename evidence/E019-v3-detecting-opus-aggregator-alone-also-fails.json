@@ -1,0 +1,64 @@
+{
+  "id": "E019",
+  "claim": "On v3 detecting-insults, opus on aggregator alone (with sonnet on all other 8 roles) DOES NOT fix the schema gate. Pipeline ran to completion at $9.50 with invalid_submission (missing Comment column). Combined with the prior X231 result (opus-designer alone also failed), no SINGLE-role lift — at the haiku→sonnet level (X217/X218 designer/coder), the sonnet→opus level (X231/X232 designer/aggregator), or the haiku→sonnet-everywhere level (X219) — bridges detecting's schema gate. The Phase 1 opus-everywhere $341.83 gold is the only known working configuration. The schema gate is multi-role opus, OR opus-coder specifically.",
+  "support": {
+    "experiment_id": "X232",
+    "run_dir": "/workspace/mlebench-playground/detecting-insults-in-social-commentary/20260602T145141Z_0000",
+    "routing": {
+      "setup": "claude-sonnet-4-6",
+      "splitter": "claude-sonnet-4-6",
+      "designer": "claude-sonnet-4-6",
+      "coder": "claude-sonnet-4-6",
+      "evaluator": "claude-sonnet-4-6",
+      "judge": "claude-sonnet-4-6",
+      "selector": "claude-sonnet-4-6",
+      "reviser": "claude-sonnet-4-6",
+      "aggregator": "claude-opus-4-8"
+    },
+    "total_cost_usd": 9.50,
+    "per_role_usd": {
+      "coder": 4.35,
+      "aggregator": 2.32,
+      "evaluator_review_0": 1.41,
+      "setup": 0.66,
+      "designer": 0.54,
+      "splitter": 0.22
+    },
+    "medal": "none",
+    "score": null,
+    "valid_submission": false,
+    "grader_error": "Submission should have an Comment column",
+    "pipeline_terminal": "no terminal marker (probably dashboard race), but submission.csv was written"
+  },
+  "scope": "Single Phase 2 run. Confirms 8-deep negative streak on detecting.",
+  "consolidated_findings_complete": {
+    "single_role_lifts_tested": "8/8 negative on detecting (all single-role lifts from baseline produce invalid_submission)",
+    "sonnet_lifts": "X209 aggregator, X217 designer, X218 coder, X219 all-sonnet — all invalid",
+    "opus_lifts_sonnet_base": "X231 designer, X232 aggregator — all invalid",
+    "remaining_hypotheses": [
+      "Pair: opus on {designer + aggregator} with sonnet rest (X233 queued)",
+      "Pair: opus on {coder + designer} or {coder + aggregator}",
+      "Opus-coder-only with sonnet-rest (~$300-340 budget, not queued)",
+      "Phase 1 opus-everywhere remains the only known working config ($342 gold)"
+    ],
+    "practical_conclusion_if_x233_also_fails": "Detecting-insults on v3 requires opus-everywhere. Cost cannot be reduced below ~$340. Routing for this task is not a savings lever; it is a tier preserver only."
+  },
+  "limitations": [
+    "n=1 per probe; very expensive to probe further."
+  ],
+  "confidence": "high",
+  "last_updated": "2026-06-02",
+  "policy_promoted": false,
+  "implications": {
+    "X232_status": "completed_negative",
+    "follow_up_experiments": [
+      "X233 (queued, medium priority) — opus on both designer + aggregator. Decisive: if it fails, single-role lift series can be terminated and we conclude opus-coder must be in the mix.",
+      "If X233 succeeds, then we have a $40-50 mid-cost working routing — a real win.",
+      "If X233 fails, queue an X234 candidate: opus on {coder + designer + aggregator} — last reasonable subset before opus-everywhere."
+    ]
+  },
+  "next_actions": [
+    "Mark X232 status=completed_negative.",
+    "Promote X233 priority to high and launch."
+  ]
+}

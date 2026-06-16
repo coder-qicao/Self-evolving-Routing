@@ -1,0 +1,368 @@
+{
+  "schema_version": 1,
+  "task": "leaf-classification",
+  "timestamp": "20260603T002531Z_0000",
+  "run_dir": "/workspace/mlebench-playground/leaf-classification/20260603T002531Z_0000",
+  "model": "claude-opus-4-8",
+  "model_role_map": {
+    "setup": "claude-opus-4-8",
+    "splitter": "claude-opus-4-8",
+    "designer": "claude-opus-4-8",
+    "aggregator": "claude-opus-4-8",
+    "coder": "claude-opus-4-8",
+    "evaluator_review_0": "claude-opus-4-8"
+  },
+  "result": {
+    "score": 0.06092,
+    "metric_name": null,
+    "metric_direction": null,
+    "medal": "above_median",
+    "above_median": true,
+    "bronze_threshold": 0.01526
+  },
+  "pipeline": {
+    "num_candidates": 12,
+    "alive_at_end": null,
+    "agent_calls": null,
+    "max_agent_calls": null,
+    "tuner_runs": null,
+    "reviser_runs": null,
+    "consumed_seconds": 10455.911948796362,
+    "wall_elapsed_seconds": null,
+    "terminal": "completed"
+  },
+  "cost": {
+    "total_usd": 26.515805500000003,
+    "total_input_tokens": 1379,
+    "total_output_tokens": 129507,
+    "cache_read_input_tokens": 29126848,
+    "cache_creation_input_tokens": 1347335,
+    "total_turns": 383,
+    "errors_count": 0,
+    "per_role": {
+      "manager": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "setup": {
+        "calls": 1,
+        "cost_usd": 0.7347922499999999,
+        "input_tokens": 25,
+        "output_tokens": 5472,
+        "cache_read_input_tokens": 552153,
+        "cache_creation_input_tokens": 50923,
+        "turns": 15,
+        "errors": 0
+      },
+      "designer": {
+        "calls": 1,
+        "cost_usd": 1.47587425,
+        "input_tokens": 21,
+        "output_tokens": 19092,
+        "cache_read_input_tokens": 576005,
+        "cache_creation_input_tokens": 78052,
+        "turns": 15,
+        "errors": 0
+      },
+      "reviser": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "coder": {
+        "calls": 6,
+        "cost_usd": 18.339758250000006,
+        "input_tokens": 1189,
+        "output_tokens": 67099,
+        "cache_read_input_tokens": 24147346,
+        "cache_creation_input_tokens": 726261,
+        "turns": 247,
+        "errors": 0
+      },
+      "tuner": {
+        "calls": 0,
+        "cost_usd": 0.0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "turns": 0,
+        "errors": 0
+      },
+      "aggregator": {
+        "calls": 1,
+        "cost_usd": 2.0166142500000004,
+        "input_tokens": 50,
+        "output_tokens": 16666,
+        "cache_read_input_tokens": 1610683,
+        "cache_creation_input_tokens": 126583,
+        "turns": 38,
+        "errors": 0
+      },
+      "splitter": {
+        "calls": 1,
+        "cost_usd": 0.6458430000000001,
+        "input_tokens": 17,
+        "output_tokens": 4820,
+        "cache_read_input_tokens": 387159,
+        "cache_creation_input_tokens": 52226,
+        "turns": 12,
+        "errors": 0
+      },
+      "evaluator_review_0": {
+        "calls": 5,
+        "cost_usd": 3.3029235,
+        "input_tokens": 77,
+        "output_tokens": 16358,
+        "cache_read_input_tokens": 1853502,
+        "cache_creation_input_tokens": 313290,
+        "turns": 56,
+        "errors": 0
+      }
+    }
+  },
+  "per_node": [
+    {
+      "node_id": 0,
+      "depth": 0,
+      "parent_node_id": null,
+      "status": "done",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {
+        "setup": "claude-opus-4-8",
+        "splitter": "claude-opus-4-8",
+        "designer": "claude-opus-4-8",
+        "aggregator": "claude-opus-4-8"
+      },
+      "coder_model": null
+    },
+    {
+      "node_id": 1,
+      "depth": 1,
+      "parent_node_id": 0,
+      "status": "failed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 7.323724250000004,
+      "coder_turns": 80,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {
+        "coder": "claude-opus-4-8"
+      },
+      "coder_model": "claude-opus-4-8"
+    },
+    {
+      "node_id": 2,
+      "depth": 1,
+      "parent_node_id": 0,
+      "status": "done",
+      "metric": 0.159234,
+      "metric_source": "holdout",
+      "coder_cost_usd": 2.0277209999999997,
+      "coder_turns": 33,
+      "coder_duration_s": 746.898,
+      "trainer_return_code": 0,
+      "trainer_duration_s": 3.0995361329987645,
+      "holdout_inference_rc": 0,
+      "holdout_grader_rc": 0,
+      "models_by_role": {
+        "coder": "claude-opus-4-8",
+        "evaluator_review_0": "claude-opus-4-8"
+      },
+      "coder_model": "claude-opus-4-8"
+    },
+    {
+      "node_id": 3,
+      "depth": 1,
+      "parent_node_id": 0,
+      "status": "proposed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {},
+      "coder_model": null
+    },
+    {
+      "node_id": 4,
+      "depth": 1,
+      "parent_node_id": 0,
+      "status": "proposed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {},
+      "coder_model": null
+    },
+    {
+      "node_id": 5,
+      "depth": 1,
+      "parent_node_id": 0,
+      "status": "done",
+      "metric": 0.311336,
+      "metric_source": "holdout",
+      "coder_cost_usd": 1.8645722499999997,
+      "coder_turns": 29,
+      "coder_duration_s": 327.811,
+      "trainer_return_code": 0,
+      "trainer_duration_s": 4.685870073735714,
+      "holdout_inference_rc": 0,
+      "holdout_grader_rc": 0,
+      "models_by_role": {
+        "coder": "claude-opus-4-8",
+        "evaluator_review_0": "claude-opus-4-8"
+      },
+      "coder_model": "claude-opus-4-8"
+    },
+    {
+      "node_id": 6,
+      "depth": 1,
+      "parent_node_id": 0,
+      "status": "failed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 4.527128,
+      "coder_turns": 54,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {
+        "coder": "claude-opus-4-8",
+        "evaluator_review_0": "claude-opus-4-8"
+      },
+      "coder_model": "claude-opus-4-8"
+    },
+    {
+      "node_id": 7,
+      "depth": 1,
+      "parent_node_id": 0,
+      "status": "proposed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {},
+      "coder_model": null
+    },
+    {
+      "node_id": 8,
+      "depth": 1,
+      "parent_node_id": 0,
+      "status": "proposed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {},
+      "coder_model": null
+    },
+    {
+      "node_id": 9,
+      "depth": 2,
+      "parent_node_id": 1,
+      "status": "done",
+      "metric": 0.096708,
+      "metric_source": "holdout",
+      "coder_cost_usd": 1.6673984999999996,
+      "coder_turns": 32,
+      "coder_duration_s": 484.686,
+      "trainer_return_code": 0,
+      "trainer_duration_s": 9.854680273681879,
+      "holdout_inference_rc": 0,
+      "holdout_grader_rc": 0,
+      "models_by_role": {
+        "coder": "claude-opus-4-8",
+        "evaluator_review_0": "claude-opus-4-8"
+      },
+      "coder_model": "claude-opus-4-8"
+    },
+    {
+      "node_id": 10,
+      "depth": 3,
+      "parent_node_id": 9,
+      "status": "skipped",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.92921425,
+      "coder_turns": 19,
+      "coder_duration_s": 188.326,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {
+        "coder": "claude-opus-4-8",
+        "evaluator_review_0": "claude-opus-4-8"
+      },
+      "coder_model": "claude-opus-4-8"
+    },
+    {
+      "node_id": 11,
+      "depth": 4,
+      "parent_node_id": 10,
+      "status": "proposed",
+      "metric": null,
+      "metric_source": null,
+      "coder_cost_usd": 0.0,
+      "coder_turns": 0,
+      "coder_duration_s": 0.0,
+      "trainer_return_code": null,
+      "trainer_duration_s": null,
+      "holdout_inference_rc": null,
+      "holdout_grader_rc": null,
+      "models_by_role": {},
+      "coder_model": null
+    }
+  ],
+  "provenance": {
+    "manager_state_sha256": "83ceca4df2194d361b890b0b53dff7106e5203276e2a1d09931b306e25eca23e",
+    "ingest_unix": 1780686052,
+    "source": "backfill-v3"
+  }
+}

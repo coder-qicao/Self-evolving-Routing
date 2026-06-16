@@ -1,0 +1,42 @@
+{
+  "evidence_id": "L53",
+  "campaign": "router-24h-2026-06-05",
+  "lane": "A",
+  "stratum": "tabular",
+  "task": "tabular-playground-series-may-2022",
+  "task_status": "UNSEEN (not in member_tasks of any family in memory/routing/task_memory/)",
+  "n": 1,
+  "promoted": false,
+  "promotion_block_reason": "Law 1: n=1 < 2; logged as Lane A scout datapoint only.",
+  "command": "scripts/test_router.sh --task tabular-playground-series-may-2022 --designs 2 --nodes 6 --budget 10 --no-ingest",
+  "run_dir": "/workspace/mlebench-playground/tabular-playground-series-may-2022/20260605T062639Z_0000",
+  "duration_hours": 2.39,
+  "router": {
+    "strategy": "composite (Static->LLM)",
+    "static_decision": "unknown_task (no family match) -> LLM fallback engaged",
+    "llm_inspect_data": true,
+    "per_node_decisions": {
+      "node_1": {"setup": "haiku", "splitter": "haiku", "designer": "sonnet", "coder": "sonnet", "evaluator": "haiku", "judge": "haiku", "selector": "haiku", "reviser": "sonnet", "aggregator": "haiku"},
+      "node_2": {"setup": "haiku", "splitter": "haiku", "designer": "sonnet", "coder": "opus-4-8", "evaluator": "haiku", "judge": "haiku", "selector": "haiku", "reviser": "sonnet", "aggregator": "haiku"},
+      "node_3": {"setup": "haiku", "splitter": "haiku", "designer": "sonnet", "coder": "sonnet", "evaluator": "haiku", "judge": "haiku", "selector": "haiku", "reviser": "haiku", "aggregator": "haiku"},
+      "node_4": {"setup": "haiku", "splitter": "haiku", "designer": "sonnet", "coder": "opus-4-8", "evaluator": "haiku", "judge": "haiku", "selector": "haiku", "reviser": "sonnet", "aggregator": "haiku"},
+      "node_5": {"setup": "haiku", "splitter": "haiku", "designer": "sonnet", "coder": "sonnet", "evaluator": "haiku", "judge": "haiku", "selector": "haiku", "reviser": "sonnet", "aggregator": "sonnet"},
+      "node_6": {"setup": "haiku", "splitter": "sonnet", "designer": "sonnet", "coder": "opus-4-8", "evaluator": "haiku", "judge": "haiku", "selector": "haiku", "reviser": "sonnet", "aggregator": "haiku"}
+    },
+    "pattern": "Designer always sonnet. Coder mix: sonnet on 3 nodes, opus-4-8 on 3 nodes (router escalated when uncertainty/complexity higher). Reviser sonnet majority, haiku once. Setup/judge/selector/evaluator uniformly haiku — cost-aware downgrade on cheap-ok nodes."
+  },
+  "outcome": {
+    "medal": null,
+    "valid_submission": true,
+    "score": 0.99341,
+    "rank_bucket": "above_median",
+    "total_cost_usd": 20.20
+  },
+  "interpretation": "Router cold-start on an UNSEEN tabular task: valid submission achieved at ~$20 (well under $80 cap). Router successfully avoided opus-everywhere over-spend AND avoided haiku-only under-spend. Net: above_median but no medal — pattern is competent but doesn't crack bronze threshold here. Cost-vs-quality is consistent with [[routing-objective-minimum-viable]] (cheapest model that completes the task is the target, not perf-max).",
+  "open_questions": [
+    "Would the LLM router have selected sonnet-coder universally (no opus-4-8 escalation) hit same above_median? Counterfactual bracket would test cost ceiling.",
+    "Is TPS-may-2022 a 'medal-cheap' task where bronze is reachable with the right feature engineering, or genuinely hard? Need to compare against unknown_task baseline.",
+    "Per-node aggregator was sonnet only on node_5 — what was different about node_5 that surfaced higher cost?"
+  ],
+  "links": ["[[L50-text-norm-en-scout]]", "[[routing-objective-minimum-viable]]", "[[agentic-router-project]]"]
+}

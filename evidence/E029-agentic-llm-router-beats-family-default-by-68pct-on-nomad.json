@@ -1,0 +1,77 @@
+{
+  "id": "E029",
+  "claim": "MAJOR WIN: The agentic LLM router on nomad2018 (router_strategy=llm, per_node_routing=false, single startup decision) DIVERGED from the E003 family default (sonnet-all gold $16) and produced a MIXED routing — designer+coder=sonnet, the other 7 roles=haiku — that achieved medal=GOLD at score 0.0549 for total $5.07. That's a 68% cost reduction vs the family default with the same gold tier. The LLM router correctly identified that designer + coder are the quality-critical roles for tabular regression (P2-style reasoning) and that the other 7 roles can run on haiku without medal regression. This is exactly the kind of generalization the per-node router design § 5 E-PN4 hypothesis aimed for. Also corrects E028's haiku-coder hypothesis: nodes 1 (haiku-coder) AND 2 (sonnet-coder) both hit `import yaml` failures in train.py — the yaml-import is a TASK-LEVEL issue (probably setup_report or instruction template injection), independent of the coder model. The pipeline still produced a valid gold submission because other nodes succeeded.",
+  "support": {
+    "experiment_id": "E-PN4-nomad-rerun",
+    "run_dir": "/workspace/mlebench-playground/nomad2018-predict-transparent-conductors/20260604T003136Z_0000",
+    "config": {
+      "task": "nomad2018-predict-transparent-conductors",
+      "router_strategy": "llm",
+      "per_node_routing": false,
+      "enable_router": true
+    },
+    "llm_router_startup_decision": {
+      "setup": "claude-haiku-4-5",
+      "splitter": "claude-haiku-4-5",
+      "designer": "claude-sonnet-4-6",
+      "coder": "claude-sonnet-4-6",
+      "evaluator": "claude-haiku-4-5",
+      "judge": "claude-haiku-4-5",
+      "selector": "claude-haiku-4-5",
+      "reviser": "claude-haiku-4-5",
+      "aggregator": "claude-haiku-4-5"
+    },
+    "interpretation": "P2-style reasoning: keep sonnet on code-generating roles (designer plans, coder writes train.py), downgrade everything else to haiku because they evaluate/select/judge rather than generate code.",
+    "result": {
+      "medal": "gold",
+      "score": 0.05494,
+      "metric": "rmsle (lower is better)",
+      "valid_submission": true,
+      "total_cost_usd": 5.07
+    },
+    "per_role_cost_usd": {
+      "coder": 3.12,
+      "evaluator_review_0": 0.91,
+      "designer": 0.57,
+      "aggregator": 0.21,
+      "setup": 0.14,
+      "splitter": 0.11
+    },
+    "comparison_to_baseline": {
+      "E003_family_default": {
+        "config": "sonnet-all (run-level)",
+        "medal": "gold",
+        "cost": 16.0
+      },
+      "E_PN4_rerun_llm_router": {
+        "config": "LLM-router mixed (designer+coder=sonnet, rest=haiku)",
+        "medal": "gold",
+        "cost": 5.07,
+        "cost_reduction_pct": 68
+      }
+    }
+  },
+  "scope": "Single Phase 2 run on nomad2018. n=1, but the comparison vs E003 (also n=1 in family memory) is direct.",
+  "corrections_to_prior_evidence": {
+    "E028_partial_correction": "E028 hypothesized that the E-PN4-nomad failure was haiku-coder writing `import yaml` without env-awareness. E-PN4-rerun (with SONNET coder) ALSO hit `import yaml` on node 2. So the import-yaml failure is INDEPENDENT of the coder model — it is a nomad2018 task-level issue (most likely the task instruction or setup_report injects a yaml-config pattern into the coder's prompt). E028's failure attribution to haiku is partially wrong. E028's design finding (the engine hook is live, agentic divergence works) remains valid."
+  },
+  "limitations": [
+    "n=1 for E-PN4-rerun and n=1 for E003. A second rerun would solidify the 68% cost saving claim.",
+    "Not a per-NODE test — per_node_routing was OFF for this rerun. The LLM router fired ONCE at startup. The per-NODE divergence path is still untested in success (E-PN4-nomad's per-node was the failed run).",
+    "The yaml-import failure on 2 of 4 main nodes means we don't know what the pipeline could have done if all 4 nodes succeeded — gold may have been achievable at even lower cost with a better-curated task instruction."
+  ],
+  "confidence": "high (for the cost-savings result on nomad2018) / medium (for generalization across other tasks — E-PN4 should now try LLM router on denoising and leaf to confirm the mixed-routing pattern is task-adaptive, not nomad-specific)",
+  "last_updated": "2026-06-04",
+  "policy_promoted": "candidate (consider promoting policy.json[nomad2018] = {designer:sonnet, coder:sonnet, rest:haiku} after n=2 confirmation)",
+  "implications": {
+    "E_PN4_nomad_rerun_status": "completed_positive",
+    "agentic_llm_router_validated": "The LLM router as a startup-level decision-maker is competent on tabular-regression: it picks a more cost-efficient routing than the family default. The KEY remaining test is per-node — does the same router make GOOD per-node decisions when the engine hook fires?",
+    "next_experiment_design": "Run E-PN4-leaf (LLM router on leaf-classification): family default is opus-all (E022/E023 baseline), bronze unreached even by opus-all + bigger search. Test: does the LLM router (a) keep opus where it matters and downgrade other roles (savings)? (b) match family default opus-all (no win)? (c) downgrade too aggressively and fail to clear above_median? Each outcome informs the router's prompt design."
+  },
+  "next_actions": [
+    "Mark E-PN4-nomad-rerun status=completed_positive.",
+    "Launch E-PN4-leaf: same router config (router_strategy=llm, per_node_routing=false) on leaf-classification. Tests generalization to a harder family where opus matters.",
+    "After E-PN4-leaf, design experiment 3 based on its outcome."
+  ],
+  "related_evidence": ["E003", "E022", "E023", "E028"]
+}

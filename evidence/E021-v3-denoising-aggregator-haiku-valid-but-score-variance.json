@@ -1,0 +1,16 @@
+{
+  "id": "E021",
+  "claim": "On v3 denoising-dirty-documents, aggregator=haiku (with coder=sonnet and rest=haiku) PRODUCES a valid submission, unlike detecting-insults where every non-opus-coder routing fails the schema gate. This confirms the schema-gate difference is task-specific: denoising's image-per-file submission format tolerates haiku aggregator; detecting's tabular CSV format does not. X213 score=0.169 (no medal) at $8.13 is the third data point on denoising mixed routing — the X203 silver result is now firmly classified as a single-run outlier (n=3: silver 0.018, none 0.193, none 0.169). Mean score 0.127 is above silver threshold 0.026 but variance dominates.",
+  "support": {
+    "experiment_id": "X213",
+    "run_dir": "/workspace/mlebench-playground/denoising-dirty-documents/20260602T182620Z_0000",
+    "routing": {"setup":"claude-haiku-4-5","splitter":"claude-haiku-4-5","designer":"claude-haiku-4-5","coder":"claude-sonnet-4-6","evaluator":"claude-haiku-4-5","judge":"claude-haiku-4-5","selector":"claude-haiku-4-5","reviser":"claude-haiku-4-5","aggregator":"claude-haiku-4-5"},
+    "total_cost_usd": 8.13,
+    "per_role_usd": {"coder":5.18,"evaluator":1.95,"aggregator":0.44,"designer":0.23,"setup":0.16,"splitter":0.15},
+    "medal": "none",
+    "score": 0.16858,
+    "valid_submission": true
+  },
+  "implications": {"X213_status": "completed_negative_valid_submission","insight": "Schema-gate is task-specific; denoising tolerates haiku-aggregator unlike detecting. Variance on denoising precludes promoting any mixed routing to policy."},
+  "next_actions": ["Continue to X214 (leaf opus-coder + opus-designer)"]
+}

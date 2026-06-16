@@ -2,7 +2,7 @@
   "schema_version": 1,
   "task": "detecting-insults-in-social-commentary",
   "timestamp": "20260519_041715",
-  "run_dir": "/data3/qi/ML-agent-code/detecting-insults-in-social-commentary/20260519_041715",
+  "run_dir": "/workspace/ML-agent-code/detecting-insults-in-social-commentary/20260519_041715",
   "model": "claude-haiku-4-5",
   "model_role_map": null,
   "result": {
